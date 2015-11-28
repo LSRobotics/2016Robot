@@ -9,7 +9,7 @@
     </classpath>
   </taskdef>
   <taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${classloadertask.jar}"/>
-  <classloader loader="system" classpath="${jsch.jar}"/>
+  <classloader classpath="${jsch.jar}"/>
 
   <target name="clean" description="Clean up all build and distribution artifacts.">
     <delete dir="${build.dir}"/>
@@ -238,5 +238,26 @@
 		failonerror="true"
         command="test -d ${roboRIOJRE.dir}"/>
   </target>
+ 
+  <target name="Test">
+  	<!--<junit printsummary="yes" haltonfailure="yes">
+
+  	    <classpath>
+  	      <pathelement location="build"/>
+  	      <pathelement location="${build.tests}"/>
+  	      <pathelement path="${java.class.path}"/>
+  	    </classpath>
+
+  	    <test name="com.jenkov.test.MyUnitTest"
+  	             haltonfailure="no" outfile="result">
+
+  	      <formatter type="plain"/>
+  	      <formatter type="xml"/>
+
+  	    </test>
+
+  	  </junit> -->
+  </target>
+	
 </project>
 
