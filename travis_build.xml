@@ -240,7 +240,23 @@
   </target>
  
   <target name="Test">
-	
+  	<!--<junit printsummary="yes" haltonfailure="yes">
+
+  	    <classpath>
+  	      <pathelement location="build"/>
+  	      <pathelement location="${build.tests}"/>
+  	      <pathelement path="${java.class.path}"/>
+  	    </classpath>
+
+  	    <test name="com.jenkov.test.MyUnitTest"
+  	             haltonfailure="no" outfile="result">
+
+  	      <formatter type="plain"/>
+  	      <formatter type="xml"/>
+
+  	    </test>
+
+  	  </junit> -->
   </target>
 	
 </project>
