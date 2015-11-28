@@ -9,7 +9,7 @@
     </classpath>
   </taskdef>
   <taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${classloadertask.jar}"/>
-  <classloader loader="system" classpath="${jsch.jar}"/>
+  <classloader classpath="${jsch.jar}"/>
 
   <target name="clean" description="Clean up all build and distribution artifacts.">
     <delete dir="${build.dir}"/>
@@ -17,6 +17,42 @@
   </target>
 
   <!-- Targets -->
+
+  <target name="get-target-ip">
+    <property name="ant.enable.asserts" value="true"/>
+    <property name="target" value="roboRIO-${team-number}.local" />
+	<echo>Trying Target: ${target}</echo>
+	 <if>
+		<isreachable host="${target}" timeout="5"/>
+	  <then>
+		<echo>roboRIO found via mDNS</echo>
+	  </then>
+	  <else>
+		<var name="target" unset="true"/>
+		<echo> roboRIO not found via mDNS, falling back to static USB</echo>
+		<property name="target" value="172.22.11.2"/>
+		<if>
+			<isreachable host="${target}" timeout="5"/>
+		  <then>
+			<echo>roboRIO found via static USB</echo>
+		  </then>
+		  <else>
+			<var name="target" unset="true"/>
+			<math result="ip.upper" operand1="${team-number}" operation="/" operand2="100" datatype="int"/>
+			<math result="ip.lower" operand1="${team-number}" operation="%" operand2="100" datatype="int"/>
+			<property name="target" value="10.${ip.upper}.${ip.lower}.2"/>
+			<echo>roboRIO not found via USB, falling back to static address of ${target}</echo>
+			<assert name="roboRIOFound" message="roboRIO not found, please check that the roboRIO is connected, imaged and that the team number is set properly in Eclipse">
+				<bool>
+					<isreachable host="${target}" timeout="5"/>
+				</bool>
+			</assert>
+			<echo>roboRIO found via Ethernet static</echo>
+		  </else>
+		</if>
+	  </else>
+	 </if>
+  </target>
 
   <target name="compile" description="Compile the source code.">
     <mkdir dir="${build.dir}"/>
@@ -59,6 +95,55 @@
       <include name="**/*.jar" />
     </zipgroupfileset>
     </jar>
+  </target>
+
+    <!-- We're running a clean here to get around a known ant issue where it does not detected changed constant variables.
+     To get around this, we're recompiling the entire project, which is not an issue for most teams. If this is an issue
+     for you, you can remove the clean here, just be sure to do a full rebuild after you've changed any constants.
+     Reference: http://stackoverflow.com/questions/6430001/ant-doesnt-recompile-constants -->	
+  <target name="deploy" depends="clean,jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
+    <echo>[athena-deploy] Copying code over.</echo>
+    <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+
+      <sshexec host="${target}"
+               username="admin"
+               password="${password}"
+               trust="true"
+               failonerror="false"
+               command="killall netconsole-host"/>
+      <scp file="${wpilib.ant.dir}/netconsole-host" todir="admin@${target}:/usr/local/frc/bin" password="${password}" trust="true"/>
+
+      <scp file="${wpilib.ant.dir}/robotCommand" todir="${username}@${target}:${command.dir}" password="${password}" trust="true"/>
+
+    <echo>[athena-deploy] Starting program.</echo>
+    <sshexec host="${target}"
+       username="${username}"
+       password="${password}"
+       trust="true"
+       command="${deploy.kill.command};"/>
+
+  </target>
+
+  <target name="debug-deploy" depends="jar,get-target-ip,dependencies" description="Deploy the jar and start the program running.">
+    <echo>[athena-deploy] Copying code over.</echo>
+    <scp file="${dist.jar}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+  	<!-- The remoteDebugCommand file is used by /usr/local/frc/bin/frcRunRobot.sh on the roboRIO  -->
+    <scp file="${wpilib.ant.dir}/robotDebugCommand" todir="${username}@${target}:${command.dir}" password="${password}" trust="true"/>
+  	<!-- The frcdebug file is used as a flag for /usr/local/frc/bin/frcRunRobot.sh to run the robot program in debug mode -->
+  	<scp file="${wpilib.ant.dir}/frcdebug" todir="${username}@${target}:${debug.flag.dir}" password="${password}" trust="true"/>
+	<sshexec host="${target}"
+        username="${username}"
+        password="${password}"
+        trust="true"
+        command="${debug.flag.command}"/>
+
+    <echo>[athena-deploy] Starting Debug program.</echo>
+    <sshexec host="${target}"
+        username="${username}"
+        password="${password}"
+        trust="true"
+        command="${deploy.kill.command}"/>
+
   </target>
 
   <!-- Simulate -->
@@ -153,4 +238,10 @@
 		failonerror="true"
         command="test -d ${roboRIOJRE.dir}"/>
   </target>
+ 
+  <target name="Test">
+	
+  </target>
+	
 </project>
+
