@@ -18,10 +18,13 @@ public class ActionBased {
 	private void sendActions() {
 		//TODO Send recording to the laptop
 	}
-	public void stratRecording(double time) { 
+	public void stratRecording(double time) {
+		//for buttons
+		double buttonPressed = 0;
 		if(gamepad.getRawButton(Gamepad.A_Button)) {
-			recordAction("A_Button", 1, time);
+			buttonPressed = 1;
 		}
+		recordAction("A_Button", buttonPressed, time);
 	}
 	public void stopRecording() {
 		//TODO sendAtions?
