@@ -47,13 +47,13 @@ public class Robot extends IterativeRobot {
 		double rightDrive = gp.getRawAxis(gp.RIGHT_Trigger);
 		double dir = Math.abs(gp.getRawAxis(gp.RIGHT_Stick_X)) / gp.getRawAxis(Gamepad.RIGHT_Stick_X); //1 or -1
 		
-//		if(Math.abs(leftDrive) >= speedLimit) {
-//			leftDrive = speedLimit;
-//		}
-//		if(Math.abs(rightDrive) >= speedLimit)) {
-//			rightDrive = speedLimit;
-//		}
-		drive.tankDrive(dir * speedLimit * leftDrive, dir * speedLimit *rightDrive);
+		if(Math.abs(leftDrive) >= speedLimit) {
+			leftDrive = speedLimit;
+		}
+		if(Math.abs(rightDrive) >= speedLimit) {
+			rightDrive = speedLimit;
+		}
+		drive.tankDrive(dir * leftDrive, dir *rightDrive);
 	}
 	
 	public void testPeriodic() {
