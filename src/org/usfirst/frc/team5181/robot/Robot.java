@@ -1,7 +1,10 @@
 package org.usfirst.frc.team5181.robot;
+import org.firs.frc.team5181.Recoder.ActionBased;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 
 public class Robot extends IterativeRobot {
@@ -14,6 +17,8 @@ public class Robot extends IterativeRobot {
 	Victor rightBack;
 	RobotDrive drive;
 	Gamepad gp;
+	ActionBased recorder;
+	Timer t;
 	
 	public void robotInit() {
 		leftFront = new Victor(Statics.LEFTPortFront);
@@ -23,7 +28,12 @@ public class Robot extends IterativeRobot {
 		
 		drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
 		
+		
+		recorder = new ActionBased();
+		t = new Timer();
 		gp = new Gamepad();
+		
+		t.start();
 	}
 	
 	public void autonomousPeriodic() {
@@ -58,5 +68,13 @@ public class Robot extends IterativeRobot {
 	
 	public void testPeriodic() {
 		
+	}
+	/**
+	 * Controls the starting and stopping of the recorder
+	 */
+	public void recording() {
+		if(gp.getRawButton(Gamepad.START) == true) {
+			recorder.startRecording(t.get());
+		}
 	}
 }
