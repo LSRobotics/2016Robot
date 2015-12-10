@@ -1,80 +1,52 @@
-package org.usfirst.frc.team5181.robot;
-import org.firs.frc.team5181.Recoder.ActionBased;
+package org.firs.frc.team5181.Recoder;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
+import org.usfirst.frc.team5181.robot.Gamepad;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Victor;
 
-public class Robot extends IterativeRobot {
+public class ActionBased {
+	String recording;
+	Gamepad gamepad;
 	
-	private static double speedLimit = .7; //20% speed
-	
-	Victor leftFront;
-	Victor leftBack;
-	Victor rightFront;
-	Victor rightBack;
-	RobotDrive drive;
-	Gamepad gp;
-	ActionBased recorder;
-	Timer t;
-	
-	public void robotInit() {
-		leftFront = new Victor(Statics.LEFTPortFront);
-		leftBack = new Victor(Statics.LEFTPortBack);
-		rightFront = new Victor(Statics.RIGHTPortFront);
-		rightBack = new Victor(Statics.RIGHTPortBack);
-		
-		drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
-		
-		
-		recorder = new ActionBased();
-		t = new Timer();
-		gp = new Gamepad();
-		
-		t.start();
+	public ActionBased() {
+		recording = "";
+		gamepad = new Gamepad();
 	}
-	
-	public void autonomousPeriodic() {
-		
+	private void recordAction(String button, double magnitude, double time) {
+		recording += button + ":" + magnitude + ":" + time + "\n";
 	}
-	
-	public void teleopPeriodic() {
-		//Speed Limit Control
-		if(gp.getRawButton(Gamepad.RIGHT_Bumper)) {
-			speedLimit += .1;
-		}
-		else if(gp.getRawButton(Gamepad.B_Button)) {
-			speedLimit = 0;
-		}
-		else if(gp.getRawButton(Gamepad.LEFT_Bumper)){
-			speedLimit -= 0.1;
-		}
-		
-		//Tank Drive
-		double leftDrive = gp.getRawAxis(gp.LEFT_Trigger);
-		double rightDrive = gp.getRawAxis(gp.RIGHT_Trigger);
-		double dir = Math.abs(gp.getRawAxis(gp.RIGHT_Stick_X)) / gp.getRawAxis(Gamepad.RIGHT_Stick_X); //1 or -1
-		
-		if(Math.abs(leftDrive) >= speedLimit) {
-			leftDrive = speedLimit;
-		}
-		if(Math.abs(rightDrive) >= speedLimit) {
-			rightDrive = speedLimit;
-		}
-		drive.tankDrive(dir * leftDrive, dir *rightDrive);
+	private void sendActions() {
+		DriverStation ds = DriverStation.getInstance();
+		ds.reportError(recording, false);
 	}
-	
-	public void testPeriodic() {
+	public void startRecording(double time) {
+		//for buttons
+		recordAction("A_Button", toDouble(gamepad.getRawButton(gamepad.A_Button)), time);
+		recordAction("B_Button", toDouble(gamepad.getRawButton(gamepad.B_Button)), time);
+		recordAction("X_Button", toDouble(gamepad.getRawButton(gamepad.X_Button)), time);
+		recordAction("Y_Button", toDouble(gamepad.getRawButton(gamepad.Y_Button)), time);
+		recordAction("Right_Bumper", toDouble(gamepad.getRawButton(gamepad.RIGHT_Bumper)), time);
+		recordAction("Left_Bumper", toDouble(gamepad.getRawButton(gamepad.LEFT_Bumper)), time);
 		
+		//for triggers/analog sticks
+		recordAction("Left_Y", gamepad.getRawAxis(gamepad.LEFT_Stick_Y), time);
+		recordAction("Left_X", gamepad.getRawAxis(gamepad.LEFT_Stick_X), time);
+		recordAction("Right_Y", gamepad.getRawAxis(gamepad.RIGHT_Stick_Y), time);
+		recordAction("Right_X", gamepad.getRawAxis(gamepad.RIGHT_Stick_X), time);
+		recordAction("Right_Trigger", gamepad.getRawAxis(gamepad.RIGHT_Trigger), time);
+		recordAction("Left_Trigger", gamepad.getRawAxis(gamepad.LEFT_Trigger), time);
+		
+		//DPad
+		recordAction("DPAD", gamepad.getRawAxis(gamepad.getPOV()), time);
 	}
-	/**
-	 * Controls the starting and stopping of the recorder
-	 */
-	public void recording() {
-		if(gp.getRawButton(Gamepad.START) == true) {
-			recorder.startRecording(t.get());
+	public void stopRecording() {
+		sendActions();
+	}
+	private double toDouble(boolean bool) {
+		if (bool) {
+			return 1.0;
 		}
+		else return 0.0;
 	}
 }
