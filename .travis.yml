@@ -1,2 +1,0 @@
-language: java
-script: ant -find "travis_build.xml" Test
