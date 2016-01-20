@@ -6,30 +6,43 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.io.*;
+import java.net.Socket;
+
 import edu.wpi.first.wpilibj.Timer;
 
 public class Autonomous {
 	private static Timer t;
 	private String recordingFile; //for actionPlayback
+	private Robot robot;
 	
-	public Autonomous(String autonName) {
+	/**
+	 * 
+	 * @param autonName Auton method to execute
+	 * @param interval Default = 0; Window of time in which an action fires
+	 * @par
+	 */
+	public Autonomous(Robot r, String autonName, double interval, String recordingFileName) {
 		t = new Timer();
+		robot = r;
 		
 		//choose auton
-		if(autonName.equalsIgnoreCase("ActionPlayback")) {
-			recordingFile = "";
-			actionPlayback();
+		if(autonName.equalsIgnoreCase("actionPlayback")) {
+			actionPlayback(interval, recordingFileName);
 		}
 	}
 	
-	private void actionPlayback() {
+	/**
+	 * 
+	 * @param interval amount of time to round the recording's time so that the action occurs
+	 */
+	private void actionPlayback(double interval, String recordignFileName) {
 		try {
-			//read commands from file
+			//read commands from file on drive computer
 			List<String> commands = new ArrayList<String>();
-			BufferedReader fileReader = new BufferedReader(new FileReader(new File(recordingFile)));
+			BufferedReader br = new BufferedReader(new InputStreamReader((new Socket("LSCHS-ROBOTICS", 5800).getInputStream())));
 			
 			String line = "";
-			while((line = fileReader.readLine()) != null) {
+			while((line = br.readLine()) != null) {
 				commands.add(line);
 			}
 			
@@ -37,10 +50,9 @@ public class Autonomous {
 			StringTokenizer tokenizer;
 			String button = "";
 			String magnitude = "";
-			int time = 0;
+			double time = 0;
 			
-			//Start timer 
-			t.start();
+			boolean startedTimer = false;
 			
 			Iterator<String> i = commands.iterator();
 			while(i.hasNext()) {
@@ -49,8 +61,17 @@ public class Autonomous {
 				magnitude = tokenizer.nextToken().trim();
 				time = Integer.parseInt(tokenizer.nextToken());
 				
+				if(!startedTimer) {
+					t.start();
+					startedTimer = true;
+				}
+				
 				//check time
-				//TODO
+				if(Math.abs(t.get() - time) <= interval) {
+					
+					//starting the action
+					robot.teleopPeriodic();
+				}
 			}
 		}
 		catch(Exception e) {
