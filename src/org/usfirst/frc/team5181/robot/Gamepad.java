@@ -51,24 +51,27 @@ public class Gamepad extends Joystick {
 
 	}
 	
-	public void update() {
-		A_Button_State = this.getRawButton(A_Button);
-		B_Button_State = this.getRawButton(B_Button);
-		X_Button_State = this.getRawButton(X_Button);
-		Y_Button_State = this.getRawButton(Y_Button);
-		LEFT_Bumper_State = this.getRawButton(LEFT_Bumper);
-		RIGHT_Bumper_State = this.getRawButton(RIGHT_Bumper);
-		BACK_State = this.getRawButton(BACK);
-		START_State = this.getRawButton(START);
-		LEFT_Stick_DOWN_State = this.getRawButton(LEFT_Stick_DOWN);
-		RIGHT_Stick_DOWN_State = this.getRawButton(RIGHT_Stick_DOWN);
-
-		// Axis
-		LEFT_Stick_X_State = this.getRawAxis(LEFT_Stick_X);
-		LEFT_Stick_Y_State = this.getRawAxis(LEFT_Stick_Y);
-		LEFT_Trigger_State = this.getRawAxis(LEFT_Trigger);
-		RIGHT_Trigger_State = this.getRawAxis(RIGHT_Trigger);
-		RIGHT_Stick_X_State = this.getRawAxis(RIGHT_Stick_X);
-		RIGHT_Stick_Y_State = this.getRawAxis(RIGHT_Stick_Y);
+	public void update(boolean inAuton) {
+		if(!inAuton) {
+			//Buttons
+			A_Button_State = this.getRawButton(A_Button);
+			B_Button_State = this.getRawButton(B_Button);
+			X_Button_State = this.getRawButton(X_Button);
+			Y_Button_State = this.getRawButton(Y_Button);
+			LEFT_Bumper_State = this.getRawButton(LEFT_Bumper);
+			RIGHT_Bumper_State = this.getRawButton(RIGHT_Bumper);
+			BACK_State = this.getRawButton(BACK);
+			START_State = this.getRawButton(START);
+			LEFT_Stick_DOWN_State = this.getRawButton(LEFT_Stick_DOWN);
+			RIGHT_Stick_DOWN_State = this.getRawButton(RIGHT_Stick_DOWN);
+	
+			// Axis
+			LEFT_Stick_X_State = this.getRawAxis(LEFT_Stick_X);
+			LEFT_Stick_Y_State = this.getRawAxis(LEFT_Stick_Y);
+			LEFT_Trigger_State = this.getRawAxis(LEFT_Trigger);
+			RIGHT_Trigger_State = this.getRawAxis(RIGHT_Trigger);
+			RIGHT_Stick_X_State = this.getRawAxis(RIGHT_Stick_X);
+			RIGHT_Stick_Y_State = this.getRawAxis(RIGHT_Stick_Y);
+		}
 	}
 }

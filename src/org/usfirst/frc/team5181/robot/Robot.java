@@ -43,21 +43,28 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
-	public void teleopPeriodic() {	
+	public void teleopPeriodic() {
+		teleopPeriodicMaster(false);
+	}
+	public void teleopPeriodicMaster(boolean inAuton) {	
+		if(!inAuton) {
+			gp.update(false);
+		}
+		
 		//Speed Limit Control
-		if(gp.getRawButton(Gamepad.RIGHT_Bumper)) {
+		if(gp.RIGHT_Bumper_State) {
 			speedLimit += .1;
 		}
-		else if(gp.getRawButton(  Gamepad.B_Button)) {
+		else if(gp.B_Button_State) {
 			speedLimit = 0;
 		}
-		else if(gp.getRawButton(Gamepad.LEFT_Bumper)){
+		else if(gp.LEFT_Bumper_State) {
 			speedLimit -= 0.1;
 		}
 		
 		//Tank drive normal
-		double left = gp.getRawAxis(gp.LEFT_Stick_Y);
-		double right = gp.getRawAxis(gp.RIGHT_Stick_Y);
+		double left = gp.LEFT_Stick_Y_State;
+		double right = gp.RIGHT_Stick_Y_State;
 		drive.tankDrive(-left * speedLimit, -right * speedLimit);
 	}
 	
@@ -70,14 +77,14 @@ public class Robot extends IterativeRobot {
 	 * Controls the starting and stopping of the recorder
 	 */
 	public void recording() {	
-		if(gp.getRawButton(Gamepad.START) == true) {
+		if(gp.START_State) {
 			DriverStation.reportError("Started", false);
 			t.reset();            
 			recorder.startRecording();
 		}
 		recorder.recording(t.get());
 		
-		if(gp.getRawButton(Gamepad.BACK) == true)  {
+		if(gp.BACK_State)  {
 			recorder.stopRecording();
 		}
 	}
