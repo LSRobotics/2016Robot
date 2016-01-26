@@ -52,7 +52,7 @@ public class Autonomous {
 			
 			//parse commands and execute
 			StringTokenizer tokenizer;
-			String next = "";
+			String nextCommand = "";
 			String button = "";
 			String magnitude = "";
 			double time = 0;
@@ -60,20 +60,62 @@ public class Autonomous {
 			t.start(); //start timer
 			Iterator<String> i = commands.iterator();
 			while(i.hasNext()) {
-				next = i.next();
-				if(next.substring(0, 4).equals("time")) {
-					time = Double.parseDouble(next.substring(5));
+				nextCommand = i.next();
+				if(nextCommand.startsWith("time")) {
+					time = Double.parseDouble(nextCommand.substring(5));
 					if(Math.abs(time - t.get()) < interval) {
-						next = i.next();
-						tokenizer = new StringTokenizer(next, ";");
+						nextCommand = i.next();
+						tokenizer = new StringTokenizer(nextCommand, ";");
 						
-						String token = "";
+						String token;
 						while(tokenizer.hasMoreTokens()) {
 							token = tokenizer.nextToken();
 							
-							//Interpret button and magnitude
+							int colonIndex = token.indexOf(':');    ///Interpret button and magnitude
+							button = token.substring(0, colonIndex);
+							magnitude = token.substring(colonIndex + 1, token.indexOf(';'));
 							//adjust game controller state
-							//Each token should be [button]:[magnitude]
+						    switch (button) {
+						    	case "A_Button":
+						    		robot.gp.A_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "B_Button":
+						    		robot.gp.B_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "X_Button":
+						    		robot.gp.X_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "Y_Button":
+						    		robot.gp.Y_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "Left_Bumper":
+						    		robot.gp.LEFT_Bumper_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "Right_Bumper":
+						    		robot.gp.RIGHT_Bumper_State = (magnitude.equals("1.0")) ? true : false;
+						    		break;
+						    	case "Left_Y":
+						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "Left_X":
+						    		robot.gp.LEFT_Stick_X_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "Right_Y":
+						    		robot.gp.RIGHT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "Right_X":
+						    		robot.gp.RIGHT_Stick_X_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "Right_Trigger":
+						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "Left_Trigger":
+						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		break;
+						    	case "DPAD":
+						    		//Could not find DPAD variable in Gamepad, no references anywhere else (I think); TODO
+						    		break;
+						    }
 						}
 					}
 				}
