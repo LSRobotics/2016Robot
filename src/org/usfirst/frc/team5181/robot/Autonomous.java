@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import java.io.*;
 import java.net.Socket;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Autonomous {
@@ -37,8 +38,11 @@ public class Autonomous {
 	 */
 	private void actionPlayback(double interval, String recordignFileName) {
 		try {
+			//Send the start command
+			new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream()))).write("Run Auton");
+			
 			//read commands from file on drive computer
-			List<String> commands = new ArrayList<String>();
+			List<String> commands = new ArrayList<String>(); //Will either be the state of the controller or the time
 			BufferedReader br = new BufferedReader(new InputStreamReader((new Socket("LSCHS-ROBOTICS", 5800).getInputStream())));
 			
 			String line = "";
@@ -48,29 +52,33 @@ public class Autonomous {
 			
 			//parse commands and execute
 			StringTokenizer tokenizer;
+			String next = "";
 			String button = "";
 			String magnitude = "";
 			double time = 0;
 			
-			boolean startedTimer = false;
-			
+			t.start(); //start timer
 			Iterator<String> i = commands.iterator();
 			while(i.hasNext()) {
-				tokenizer = new StringTokenizer(i.next(), ":");
-				button = tokenizer.nextToken().trim();
-				magnitude = tokenizer.nextToken().trim();
-				time = Integer.parseInt(tokenizer.nextToken());
-				
-				if(!startedTimer) {
-					t.start();
-					startedTimer = true;
+				next = i.next();
+				if(next.substring(0, 4).equals("time")) {
+					time = Double.parseDouble(next.substring(5));
+					if(Math.abs(time - t.get()) < interval) {
+						next = i.next();
+						tokenizer = new StringTokenizer(next, ";");
+						
+						String token = "";
+						while(tokenizer.hasMoreTokens()) {
+							token = tokenizer.nextToken();
+							
+							//Interpret button and magnitude
+							//adjust game controller state
+							//Each token should be [button]:[magnitude]
+						}
+					}
 				}
-				
-				//check time
-				if(Math.abs(t.get() - time) <= interval) {
-					
-					//starting the action
-					robot.teleopPeriodic();
+				else {
+					DriverStation.reportError("No time attached", true);
 				}
 			}
 		}
