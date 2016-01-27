@@ -53,7 +53,7 @@ public class Autonomous {
 			//parse commands and execute
 			StringTokenizer tokenizer;
 			String nextCommand = "";
-			String button = "";
+			int button = -1;
 			String magnitude = "";
 			double time = 0;
 			
@@ -72,51 +72,55 @@ public class Autonomous {
 							token = tokenizer.nextToken();
 							
 							int colonIndex = token.indexOf(':');    ///Interpret button and magnitude
-							button = token.substring(0, colonIndex);
+							button = Integer.parseInt(token.substring(0, colonIndex));
 							magnitude = token.substring(colonIndex + 1, token.indexOf(';'));
 							//adjust game controller state
 						    switch (button) {
-						    	case "A_Button":
-						    		robot.gp.A_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 1:
+						    		robot.gp.A_Button_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "B_Button":
-						    		robot.gp.B_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 2:
+						    		robot.gp.B_Button_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "X_Button":
-						    		robot.gp.X_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 3:
+						    		robot.gp.X_Button_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "Y_Button":
-						    		robot.gp.Y_Button_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 4:
+						    		robot.gp.Y_Button_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "Left_Bumper":
-						    		robot.gp.LEFT_Bumper_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 5:
+						    		robot.gp.LEFT_Bumper_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "Right_Bumper":
-						    		robot.gp.RIGHT_Bumper_State = (magnitude.equals("1.0")) ? true : false;
+						    	case 6:
+						    		robot.gp.RIGHT_Bumper_State = magnitude.equals("1.0") ;
 						    		break;
-						    	case "Left_Y":
+						    	case 12:
 						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "Left_X":
+						    	case 11:
 						    		robot.gp.LEFT_Stick_X_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "Right_Y":
+						    	case 16:
 						    		robot.gp.RIGHT_Stick_Y_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "Right_X":
+						    	case 15:
 						    		robot.gp.RIGHT_Stick_X_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "Right_Trigger":
+						    	case 14:
 						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "Left_Trigger":
+						    	case 13:
 						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
 						    		break;
-						    	case "DPAD":
+						    	//case "DPAD":
 						    		//Could not find DPAD variable in Gamepad, no references anywhere else (I think); TODO
-						    		break;
+						    		//break;
+						    	default:
+						    			DriverStation.reportError("Button not found: " + button, false);
+						    			break;
 						    }
 						}
+						robot.teleopPeriodicMaster(true);
 					}
 				}
 				else {
