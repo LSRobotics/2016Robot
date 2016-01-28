@@ -48,6 +48,13 @@ public class DriveTrain {
 	}
 	
 	public void tankDrive(double controlStickLeft, double controlStickRight) {
+		if(controlStickLeft >= speedLimit) {
+			controlStickLeft = speedLimit;
+		}
+		if(controlStickRight >= speedLimit) {
+			controlStickRight = speedLimit;
+		}
+		
 		drive.tankDrive(controlStickLeft, controlStickRight);
 	}
 	
