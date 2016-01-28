@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	
 	private static double speedLimit = .6; 
-	private static boolean speedBool = false;
 	
 	Victor leftFront;
 	Victor leftBack;
@@ -54,6 +53,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		//Speed Limit Control
+		boolean speedBool = true;
 		if(gp.RIGHT_Bumper_State && !speedBool) {
 			speedLimit += 0.1;
 			speedBool = true;
