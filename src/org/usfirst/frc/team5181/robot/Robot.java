@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends IterativeRobot {
 	
 	private static double speedLimit = .6; 
-	private static boolean speedBool = false;
 	
 	Victor leftFront;
 	Victor leftBack;
@@ -24,7 +23,7 @@ public class Robot extends IterativeRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	
-	public void robotInit() {
+	public void robotInit(int drivingType) {
 		leftFront = new Victor(Statics.LEFTPortFront);
 		leftBack = new Victor(Statics.LEFTPortBack);
 		rightFront = new Victor(Statics.RIGHTPortFront);
@@ -32,16 +31,28 @@ public class Robot extends IterativeRobot {
 		
 		drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
 		
-		auton = new Autonomous(this, "actionPlayback", 0, "autonRecording1.txt");
+		//auton = new Autonomous(this, "actionPlayback", 0, "autonRecording1.log");
 		recorder = new ActionBased(ds);
 		t = new Timer();
 		gp = new Gamepad();
 		
+		if (drivingType == 0) {
+			drivePeriodic();
+		} else if (drivingType == 1) {
+			driveAutonomous();
+		}
 		t.start();
 	}
 	
 	public void autonomousPeriodic() {
-		
+		autonomousPeriodicMaster(false);
+	}
+	
+	public void autonomousPeriodicMaster(boolean inPeriod) {
+		if(!inPeriod){
+			gp.update(true);
+		}
+		auton = new Autonomous(this, "actionPlayback", 0, "autonRecording1.log");
 	}
 	
 	public void teleopPeriodic() {
@@ -54,6 +65,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		//Speed Limit Control
+		boolean speedBool = true;
 		if(gp.RIGHT_Bumper_State && !speedBool) {
 			speedLimit += 0.1;
 			speedBool = true;
@@ -103,11 +115,14 @@ public class Robot extends IterativeRobot {
 		drive.arcadeDrive(-speedLimit * gp.getRawAxis(gp.RIGHT_Stick_Y), speedLimit * -(rotation));
 	}
 	
-	public void testPeriodic() {
+	public void drivePeriodic() {
 		recording(); 
 		teleopPeriodic();
 	}
 	
+	public void driveAutonomous() {
+		autonomousPeriodic();
+	}
 	/**
 	 * Controls the starting and stopping of the recorder
 	 */

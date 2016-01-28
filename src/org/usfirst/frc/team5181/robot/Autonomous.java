@@ -17,10 +17,8 @@ public class Autonomous {
 	private Robot robot;
 	
 	/**
-	 * 
 	 * @param autonName Auton method to execute
 	 * @param interval Default = 0; Window of time in which an action fires
-	 * @par
 	 */
 	public Autonomous(Robot r, String autonName, double interval, String recordingFileName) {
 		t = new Timer();
