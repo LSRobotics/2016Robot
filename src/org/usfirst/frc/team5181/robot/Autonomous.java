@@ -120,7 +120,7 @@ public class Autonomous {
 						    			break;
 						    }
 						}
-						robot.teleopPeriodicMaster(true);
+						robot.teleopMaster(true);
 					}
 				}
 				else {

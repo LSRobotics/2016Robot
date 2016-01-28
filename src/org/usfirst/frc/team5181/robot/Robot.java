@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 
-public class Robot extends IterativeRobot {
+public class Robot extends SampleRobot {
 	
 	private static double speedLimit = .6; 
-	private static boolean speedBool = false;
 	
 	
 	Gamepad gp;
@@ -33,40 +33,29 @@ public class Robot extends IterativeRobot {
 		t.start();
 	}
 	
-	public void autonomousPeriodic() {
-		
+	public void autonomous() {
+		while (isAutonomous()) {
+			
+		}
 	}
 	
-	public void teleopPeriodic() {
-		teleopPeriodicMaster(false);
+	public void operatorControl() {
+		while (isOperatorControl() && isEnabled()) {
+			teleopMaster(false);
+		}
 	}
-	public void teleopPeriodicMaster(boolean inAuton) {	
+	public void teleopMaster(boolean inAuton) {	
 		if(!inAuton) {
 			gp.update(false);
 		}
 		
-		//Speed Limit Control
-		if(gp.RIGHT_Bumper_State && !speedBool) {
-			drive.setSpeedLimit(speedLimit += 0.1);
-			speedBool = true;
-		}
-		else if(gp.B_Button_State) {
-			drive.setSpeedLimit(speedLimit = 0);
-		}
-		else if(gp.LEFT_Bumper_State && !speedBool) {
-			drive.setSpeedLimit(speedLimit -= 0.1);
-			speedBool = true;
-		}
-		else if(!gp.LEFT_Bumper_State && !gp.RIGHT_Bumper_State && speedBool){
-			speedBool = false;
-		}
-		
+		drive.updateSpeedLimit();
 		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
 	}
 	
 	public void testPeriodic() {
 		recording(); 
-		teleopPeriodic();
+		operatorControl();
 	}
 	
 	/**

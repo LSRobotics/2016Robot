@@ -1,12 +1,13 @@
 package org.usfirst.frc.team5181.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 
 public class DriveTrain {
 	
 	private double speedLimit;
-	
+	private boolean speedBool;
 	Victor leftFront;
 	Victor leftBack;
 	Victor rightFront;
@@ -37,14 +38,15 @@ public class DriveTrain {
 		
 		xRotation = Filters.powerCurving(controlStickX, 0.75); //filter rotational values
 		
-		if(yDrive >= speedLimit) {
-			yDrive = speedLimit;
+		if(Math.abs(yDrive) >= speedLimit) {
+			yDrive = 	(Math.abs(yDrive)    /    yDrive) * speedLimit;
+			DriverStation.reportError("" +speedLimit, false);
 		}
-		if(xRotation >= speedLimit) {
-			xRotation = speedLimit;
+		if(Math.abs(xRotation) >= speedLimit) {
+			xRotation = (Math.abs(xRotation) / xRotation) * speedLimit;
 		}
 		
-		drive.arcadeDrive(-gp.getRawAxis(gp.RIGHT_Stick_Y), -(xRotation));
+		drive.arcadeDrive(-yDrive, -(xRotation));
 	}
 	
 	public void tankDrive(double controlStickLeft, double controlStickRight) {
@@ -57,8 +59,24 @@ public class DriveTrain {
 		
 		drive.tankDrive(controlStickLeft, controlStickRight);
 	}
-	
-	public void setSpeedLimit(double newMaxSpeed) {
-		speedLimit = newMaxSpeed;
+	public void updateSpeedLimit() {
+
+		//Speed Limit Control
+		if(gp.RIGHT_Bumper_State && !speedBool) {
+			speedLimit += 0.1;
+			speedBool = true;
+		}
+		else if(gp.B_Button_State) {
+			speedLimit = 0;
+		}
+		else if(gp.LEFT_Bumper_State && !speedBool) {
+			speedLimit -= 0.1;
+			speedBool = true;
+		}
+		else if(!gp.LEFT_Bumper_State && !gp.RIGHT_Bumper_State && speedBool) {
+			speedBool = false;
+		}
+		
 	}
+	
 }
