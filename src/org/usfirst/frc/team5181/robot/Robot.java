@@ -24,7 +24,7 @@ public class Robot extends SampleRobot {
 	public void robotInit() {
 		
 		
-		auton = new Autonomous(this, "actionPlayback", 0, "autonRecording1.txt");
+		auton = new Autonomous(this, "actionPlayback", 0);
 		recorder = new ActionBased(ds);
 		t = new Timer();
 		gp = new Gamepad();
@@ -34,13 +34,13 @@ public class Robot extends SampleRobot {
 	}
 	
 	public void autonomous() {
-		while (isAutonomous()) {
-			
-		}
+		DriverStation.reportError("Started", false);
+		auton.actionPlayback(0, "/var/rcrdng/autonRecording.rcrdng");
 	}
 	
 	public void operatorControl() {
 		while (isOperatorControl() && isEnabled()) {
+			recording();
 			teleopMaster(false);
 		}
 	}
@@ -53,10 +53,6 @@ public class Robot extends SampleRobot {
 		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
 	}
 	
-	public void testPeriodic() {
-		recording(); 
-		operatorControl();
-	}
 	
 	/**
 	 * Controls the starting and stopping of the recorder

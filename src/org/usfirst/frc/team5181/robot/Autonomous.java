@@ -22,28 +22,24 @@ public class Autonomous {
 	 * @param interval Default = 0; Window of time in which an action fires
 	 * @par
 	 */
-	public Autonomous(Robot r, String autonName, double interval, String recordingFileName) {
+	public Autonomous(Robot r, String autonName, double interval) {
 		t = new Timer();
 		robot = r;
-		
-		//choose auton
-		if(autonName.equalsIgnoreCase("actionPlayback")) {
-			actionPlayback(interval, recordingFileName);
-		}
 	}
 	
 	/**
 	 * 
 	 * @param interval amount of time to round the recording's time so that the action occurs
 	 */
-	private void actionPlayback(double interval, String recordignFileName) {
+	public void actionPlayback(double interval, String recordingFileName) {
 		try {
 			//Send the start command
-			new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream()))).write("Run Auton");
+			//new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream()))).write("Run Auton");
 			
 			//read commands from file on drive computer
 			List<String> commands = new ArrayList<String>(); //Will either be the state of the controller or the time
-			BufferedReader br = new BufferedReader(new InputStreamReader((new Socket("LSCHS-ROBOTICS", 5800).getInputStream())));
+			//BufferedReader br = new BufferedReader(new InputStreamReader((new Socket("LSCHS-ROBOTICS", 5800).getInputStream())));
+			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
 			
 			String line = "";
 			while((line = br.readLine()) != null) {
@@ -61,8 +57,13 @@ public class Autonomous {
 			Iterator<String> i = commands.iterator();
 			while(i.hasNext()) {
 				nextCommand = i.next();
-				if(nextCommand.startsWith("time")) {
+				if(nextCommand.equals("\n")) {
+					DriverStation.reportError("HERE CONTINUE", false);
+					continue;
+				}
+				else if(nextCommand.startsWith("time")) {
 					time = Double.parseDouble(nextCommand.substring(5));
+					DriverStation.reportError("HEREB4", false);
 					if(Math.abs(time - t.get()) < interval) {
 						nextCommand = i.next();
 						tokenizer = new StringTokenizer(nextCommand, ";");
@@ -120,11 +121,13 @@ public class Autonomous {
 						    			break;
 						    }
 						}
+						DriverStation.reportError("HERE", false);
 						robot.teleopMaster(true);
 					}
 				}
-				else {
+			else {
 					DriverStation.reportError("No time attached", true);
+						break;
 				}
 			}
 		}

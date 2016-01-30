@@ -27,14 +27,14 @@ public class ActionBased {
 	}
 	
 	public void recordAction(double time) {
-		recording += "time:" + time + "\n";
+		recording += "\ntime:" + time + "\n";
 	}
-	
 	private void sendActions() {
 		DriverStation.reportError(recording, false);
 		
 		try {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
+			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording.rcrdng")));
 			bw.write(recording);
 		
 		}
@@ -69,7 +69,7 @@ public class ActionBased {
 			recordAction("Left_Trigger", gamepad.getRawAxis(gamepad.LEFT_Trigger));
 					
 			//DPad
-			recordAction("DPAD", gamepad.getRawAxis(gamepad.getPOV()));
+			//recordAction("DPAD", gamepad.getPOV());
 		}
 	}
 	

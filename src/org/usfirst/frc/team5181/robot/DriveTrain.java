@@ -34,13 +34,12 @@ public class DriveTrain {
 	 */
 	public void ArcadeDrive(double controlStickX, double controlStickY) {
 		double xRotation = controlStickX;
-		double yDrive = controlStickY;
+		double yDrive    = controlStickY;
 		
 		xRotation = Filters.powerCurving(controlStickX, 0.75); //filter rotational values
 		
 		if(Math.abs(yDrive) >= speedLimit) {
 			yDrive = 	(Math.abs(yDrive)    /    yDrive) * speedLimit;
-			DriverStation.reportError("" +speedLimit, false);
 		}
 		if(Math.abs(xRotation) >= speedLimit) {
 			xRotation = (Math.abs(xRotation) / xRotation) * speedLimit;
