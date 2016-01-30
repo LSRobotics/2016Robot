@@ -15,6 +15,8 @@ public class Autonomous {
 	private static Timer t;
 	private String recordingFile; //for actionPlayback
 	private Robot robot;
+	double timeStep;
+	double prevTime;
 	
 	/**
 	 * 
@@ -22,16 +24,18 @@ public class Autonomous {
 	 * @param interval Default = 0; Window of time in which an action fires
 	 * @par
 	 */
-	public Autonomous(Robot r, String autonName, double interval) {
+	public Autonomous(Robot r, String autonName, double step) {
 		t = new Timer();
 		robot = r;
+		timeStep = step;
+		prevTime = 0 - timeStep;
 	}
 	
 	/**
 	 * 
 	 * @param interval amount of time to round the recording's time so that the action occurs
 	 */
-	public void actionPlayback(double interval, String recordingFileName) {
+	public void actionPlayback(String recordingFileName) {
 		try {
 			//Send the start command
 			//new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream()))).write("Run Auton");
@@ -50,33 +54,33 @@ public class Autonomous {
 			StringTokenizer tokenizer;
 			String nextCommand = "";
 			int button = -1;
+			int state = 0;
 			String magnitude = "";
-			double time = 0;
-			
-			t.start(); //start timer
+			boolean printTrace= false; //so I don't need to change the default driverstation.reporterror param
 			Iterator<String> i = commands.iterator();
+			t.start();
 			while(i.hasNext()) {
 				nextCommand = i.next();
-				if(nextCommand.equals("\n")) {
-					DriverStation.reportError("HERE CONTINUE", false);
+				if(nextCommand.equals("")) {
 					continue;
 				}
-				else if(nextCommand.startsWith("time")) {
-					time = Double.parseDouble(nextCommand.substring(5));
-					DriverStation.reportError("HEREB4", false);
-					if(Math.abs(time - t.get()) < interval) {
+				else if(nextCommand.startsWith("state")) {
+					int readState = Integer.parseInt(nextCommand.substring(6));
+					while(t.get() < prevTime + timeStep){} //wait
+					prevTime = t.get();;
+					if(state == readState) {
 						nextCommand = i.next();
 						tokenizer = new StringTokenizer(nextCommand, ";");
 						
 						String token;
 						while(tokenizer.hasMoreTokens()) {
 							token = tokenizer.nextToken();
-							
 							int colonIndex = token.indexOf(':');    ///Interpret button and magnitude
+							
 							button = Integer.parseInt(token.substring(0, colonIndex));
-							magnitude = token.substring(colonIndex + 1, token.indexOf(';'));
+							magnitude = token.substring(colonIndex + 1);
 							//adjust game controller state
-						    switch (button) {
+							switch (button) {
 						    	case 1:
 						    		robot.gp.A_Button_State = magnitude.equals("1.0") ;
 						    		break;
@@ -108,10 +112,10 @@ public class Autonomous {
 						    		robot.gp.RIGHT_Stick_X_State = Double.parseDouble(magnitude);
 						    		break;
 						    	case 14:
-						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		robot.gp.RIGHT_Trigger_State = Double.parseDouble(magnitude);
 						    		break;
 						    	case 13:
-						    		robot.gp.LEFT_Stick_Y_State = Double.parseDouble(magnitude);
+						    		robot.gp.LEFT_Trigger_State = Double.parseDouble(magnitude);
 						    		break;
 						    	//case "DPAD":
 						    		//Could not find DPAD variable in Gamepad, no references anywhere else (I think); TODO
@@ -120,14 +124,11 @@ public class Autonomous {
 						    			DriverStation.reportError("Button not found: " + button, false);
 						    			break;
 						    }
+						 
 						}
-						DriverStation.reportError("HERE", false);
 						robot.teleopMaster(true);
+						state++;
 					}
-				}
-			else {
-					DriverStation.reportError("No time attached", true);
-						break;
 				}
 			}
 		}

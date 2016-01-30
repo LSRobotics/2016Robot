@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5181.robot;
 import org.firs.frc.team5181.Recoder.ActionBased;
 
+import Sensors.Potentiometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,29 +14,29 @@ public class Robot extends SampleRobot {
 	
 	private static double speedLimit = .6; 
 	
-	
 	Gamepad gp;
 	ActionBased recorder;
 	Timer t;
+	static final double timeStep = .01;
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
+	Victor linAct;
+	Potentiometer potent;
 	
 	public void robotInit() {
-		
-		
-		auton = new Autonomous(this, "actionPlayback", 0);
-		recorder = new ActionBased(ds);
+		auton = new Autonomous(this, "actionPlayback", timeStep);
+		recorder = new ActionBased(ds, timeStep);
 		t = new Timer();
 		gp = new Gamepad();
-		
+		linAct = new Victor(4);
 		drive = new DriveTrain(gp, speedLimit);
 		t.start();
+		potent = new Potentiometer();
 	}
 	
 	public void autonomous() {
-		DriverStation.reportError("Started", false);
-		auton.actionPlayback(0, "/var/rcrdng/autonRecording.rcrdng");
+		auton.actionPlayback("/var/rcrdng/autonRecording3.rcrdng");
 	}
 	
 	public void operatorControl() {
@@ -45,10 +46,12 @@ public class Robot extends SampleRobot {
 		}
 	}
 	public void teleopMaster(boolean inAuton) {	
-		if(!inAuton) {
-			gp.update(false);
+		gp.update(inAuton);
+		if (gp.Y_Button_State) {
+			DriverStation.reportError("" + potent.getPosition(), false);
 		}
 		
+		linAct.set(gp.LEFT_Stick_Y_State);
 		drive.updateSpeedLimit();
 		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
 	}
@@ -63,7 +66,7 @@ public class Robot extends SampleRobot {
 			t.reset();            
 			recorder.startRecording();
 		}
-		recorder.recording(t.get());
+		recorder.recording();
 		
 		if(gp.BACK_State)  {
 			recorder.stopRecording();

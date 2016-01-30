@@ -12,29 +12,36 @@ public class ActionBased {
 	String recording;
 	Gamepad gamepad;
 	DriverStation ds;
+	Timer t;
+	double prevTime;
+	double timeStep;
 	boolean isRecording;
+	int state;
 	
-	public ActionBased(DriverStation ds) {
+	public ActionBased(DriverStation ds, double step) {
 		recording = "";
 		gamepad = new Gamepad();
 		this.ds = ds;
-		
+		state = 0;
 		isRecording = false;
+		timeStep = step;
+		prevTime = 0 - timeStep;
+		t = new Timer();
 	}
 	
-	private void recordAction(String button, double magnitude) {
+	private void recordAction(int button, double magnitude) {
 		recording += button + ":" + magnitude + ";";
 	}
 	
-	public void recordAction(double time) {
-		recording += "\ntime:" + time + "\n";
+	public void newState() {
+		recording += "\nstate:" + (state++) + "\n";
 	}
 	private void sendActions() {
 		DriverStation.reportError(recording, false);
 		
 		try {
 			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording.rcrdng")));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording3.rcrdng")));
 			bw.write(recording);
 		
 		}
@@ -45,28 +52,31 @@ public class ActionBased {
 	
 	public void startRecording() {
 		isRecording = true;
+		t.start();
 	}
 	
-	public void recording(double time) {
+	public void recording() {
 		
 		//for buttons
-		if (isRecording) {
-			recordAction(time);
+		if (isRecording && t.get() > prevTime + timeStep) {
+			prevTime = t.get();
 			
-			recordAction("A_Button", toDouble(gamepad.getRawButton(gamepad.A_Button)));
-			recordAction("B_Button", toDouble(gamepad.getRawButton(gamepad.B_Button)));
-			recordAction("X_Button", toDouble(gamepad.getRawButton(gamepad.X_Button)));
-			recordAction("Y_Button", toDouble(gamepad.getRawButton(gamepad.Y_Button)));
-			recordAction("Right_Bumper", toDouble(gamepad.getRawButton(gamepad.RIGHT_Bumper)));
-			recordAction("Left_Bumper", toDouble(gamepad.getRawButton(gamepad.LEFT_Bumper)));
+			newState();
+			
+			recordAction(gamepad.A_Button, toDouble(gamepad.getRawButton(gamepad.A_Button)));
+			recordAction(gamepad.B_Button, toDouble(gamepad.getRawButton(gamepad.B_Button)));
+			recordAction(gamepad.X_Button, toDouble(gamepad.getRawButton(gamepad.X_Button)));
+			recordAction(gamepad.Y_Button, toDouble(gamepad.getRawButton(gamepad.Y_Button)));
+			recordAction(gamepad.RIGHT_Bumper, toDouble(gamepad.getRawButton(gamepad.RIGHT_Bumper)));
+			recordAction(gamepad.LEFT_Bumper, toDouble(gamepad.getRawButton(gamepad.LEFT_Bumper)));
 			
 			//for triggers/analog sticks
-			recordAction("Left_Y", gamepad.getRawAxis(gamepad.LEFT_Stick_Y));
-			recordAction("Left_X", gamepad.getRawAxis(gamepad.LEFT_Stick_X));
-			recordAction("Right_Y", gamepad.getRawAxis(gamepad.RIGHT_Stick_Y));
-			recordAction("Right_X", gamepad.getRawAxis(gamepad.RIGHT_Stick_X));
-			recordAction("Right_Trigger", gamepad.getRawAxis(gamepad.RIGHT_Trigger));
-			recordAction("Left_Trigger", gamepad.getRawAxis(gamepad.LEFT_Trigger));
+			recordAction(12, gamepad.getRawAxis(gamepad.LEFT_Stick_Y));
+			recordAction(11, gamepad.getRawAxis(gamepad.LEFT_Stick_X));
+			recordAction(16, gamepad.getRawAxis(gamepad.RIGHT_Stick_Y));
+			recordAction(15, gamepad.getRawAxis(gamepad.RIGHT_Stick_X));
+			recordAction(14, gamepad.getRawAxis(gamepad.RIGHT_Trigger));
+			recordAction(13, gamepad.getRawAxis(gamepad.LEFT_Trigger));
 					
 			//DPad
 			//recordAction("DPAD", gamepad.getPOV());
@@ -77,6 +87,7 @@ public class ActionBased {
 		if (isRecording) {
 			sendActions();
 		}
+		t.stop();
 		isRecording = false;
 	}
 	
