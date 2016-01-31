@@ -1,80 +1,85 @@
 package org.usfirst.frc.team5181.robot;
-import org.firs.frc.team5181.Recoder.ActionBased;
 
+import org.firs.frc.team5181.Recoder.ActionBased;
+import org.firs.frc.team5181.Recoder.Lock;
+
+import Sensors.Potentiometer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 
-public class Robot extends IterativeRobot {
+public class Robot extends SampleRobot {
 	
-	private static double speedLimit = .7; //20% speed
+	//Speed Limit vars
+	private static double speedLimit = .6; 
 	
-	Victor leftFront;
-	Victor leftBack;
-	Victor rightFront;
-	Victor rightBack;
-	RobotDrive drive;
+	//General vars
 	Gamepad gp;
 	ActionBased recorder;
 	Timer t;
+	DriverStation ds = DriverStation.getInstance();
+	Autonomous auton;
+	DriveTrain drive;
+	Victor linAct;
+	Potentiometer potent;
+	Lock lock;
+	//Recorder Vars
+	final long timeStep = 10; //in Milliseconds
+	boolean isRecording;
 	
 	public void robotInit() {
-		leftFront = new Victor(Statics.LEFTPortFront);
-		leftBack = new Victor(Statics.LEFTPortBack);
-		rightFront = new Victor(Statics.RIGHTPortFront);
-		rightBack = new Victor(Statics.RIGHTPortBack);
-		
-		drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
-		
-		
-		recorder = new ActionBased();
+		lock = new Lock();
+		auton = new Autonomous(this, "actionPlayback");
+		recorder = new ActionBased(ds, timeStep, gp, lock);
 		t = new Timer();
-		gp = new Gamepad();
-		
+		gp = new Gamepad(3);
+		linAct = new Victor(4);
+		drive = new DriveTrain(gp, speedLimit);
 		t.start();
+		potent = new Potentiometer();
 	}
 	
-	public void autonomousPeriodic() {
-		
+	public void autonomous() {
+		auton.actionPlayback("/var/rcrdng/autonRecording3.rcrdng", timeStep);
 	}
 	
-	public void teleopPeriodic() {
-		//Speed Limit Control
-		if(gp.getRawButton(Gamepad.RIGHT_Bumper)) {
-			speedLimit += .1;
+	public void operatorControl() {
+		while (isOperatorControl() && isEnabled()) {
+			recording();
+			teleopMaster(false);
 		}
-		else if(gp.getRawButton(Gamepad.B_Button)) {
-			speedLimit = 0;
+	}
+	public void teleopMaster(boolean inAuton) {	
+		if (!inAuton) {
+			gp.getPhysicalState(lock);
 		}
-		else if(gp.getRawButton(Gamepad.LEFT_Bumper)){
-			speedLimit -= 0.1;
+		if (gp.Y_Button_State) {
+			DriverStation.reportError("" + potent.getPosition(), false);
 		}
 		
-		//Tank Drive
-		double leftDrive = gp.getRawAxis(gp.LEFT_Trigger);
-		double rightDrive = gp.getRawAxis(gp.RIGHT_Trigger);
-		double dir = Math.abs(gp.getRawAxis(gp.RIGHT_Stick_X)) / gp.getRawAxis(Gamepad.RIGHT_Stick_X); //1 or -1
-		
-		if(Math.abs(leftDrive) >= speedLimit) {
-			leftDrive = speedLimit;
-		}
-		if(Math.abs(rightDrive) >= speedLimit) {
-			rightDrive = speedLimit;
-		}
-		drive.tankDrive(dir * leftDrive, dir *rightDrive);
+		linAct.set(gp.LEFT_Stick_Y_State);
+		drive.updateSpeedLimit();
+		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
 	}
 	
-	public void testPeriodic() {
-		
-	}
+	
 	/**
 	 * Controls the starting and stopping of the recorder
 	 */
-	public void recording() {
-		if(gp.getRawButton(Gamepad.START) == true) {
-			recorder.startRecording(t.get());
+	public void recording() {	
+		if(gp.START_State && !isRecording) {
+			isRecording = true;
+			
+			DriverStation.reportError("Started", false);          
+			recorder.startRecording();
+		}
+		if(gp.BACK_State && isRecording)  {
+			isRecording = false;
+			recorder.stopRecording();
 		}
 	}
 }

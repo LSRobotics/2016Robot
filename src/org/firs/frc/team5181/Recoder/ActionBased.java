@@ -1,52 +1,112 @@
 package org.firs.frc.team5181.Recoder;
 
 import org.usfirst.frc.team5181.robot.Gamepad;
+import org.usfirst.frc.team5181.robot.Statics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
-public class ActionBased {
+import java.io.*;
+import java.net.Socket;
+
+public class ActionBased extends Thread {
+	
 	String recording;
 	Gamepad gamepad;
+	DriverStation ds;
+	long timeStep;
+	boolean isRecording;
+	Lock lock;
 	
-	public ActionBased() {
+	public ActionBased(DriverStation ds, long step, Gamepad gp, Lock lock) {
+		this.lock = lock;
 		recording = "";
-		gamepad = new Gamepad();
+		gamepad = gp;
+		this.ds = ds;
+		isRecording = false;
+		timeStep = step;
 	}
-	private void recordAction(String button, double magnitude, double time) {
-		recording += button + ":" + magnitude + ":" + time + "\n";
+	
+	private void recordAction(int button, double magnitude) {
+		recording += button + ":" + magnitude + ";";
 	}
+	
 	private void sendActions() {
-		DriverStation ds = DriverStation.getInstance();
-		ds.reportError(recording, false);
-	}
-	public void startRecording(double time) {
-		//for buttons
-		recordAction("A_Button", toDouble(gamepad.getRawButton(gamepad.A_Button)), time);
-		recordAction("B_Button", toDouble(gamepad.getRawButton(gamepad.B_Button)), time);
-		recordAction("X_Button", toDouble(gamepad.getRawButton(gamepad.X_Button)), time);
-		recordAction("Y_Button", toDouble(gamepad.getRawButton(gamepad.Y_Button)), time);
-		recordAction("Right_Bumper", toDouble(gamepad.getRawButton(gamepad.RIGHT_Bumper)), time);
-		recordAction("Left_Bumper", toDouble(gamepad.getRawButton(gamepad.LEFT_Bumper)), time);
+		DriverStation.reportError(recording, false);
 		
-		//for triggers/analog sticks
-		recordAction("Left_Y", gamepad.getRawAxis(gamepad.LEFT_Stick_Y), time);
-		recordAction("Left_X", gamepad.getRawAxis(gamepad.LEFT_Stick_X), time);
-		recordAction("Right_Y", gamepad.getRawAxis(gamepad.RIGHT_Stick_Y), time);
-		recordAction("Right_X", gamepad.getRawAxis(gamepad.RIGHT_Stick_X), time);
-		recordAction("Right_Trigger", gamepad.getRawAxis(gamepad.RIGHT_Trigger), time);
-		recordAction("Left_Trigger", gamepad.getRawAxis(gamepad.LEFT_Trigger), time);
+		try {
+			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording3.rcrdng")));
+			bw.write(recording);
 		
-		//DPad
-		recordAction("DPAD", gamepad.getRawAxis(gamepad.getPOV()), time);
+		}
+		catch(Exception e) {
+			DriverStation.reportError(e.getMessage(), false);
+		}
 	}
+	
+	public void startRecording() {
+		isRecording = true;
+		this.start();
+	}
+	
+	public void record() {
+		if(isRecording) {
+			try {
+				lock.lock();	
+			
+				//for buttons
+				recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
+				recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
+				recordAction(Statics.X_Button, toDouble(gamepad.X_Button_State));
+				recordAction(Statics.Y_Button, toDouble(gamepad.Y_Button_State));
+				recordAction(Statics.RIGHT_Bumper, toDouble(gamepad.RIGHT_Bumper_State));
+				recordAction(Statics.LEFT_Bumper, toDouble(gamepad.LEFT_Bumper_State));
+				
+				//for triggers/analog sticks
+				recordAction(12, gamepad.LEFT_Stick_Y_State);
+				recordAction(11, gamepad.LEFT_Stick_X_State);
+				DriverStation.reportError(""+gamepad.RIGHT_Stick_Y_State+"\n", false);
+				recordAction(16, gamepad.RIGHT_Stick_Y_State);
+				recordAction(15, gamepad.RIGHT_Stick_X_State);
+				recordAction(14, gamepad.RIGHT_Trigger_State);
+				recordAction(13, gamepad.LEFT_Trigger_State);
+				
+				lock.unlock();
+			}
+			catch (Exception e) {
+				DriverStation.reportError(e.getMessage(), false);
+			}
+			recording += "\n";
+		}
+	}
+	
 	public void stopRecording() {
-		sendActions();
+		if (isRecording) {
+			sendActions();
+		}
+		isRecording = false;
+		this.stop();
 	}
+	
 	private double toDouble(boolean bool) {
 		if (bool) {
 			return 1.0;
 		}
 		else return 0.0;
+	}
+	
+	public void run() {
+		try {
+			while(true) {
+				if(isRecording) {
+					record();
+					Thread.sleep(timeStep);
+				}
+			}
+		}
+		catch(Exception e) {
+			DriverStation.reportError(e.getStackTrace() + "", false);
+		}
 	}
 }
