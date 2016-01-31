@@ -88,10 +88,8 @@ public class Gamepad {
 		}
 	}
 
-	public void getPhysicalState(Lock lock) {
+	public void getPhysicalState() {
 		try {
-			lock.lock();
-		
 			Joystick j = new Joystick(portNumber);
 			j.setAxisChannel(Joystick.AxisType.kTwist, Statics.LEFT_Stick_X);
 			j.setAxisChannel(Joystick.AxisType.kX, Statics.RIGHT_Stick_X);
@@ -106,7 +104,7 @@ public class Gamepad {
 			 BACK_State = j.getRawButton(Statics.BACK);
 			 START_State = j.getRawButton(Statics.START);
 			 LEFT_Stick_DOWN_State = j.getRawButton(Statics.LEFT_Stick_DOWN);
-			 RIGHT_Stick_DOWN_State = j.getRawButton(Statics.RIGHT_Stick_DOWN);
+			 RIGHT_Stick_DOWN_State =j.getRawButton(Statics.RIGHT_Stick_DOWN);
 			
 			// Axis
 			 LEFT_Stick_X_State = j.getRawAxis(Statics.LEFT_Stick_X);
@@ -116,7 +114,6 @@ public class Gamepad {
 			 RIGHT_Stick_X_State = j.getRawAxis(Statics.RIGHT_Stick_X);
 			 RIGHT_Stick_Y_State = j.getRawAxis(Statics.RIGHT_Stick_Y);
 			 
-			 lock.unlock();
 		}
 		catch (Exception e) {
 			DriverStation.reportError(e.getMessage(), true);
