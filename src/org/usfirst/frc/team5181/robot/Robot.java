@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5181.robot;
+
 import org.firs.frc.team5181.Recoder.ActionBased;
+import org.firs.frc.team5181.Recoder.Lock;
 
 import Sensors.Potentiometer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,23 +14,29 @@ import edu.wpi.first.wpilibj.Victor;
 
 public class Robot extends SampleRobot {
 	
+	//Speed Limit vars
 	private static double speedLimit = .6; 
 	
+	//General vars
 	Gamepad gp;
 	ActionBased recorder;
 	Timer t;
-	static final double timeStep = .01;
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
 	Victor linAct;
 	Potentiometer potent;
+	Lock lock;
+	//Recorder Vars
+	final long timeStep = 10; //in Milliseconds
+	boolean isRecording;
 	
 	public void robotInit() {
-		auton = new Autonomous(this, "actionPlayback", timeStep);
-		recorder = new ActionBased(ds, timeStep);
+		lock = new Lock();
+		auton = new Autonomous(this, "actionPlayback");
+		recorder = new ActionBased(ds, timeStep, gp, lock);
 		t = new Timer();
-		gp = new Gamepad();
+		gp = new Gamepad(3);
 		linAct = new Victor(4);
 		drive = new DriveTrain(gp, speedLimit);
 		t.start();
@@ -36,7 +44,7 @@ public class Robot extends SampleRobot {
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback("/var/rcrdng/autonRecording3.rcrdng");
+		auton.actionPlayback("/var/rcrdng/autonRecording3.rcrdng", timeStep);
 	}
 	
 	public void operatorControl() {
@@ -46,7 +54,9 @@ public class Robot extends SampleRobot {
 		}
 	}
 	public void teleopMaster(boolean inAuton) {	
-		gp.update(inAuton);
+		if (!inAuton) {
+			gp.getPhysicalState(lock);
+		}
 		if (gp.Y_Button_State) {
 			DriverStation.reportError("" + potent.getPosition(), false);
 		}
@@ -61,14 +71,14 @@ public class Robot extends SampleRobot {
 	 * Controls the starting and stopping of the recorder
 	 */
 	public void recording() {	
-		if(gp.START_State) {
-			DriverStation.reportError("Started", false);
-			t.reset();            
+		if(gp.START_State && !isRecording) {
+			isRecording = true;
+			
+			DriverStation.reportError("Started", false);          
 			recorder.startRecording();
 		}
-		recorder.recording();
-		
-		if(gp.BACK_State)  {
+		if(gp.BACK_State && isRecording)  {
+			isRecording = false;
 			recorder.stopRecording();
 		}
 	}

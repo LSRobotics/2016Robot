@@ -1,6 +1,7 @@
 package org.firs.frc.team5181.Recoder;
 
 import org.usfirst.frc.team5181.robot.Gamepad;
+import org.usfirst.frc.team5181.robot.Statics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -8,34 +9,28 @@ import edu.wpi.first.wpilibj.Timer;
 import java.io.*;
 import java.net.Socket;
 
-public class ActionBased {
+public class ActionBased extends Thread {
+	
 	String recording;
 	Gamepad gamepad;
 	DriverStation ds;
-	Timer t;
-	double prevTime;
-	double timeStep;
+	long timeStep;
 	boolean isRecording;
-	int state;
+	Lock lock;
 	
-	public ActionBased(DriverStation ds, double step) {
+	public ActionBased(DriverStation ds, long step, Gamepad gp, Lock lock) {
+		this.lock = lock;
 		recording = "";
-		gamepad = new Gamepad();
+		gamepad = gp;
 		this.ds = ds;
-		state = 0;
 		isRecording = false;
 		timeStep = step;
-		prevTime = 0 - timeStep;
-		t = new Timer();
 	}
 	
 	private void recordAction(int button, double magnitude) {
 		recording += button + ":" + magnitude + ";";
 	}
 	
-	public void newState() {
-		recording += "\nstate:" + (state++) + "\n";
-	}
 	private void sendActions() {
 		DriverStation.reportError(recording, false);
 		
@@ -52,34 +47,37 @@ public class ActionBased {
 	
 	public void startRecording() {
 		isRecording = true;
-		t.start();
+		this.start();
 	}
 	
-	public void recording() {
-		
-		//for buttons
-		if (isRecording && t.get() > prevTime + timeStep) {
-			prevTime = t.get();
+	public void record() {
+		if(isRecording) {
+			try {
+				lock.lock();	
 			
-			newState();
-			
-			recordAction(gamepad.A_Button, toDouble(gamepad.getRawButton(gamepad.A_Button)));
-			recordAction(gamepad.B_Button, toDouble(gamepad.getRawButton(gamepad.B_Button)));
-			recordAction(gamepad.X_Button, toDouble(gamepad.getRawButton(gamepad.X_Button)));
-			recordAction(gamepad.Y_Button, toDouble(gamepad.getRawButton(gamepad.Y_Button)));
-			recordAction(gamepad.RIGHT_Bumper, toDouble(gamepad.getRawButton(gamepad.RIGHT_Bumper)));
-			recordAction(gamepad.LEFT_Bumper, toDouble(gamepad.getRawButton(gamepad.LEFT_Bumper)));
-			
-			//for triggers/analog sticks
-			recordAction(12, gamepad.getRawAxis(gamepad.LEFT_Stick_Y));
-			recordAction(11, gamepad.getRawAxis(gamepad.LEFT_Stick_X));
-			recordAction(16, gamepad.getRawAxis(gamepad.RIGHT_Stick_Y));
-			recordAction(15, gamepad.getRawAxis(gamepad.RIGHT_Stick_X));
-			recordAction(14, gamepad.getRawAxis(gamepad.RIGHT_Trigger));
-			recordAction(13, gamepad.getRawAxis(gamepad.LEFT_Trigger));
-					
-			//DPad
-			//recordAction("DPAD", gamepad.getPOV());
+				//for buttons
+				recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
+				recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
+				recordAction(Statics.X_Button, toDouble(gamepad.X_Button_State));
+				recordAction(Statics.Y_Button, toDouble(gamepad.Y_Button_State));
+				recordAction(Statics.RIGHT_Bumper, toDouble(gamepad.RIGHT_Bumper_State));
+				recordAction(Statics.LEFT_Bumper, toDouble(gamepad.LEFT_Bumper_State));
+				
+				//for triggers/analog sticks
+				recordAction(12, gamepad.LEFT_Stick_Y_State);
+				recordAction(11, gamepad.LEFT_Stick_X_State);
+				DriverStation.reportError(""+gamepad.RIGHT_Stick_Y_State+"\n", false);
+				recordAction(16, gamepad.RIGHT_Stick_Y_State);
+				recordAction(15, gamepad.RIGHT_Stick_X_State);
+				recordAction(14, gamepad.RIGHT_Trigger_State);
+				recordAction(13, gamepad.LEFT_Trigger_State);
+				
+				lock.unlock();
+			}
+			catch (Exception e) {
+				DriverStation.reportError(e.getMessage(), false);
+			}
+			recording += "\n";
 		}
 	}
 	
@@ -87,8 +85,8 @@ public class ActionBased {
 		if (isRecording) {
 			sendActions();
 		}
-		t.stop();
 		isRecording = false;
+		this.stop();
 	}
 	
 	private double toDouble(boolean bool) {
@@ -96,5 +94,19 @@ public class ActionBased {
 			return 1.0;
 		}
 		else return 0.0;
+	}
+	
+	public void run() {
+		try {
+			while(true) {
+				if(isRecording) {
+					record();
+					Thread.sleep(timeStep);
+				}
+			}
+		}
+		catch(Exception e) {
+			DriverStation.reportError(e.getStackTrace() + "", false);
+		}
 	}
 }
