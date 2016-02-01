@@ -49,6 +49,8 @@ public class ActionBased extends Thread {
 	}
 	
 	public void record() {
+		gamepad.getPhysicalState();
+		
 		//for buttons
 		recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
 		recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
