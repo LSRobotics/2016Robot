@@ -29,10 +29,8 @@ public class Autonomous extends Thread {
 	}
 	
 	public void run() {
-		DriverStation.reportError("HERE", false);
 		try {			
 			for (Gamepad gp:GPStates) {
-				robot.gp = gp;
 				robot.teleopMaster(true);
 				Thread.sleep(timeStep);
 			}
@@ -50,7 +48,6 @@ public class Autonomous extends Thread {
 		timeStep = step;
 		GPStates = new ArrayList<Gamepad>();
 		try {
-			
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
 			String line = "";
 			while((line = br.readLine()) != null) {
@@ -63,7 +60,7 @@ public class Autonomous extends Thread {
 			this.start();
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			DriverStation.reportError(e + "", true);
 		}
 	}
 }

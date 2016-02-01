@@ -12,14 +12,12 @@ import java.net.Socket;
 public class ActionBased extends Thread {
 	
 	String recording;
-	Gamepad gamepad;
 	DriverStation ds;
 	long timeStep;
 	boolean isRecording;
 	
 	public ActionBased(DriverStation ds, long step) {
 		recording = "";
-		gamepad = new Gamepad(3);
 		this.ds = ds;
 		isRecording = false;
 		timeStep = step;
@@ -49,23 +47,22 @@ public class ActionBased extends Thread {
 	}
 	
 	public void record() {
-		gamepad.getPhysicalState();
 		
 		//for buttons
-		recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
-		recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
-		recordAction(Statics.X_Button, toDouble(gamepad.X_Button_State));
-		recordAction(Statics.Y_Button, toDouble(gamepad.Y_Button_State));
-		recordAction(Statics.RIGHT_Bumper, toDouble(gamepad.RIGHT_Bumper_State));
-		recordAction(Statics.LEFT_Bumper, toDouble(gamepad.LEFT_Bumper_State));
+		recordAction(Statics.A_Button, toDouble(Gamepad.A_Button_State));
+		recordAction(Statics.B_Button, toDouble(Gamepad.B_Button_State));
+		recordAction(Statics.X_Button, toDouble(Gamepad.X_Button_State));
+		recordAction(Statics.Y_Button, toDouble(Gamepad.Y_Button_State));
+		recordAction(Statics.RIGHT_Bumper, toDouble(Gamepad.RIGHT_Bumper_State));
+		recordAction(Statics.LEFT_Bumper, toDouble(Gamepad.LEFT_Bumper_State));
 		
 		//for triggers/analog sticks
-		recordAction(12, gamepad.LEFT_Stick_Y_State);
-		recordAction(11, gamepad.LEFT_Stick_X_State);
-		recordAction(16, gamepad.RIGHT_Stick_Y_State);
-		recordAction(15, gamepad.RIGHT_Stick_X_State);
-		recordAction(14, gamepad.RIGHT_Trigger_State);
-		recordAction(13, gamepad.LEFT_Trigger_State);
+		recordAction(12, Gamepad.LEFT_Stick_Y_State);
+		recordAction(11, Gamepad.LEFT_Stick_X_State);
+		recordAction(16, Gamepad.RIGHT_Stick_Y_State);
+		recordAction(15, Gamepad.RIGHT_Stick_X_State);
+		recordAction(14, Gamepad.RIGHT_Trigger_State);
+		recordAction(13, Gamepad.LEFT_Trigger_State);
 	
 		recording += "\n";
 	}

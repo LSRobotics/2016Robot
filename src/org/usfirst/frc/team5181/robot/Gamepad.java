@@ -2,8 +2,6 @@ package org.usfirst.frc.team5181.robot;
 
 import java.util.StringTokenizer;
 
-import org.firs.frc.team5181.Recoder.Lock;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -12,24 +10,24 @@ public class Gamepad {
 	private int portNumber;
 	
 	//States of Buttons
-	public boolean A_Button_State = false;
-	public boolean B_Button_State = false;
-	public boolean X_Button_State = false;
-	public boolean Y_Button_State = false;
-	public boolean LEFT_Bumper_State = false;
-	public boolean RIGHT_Bumper_State = false;
-	public boolean BACK_State = false;
-	public boolean START_State = false;
-	public boolean LEFT_Stick_DOWN_State = false;
-	public boolean RIGHT_Stick_DOWN_State = false;
+	public static boolean A_Button_State = false;
+	public static boolean B_Button_State = false;
+	public static boolean X_Button_State = false;
+	public static boolean Y_Button_State = false;
+	public static boolean LEFT_Bumper_State = false;
+	public static boolean RIGHT_Bumper_State = false;
+	public static boolean BACK_State = false;
+	public static boolean START_State = false;
+	public static boolean LEFT_Stick_DOWN_State = false;
+	public static boolean RIGHT_Stick_DOWN_State = false;
 	
 	// Axis
-	public double LEFT_Stick_X_State = 0;
-	public double LEFT_Stick_Y_State = 0;
-	public double LEFT_Trigger_State = 0;
-	public double RIGHT_Trigger_State = 0;
-	public double RIGHT_Stick_X_State = 0;
-	public double RIGHT_Stick_Y_State = 0;
+	public static double LEFT_Stick_X_State = 0;
+	public static double LEFT_Stick_Y_State = 0;
+	public static double LEFT_Trigger_State = 0;
+	public static double RIGHT_Trigger_State = 0;
+	public static double RIGHT_Stick_X_State = 0;
+	public static double RIGHT_Stick_Y_State = 0;
 	
 	public Gamepad(int port) {
 		portNumber = port;
@@ -95,24 +93,24 @@ public class Gamepad {
 			j.setAxisChannel(Joystick.AxisType.kX, Statics.RIGHT_Stick_X);
 			j.setAxisChannel(Joystick.AxisType.kY, Statics.RIGHT_Stick_Y);
 			
-			 A_Button_State = j.getRawButton(Statics.A_Button);
-			 B_Button_State = j.getRawButton(Statics.B_Button);
-			 X_Button_State = j.getRawButton(Statics.X_Button);
-			 Y_Button_State = j.getRawButton(Statics.Y_Button);
-			 LEFT_Bumper_State = j.getRawButton(Statics.LEFT_Bumper);
-			 RIGHT_Bumper_State = j.getRawButton(Statics.RIGHT_Bumper);
-			 BACK_State = j.getRawButton(Statics.BACK);
-			 START_State = j.getRawButton(Statics.START);
-			 LEFT_Stick_DOWN_State = j.getRawButton(Statics.LEFT_Stick_DOWN);
-			 RIGHT_Stick_DOWN_State =j.getRawButton(Statics.RIGHT_Stick_DOWN);
+			A_Button_State = j.getRawButton(Statics.A_Button);
+			B_Button_State = j.getRawButton(Statics.B_Button);
+			X_Button_State = j.getRawButton(Statics.X_Button);
+			Y_Button_State = j.getRawButton(Statics.Y_Button);
+			LEFT_Bumper_State = j.getRawButton(Statics.LEFT_Bumper);
+			RIGHT_Bumper_State = j.getRawButton(Statics.RIGHT_Bumper);
+			BACK_State = j.getRawButton(Statics.BACK);
+			START_State = j.getRawButton(Statics.START);
+			LEFT_Stick_DOWN_State = j.getRawButton(Statics.LEFT_Stick_DOWN);
+			RIGHT_Stick_DOWN_State =j.getRawButton(Statics.RIGHT_Stick_DOWN);
 			
 			// Axis
-			 LEFT_Stick_X_State = j.getRawAxis(Statics.LEFT_Stick_X);
-			 LEFT_Stick_Y_State = j.getRawAxis(Statics.LEFT_Stick_Y);
-			 LEFT_Trigger_State = j.getRawAxis(Statics.LEFT_Trigger);
-			 RIGHT_Trigger_State = j.getRawAxis(Statics.RIGHT_Trigger);
-			 RIGHT_Stick_X_State = j.getRawAxis(Statics.RIGHT_Stick_X);
-			 RIGHT_Stick_Y_State = j.getRawAxis(Statics.RIGHT_Stick_Y);
+			LEFT_Stick_X_State = j.getRawAxis(Statics.LEFT_Stick_X);
+			LEFT_Stick_Y_State = j.getRawAxis(Statics.LEFT_Stick_Y);
+			LEFT_Trigger_State = j.getRawAxis(Statics.LEFT_Trigger);
+			RIGHT_Trigger_State = j.getRawAxis(Statics.RIGHT_Trigger);
+			RIGHT_Stick_X_State = j.getRawAxis(Statics.RIGHT_Stick_X);
+			RIGHT_Stick_Y_State = j.getRawAxis(Statics.RIGHT_Stick_Y);
 			 
 		}
 		catch (Exception e) {

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5181.robot;
 
 import org.firs.frc.team5181.Recoder.ActionBased;
-import org.firs.frc.team5181.Recoder.Lock;
 
 import Sensors.Potentiometer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -60,7 +59,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		linAct.set(gp.LEFT_Stick_Y_State);
-		drive.updateSpeedLimit();
+		drive.updateSpeedLimit(gp.RIGHT_Bumper_State, gp.LEFT_Bumper_State, gp.B_Button_State);
 		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
 	}
 	

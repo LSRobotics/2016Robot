@@ -58,21 +58,21 @@ public class DriveTrain {
 		
 		drive.tankDrive(controlStickLeft, controlStickRight);
 	}
-	public void updateSpeedLimit() {
+	public void updateSpeedLimit(boolean increase, boolean decrease, boolean stop) {
 
 		//Speed Limit Control
-		if(gp.RIGHT_Bumper_State && !speedBool) {
+		if(increase && !speedBool) {
 			speedLimit += 0.1;
 			speedBool = true;
 		}
-		else if(gp.B_Button_State) {
+		else if(stop) {
 			speedLimit = 0;
 		}
-		else if(gp.LEFT_Bumper_State && !speedBool) {
+		else if(increase && !speedBool) {
 			speedLimit -= 0.1;
 			speedBool = true;
 		}
-		else if(!gp.LEFT_Bumper_State && !gp.RIGHT_Bumper_State && speedBool) {
+		else if(!decrease && !increase && speedBool) {
 			speedBool = false;
 		}
 		
