@@ -28,8 +28,7 @@ public class ActionBased extends Thread {
 	}
 	
 	private void sendActions() {
-		DriverStation.reportError(recording, false);
-		
+		DriverStation.reportError("\n\n" + recording + "\n\n", false);
 		try {
 			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording3.rcrdng")));
@@ -47,7 +46,6 @@ public class ActionBased extends Thread {
 	}
 	
 	public void record() {
-		
 		//for buttons
 		recordAction(Statics.A_Button, toDouble(Gamepad.A_Button_State));
 		recordAction(Statics.B_Button, toDouble(Gamepad.B_Button_State));
@@ -72,7 +70,6 @@ public class ActionBased extends Thread {
 			sendActions();
 		}
 		isRecording = false;
-		this.stop();
 	}
 	
 	private double toDouble(boolean bool) {

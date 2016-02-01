@@ -17,7 +17,6 @@ public class Robot extends SampleRobot {
 	private static double speedLimit = .6; 
 	
 	//General vars
-	Gamepad gp;
 	ActionBased recorder;
 	Timer t;
 	DriverStation ds = DriverStation.getInstance();
@@ -25,17 +24,17 @@ public class Robot extends SampleRobot {
 	DriveTrain drive;
 	Victor linAct;
 	Potentiometer potent;
+	
 	//Recorder Vars
-	final long timeStep = 10; //in Milliseconds
+	final long timeStep = 100; //in Milliseconds
 	boolean isRecording;
 	
 	public void robotInit(){ 
 		auton = new Autonomous(this, "actionPlayback");
 		recorder = new ActionBased(ds, timeStep);
 		t = new Timer();
-		gp = new Gamepad(3);
 		linAct = new Victor(4);
-		drive = new DriveTrain(gp, speedLimit);
+		drive = new DriveTrain(speedLimit);
 		t.start();
 		potent = new Potentiometer();
 	}
@@ -52,15 +51,15 @@ public class Robot extends SampleRobot {
 	}
 	public void teleopMaster(boolean inAuton) {	
 		if (!inAuton) {
-			gp.getPhysicalState();
+			Gamepad.setNaturalState();
 		}
-		if (gp.Y_Button_State) {
+		if (Gamepad.Y_Button_State) {
 			DriverStation.reportError("" + potent.getPosition(), false);
 		}
 		
-		linAct.set(gp.LEFT_Stick_Y_State);
-		drive.updateSpeedLimit(gp.RIGHT_Bumper_State, gp.LEFT_Bumper_State, gp.B_Button_State);
-		drive.ArcadeDrive(gp.RIGHT_Stick_X_State, gp.RIGHT_Stick_Y_State);
+		linAct.set(Gamepad.LEFT_Stick_Y_State);
+		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
+		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 	}
 	
 	
@@ -68,13 +67,13 @@ public class Robot extends SampleRobot {
 	 * Controls the starting and stopping of the recorder
 	 */
 	public void recording() {	
-		if(gp.START_State && !isRecording) {
+		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			
 			DriverStation.reportError("Started", false);          
 			recorder.startRecording();
 		}
-		if(gp.BACK_State && isRecording)  {
+		if(Gamepad.BACK_State && isRecording)  {
 			isRecording = false;
 			recorder.stopRecording();
 		}

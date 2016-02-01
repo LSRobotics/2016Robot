@@ -14,8 +14,7 @@ public class DriveTrain {
 	Victor rightBack;
 	RobotDrive drive;
 	
-	Gamepad gp;
-	public DriveTrain(Gamepad gp, double speedLimit) {
+	public DriveTrain(double speedLimit) {
 		leftFront = new Victor(Statics.LEFTPortFront);
 		leftBack = new Victor(Statics.LEFTPortBack);
 		rightFront = new Victor(Statics.RIGHTPortFront);
@@ -23,7 +22,6 @@ public class DriveTrain {
 		
 		drive = new RobotDrive(leftFront, leftBack, rightFront, rightBack);
 		
-		this.gp = gp;
 		this.speedLimit = speedLimit;
 	}
 	

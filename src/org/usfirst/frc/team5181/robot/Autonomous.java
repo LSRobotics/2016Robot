@@ -16,7 +16,7 @@ public class Autonomous extends Thread {
 	private Robot robot;
 	
 	//for actionPlayback only
-	ArrayList<Gamepad> GPStates;
+	ArrayList<String> commands;
 	long timeStep;
 	
 	/**
@@ -30,7 +30,8 @@ public class Autonomous extends Thread {
 	
 	public void run() {
 		try {			
-			for (Gamepad gp:GPStates) {
+			for (String command:commands) {
+				Gamepad.setSyntheticState(command);
 				robot.teleopMaster(true);
 				Thread.sleep(timeStep);
 			}
@@ -46,17 +47,19 @@ public class Autonomous extends Thread {
 	 */
 	public void actionPlayback(String recordingFileName,  long step) {
 		timeStep = step;
-		GPStates = new ArrayList<Gamepad>();
+		commands = new ArrayList<String>();
 		try {
+			DriverStation.reportError("HERE", false);
+			
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
 			String line = "";
 			while((line = br.readLine()) != null) {
 				if (line.equals("")) {
 					continue;
 				}
-				GPStates.add(new Gamepad(line));
+				commands.add(line);
+				DriverStation.reportError("Line: " + line, false);
 			}
-			
 			this.start();
 		}
 		catch(Exception e) {
