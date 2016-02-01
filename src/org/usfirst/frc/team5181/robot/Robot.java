@@ -26,15 +26,13 @@ public class Robot extends SampleRobot {
 	DriveTrain drive;
 	Victor linAct;
 	Potentiometer potent;
-	Lock lock;
 	//Recorder Vars
 	final long timeStep = 10; //in Milliseconds
 	boolean isRecording;
 	
-	public void robotInit() {
-		lock = new Lock();
+	public void robotInit(){ 
 		auton = new Autonomous(this, "actionPlayback");
-		recorder = new ActionBased(ds, timeStep, gp, lock);
+		recorder = new ActionBased(ds, timeStep);
 		t = new Timer();
 		gp = new Gamepad(3);
 		linAct = new Victor(4);
@@ -55,7 +53,7 @@ public class Robot extends SampleRobot {
 	}
 	public void teleopMaster(boolean inAuton) {	
 		if (!inAuton) {
-			gp.getPhysicalState(lock);
+			gp.getPhysicalState();
 		}
 		if (gp.Y_Button_State) {
 			DriverStation.reportError("" + potent.getPosition(), false);

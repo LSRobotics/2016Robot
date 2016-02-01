@@ -16,12 +16,10 @@ public class ActionBased extends Thread {
 	DriverStation ds;
 	long timeStep;
 	boolean isRecording;
-	Lock lock;
 	
-	public ActionBased(DriverStation ds, long step, Gamepad gp, Lock lock) {
-		this.lock = lock;
+	public ActionBased(DriverStation ds, long step) {
 		recording = "";
-		gamepad = gp;
+		gamepad = new Gamepad(3);
 		this.ds = ds;
 		isRecording = false;
 		timeStep = step;
@@ -51,34 +49,25 @@ public class ActionBased extends Thread {
 	}
 	
 	public void record() {
-		if(isRecording) {
-			try {
-				lock.lock();	
-			
-				//for buttons
-				recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
-				recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
-				recordAction(Statics.X_Button, toDouble(gamepad.X_Button_State));
-				recordAction(Statics.Y_Button, toDouble(gamepad.Y_Button_State));
-				recordAction(Statics.RIGHT_Bumper, toDouble(gamepad.RIGHT_Bumper_State));
-				recordAction(Statics.LEFT_Bumper, toDouble(gamepad.LEFT_Bumper_State));
-				
-				//for triggers/analog sticks
-				recordAction(12, gamepad.LEFT_Stick_Y_State);
-				recordAction(11, gamepad.LEFT_Stick_X_State);
-				DriverStation.reportError(""+gamepad.RIGHT_Stick_Y_State+"\n", false);
-				recordAction(16, gamepad.RIGHT_Stick_Y_State);
-				recordAction(15, gamepad.RIGHT_Stick_X_State);
-				recordAction(14, gamepad.RIGHT_Trigger_State);
-				recordAction(13, gamepad.LEFT_Trigger_State);
-				
-				lock.unlock();
-			}
-			catch (Exception e) {
-				DriverStation.reportError(e.getMessage(), false);
-			}
-			recording += "\n";
-		}
+		gamepad.getPhysicalState();
+		
+		//for buttons
+		recordAction(Statics.A_Button, toDouble(gamepad.A_Button_State));
+		recordAction(Statics.B_Button, toDouble(gamepad.B_Button_State));
+		recordAction(Statics.X_Button, toDouble(gamepad.X_Button_State));
+		recordAction(Statics.Y_Button, toDouble(gamepad.Y_Button_State));
+		recordAction(Statics.RIGHT_Bumper, toDouble(gamepad.RIGHT_Bumper_State));
+		recordAction(Statics.LEFT_Bumper, toDouble(gamepad.LEFT_Bumper_State));
+		
+		//for triggers/analog sticks
+		recordAction(12, gamepad.LEFT_Stick_Y_State);
+		recordAction(11, gamepad.LEFT_Stick_X_State);
+		recordAction(16, gamepad.RIGHT_Stick_Y_State);
+		recordAction(15, gamepad.RIGHT_Stick_X_State);
+		recordAction(14, gamepad.RIGHT_Trigger_State);
+		recordAction(13, gamepad.LEFT_Trigger_State);
+	
+		recording += "\n";
 	}
 	
 	public void stopRecording() {
