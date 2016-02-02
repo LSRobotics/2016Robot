@@ -2,6 +2,7 @@ package org.usfirst.frc.team5181.robot;
 
 import org.firs.frc.team5181.Recoder.ActionBased;
 
+import Sensors.LimitSwitch;
 import Sensors.Potentiometer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends SampleRobot {
 	
 	//Speed Limit vars
-	private static double speedLimit = .6; 
+	private static double speedLimit = .8; 
 	
 	//General vars
 	ActionBased recorder;
@@ -23,24 +24,29 @@ public class Robot extends SampleRobot {
 	Autonomous auton;
 	DriveTrain drive;
 	Victor linAct;
-	Potentiometer potent;
 	
 	//Recorder Vars
-	final long timeStep = 100; //in Milliseconds
+	final long timeStep = 500; //in Milliseconds
 	boolean isRecording;
 	
+	//Sensors
+	Potentiometer potent;
+	LimitSwitch limitSwitch;
+	
 	public void robotInit(){ 
-		auton = new Autonomous(this, "actionPlayback");
-		recorder = new ActionBased(ds, timeStep);
+		auton = new Autonomous(this);
+		recorder = new ActionBased(timeStep);
 		t = new Timer();
 		linAct = new Victor(4);
 		drive = new DriveTrain(speedLimit);
 		t.start();
+		
 		potent = new Potentiometer();
+		limitSwitch = new LimitSwitch(0);
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback("/var/rcrdng/autonRecording3.rcrdng", timeStep);
+		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeStep);
 	}
 	
 	public void operatorControl() {
@@ -55,6 +61,10 @@ public class Robot extends SampleRobot {
 		}
 		if (Gamepad.Y_Button_State) {
 			DriverStation.reportError("" + potent.getPosition(), false);
+		}
+		
+		if(limitSwitch.get()) {
+			//DriverStation.reportError("LimitSwitch Pressed", false);
 		}
 		
 		linAct.set(Gamepad.LEFT_Stick_Y_State);
@@ -73,6 +83,7 @@ public class Robot extends SampleRobot {
 			DriverStation.reportError("Started", false);          
 			recorder.startRecording();
 		}
+		
 		if(Gamepad.BACK_State && isRecording)  {
 			isRecording = false;
 			recorder.stopRecording();

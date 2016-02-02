@@ -1,6 +1,0 @@
-package edu.wpi.first.wpilibj.templates.commands;
-
-public class get {
-   return limitSwitch.get();
-    }
-}

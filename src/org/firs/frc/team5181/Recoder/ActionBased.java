@@ -12,13 +12,11 @@ import java.net.Socket;
 public class ActionBased extends Thread {
 	
 	String recording;
-	DriverStation ds;
 	long timeStep;
 	boolean isRecording;
 	
-	public ActionBased(DriverStation ds, long step) {
+	public ActionBased(long step) {
 		recording = "";
-		this.ds = ds;
 		isRecording = false;
 		timeStep = step;
 	}
@@ -28,12 +26,11 @@ public class ActionBased extends Thread {
 	}
 	
 	private void sendActions() {
-		DriverStation.reportError("\n\n" + recording + "\n\n", false);
 		try {
-			//BufferedWriter bw = new BufferedWriter(new OutputStreamWriter((new Socket("LSCHS-ROBOTICS", 5800).getOutputStream())));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording3.rcrdng")));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
 			bw.write(recording);
-		
+			
+			DriverStation.reportError(recording + "\n", false);
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e.getMessage(), false);
@@ -70,6 +67,7 @@ public class ActionBased extends Thread {
 			sendActions();
 		}
 		isRecording = false;
+		this.stop();
 	}
 	
 	private double toDouble(boolean bool) {

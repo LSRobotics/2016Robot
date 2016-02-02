@@ -24,7 +24,7 @@ public class Autonomous extends Thread {
 	 * @param r robot object
 	 * @param autonName name of auton method to run
 	 */
-	public Autonomous(Robot r, String autonName) {
+	public Autonomous(Robot r) {
 		robot = r;
 	}
 	
@@ -35,6 +35,7 @@ public class Autonomous extends Thread {
 				robot.teleopMaster(true);
 				Thread.sleep(timeStep);
 			}
+			DriverStation.reportError("Finished", false);
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "", true);
@@ -49,16 +50,15 @@ public class Autonomous extends Thread {
 		timeStep = step;
 		commands = new ArrayList<String>();
 		try {
-			DriverStation.reportError("HERE", false);
-			
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
 			String line = "";
+			DriverStation.reportError("HERE", false);
 			while((line = br.readLine()) != null) {
+				DriverStation.reportError("HERE AFTER WHILE", false);
 				if (line.equals("")) {
 					continue;
 				}
 				commands.add(line);
-				DriverStation.reportError("Line: " + line, false);
 			}
 			this.start();
 		}
