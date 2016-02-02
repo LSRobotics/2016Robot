@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Victor;
 public class Robot extends SampleRobot {
 	
 	//Speed Limit vars
-	private static double speedLimit = .8; 
+	private static double speedLimit = .6; 
 	
 	//General vars
 	ActionBased recorder;
@@ -26,7 +26,7 @@ public class Robot extends SampleRobot {
 	Victor linAct;
 	
 	//Recorder Vars
-	final long timeStep = 500; //in Milliseconds
+	final long timeStep = 100; //in Milliseconds
 	boolean isRecording;
 	
 	//Sensors
@@ -59,6 +59,7 @@ public class Robot extends SampleRobot {
 		if (!inAuton) {
 			Gamepad.setNaturalState();
 		}
+		
 		if (Gamepad.Y_Button_State) {
 			DriverStation.reportError("" + potent.getPosition(), false);
 		}
@@ -79,14 +80,19 @@ public class Robot extends SampleRobot {
 	public void recording() {	
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
-			
-			DriverStation.reportError("Started", false);          
+			   
 			recorder.startRecording();
+			
+			DriverStation.reportError("Started", false); 	
 		}
 		
 		if(Gamepad.BACK_State && isRecording)  {
 			isRecording = false;
 			recorder.stopRecording();
+		}
+
+		if(Gamepad.LEFT_Stick_DOWN_State) {
+			recorder.incrementRecording();
 		}
 	}
 }

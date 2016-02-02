@@ -29,7 +29,7 @@ public class Gamepad {
 	public static double RIGHT_Stick_X_State = 0;
 	public static double RIGHT_Stick_Y_State = 0;
 	
-	public static synchronized void setNaturalState(int port) {
+	public static void setNaturalState(int port) {
 		portNumber = port;
 		try {
 			Joystick j = new Joystick(portNumber);
@@ -61,7 +61,7 @@ public class Gamepad {
 			DriverStation.reportError(e.getMessage(), true);
 		}
 	}
-	public static synchronized void setNaturalState() {
+	public static void setNaturalState() {
 		try {
 			Joystick j = new Joystick(portNumber);
 			j.setAxisChannel(Joystick.AxisType.kTwist, Statics.LEFT_Stick_X);
@@ -92,7 +92,7 @@ public class Gamepad {
 			DriverStation.reportError(e.getMessage(), true);
 		}
 	}
-	public synchronized static void setSyntheticState(String state) {
+	public static void setSyntheticState(String state) {
 		int button;
 		String magnitude;
 		StringTokenizer tokenizer = new StringTokenizer(state, ";");

@@ -14,11 +14,13 @@ public class ActionBased extends Thread {
 	String recording;
 	long timeStep;
 	boolean isRecording;
+	int recordingNumber;
 	
 	public ActionBased(long step) {
 		recording = "";
 		isRecording = false;
 		timeStep = step;
+		recordingNumber = 0;
 	}
 	
 	private void recordAction(int button, double magnitude) {
@@ -27,19 +29,29 @@ public class ActionBased extends Thread {
 	
 	private void sendActions() {
 		try {
+			DriverStation.reportError(recording + "\n", false);
+			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
 			bw.write(recording);
-			
-			DriverStation.reportError(recording + "\n", false);
+			bw.flush();
+			bw.close();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e.getMessage(), false);
 		}
 	}
 	
+	public void incrementRecording() {
+		recordingNumber++;
+	}
 	public void startRecording() {
 		isRecording = true;
-		this.pause();
+		if(this.getState().equals(Thread.State.TIMED_WAITING)) {
+			this.resume();
+		}
+		else {
+			this.start();
+		}
 	}
 	
 	public void record() {
@@ -67,7 +79,7 @@ public class ActionBased extends Thread {
 			sendActions();
 		}
 		isRecording = false;
-		this.stop();
+		this.suspend();
 	}
 	
 	private double toDouble(boolean bool) {

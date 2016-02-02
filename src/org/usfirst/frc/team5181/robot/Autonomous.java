@@ -35,7 +35,7 @@ public class Autonomous extends Thread {
 				robot.teleopMaster(true);
 				Thread.sleep(timeStep);
 			}
-			DriverStation.reportError("Finished", false);
+			this.suspend();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "", true);
@@ -52,18 +52,22 @@ public class Autonomous extends Thread {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
 			String line = "";
-			DriverStation.reportError("HERE", false);
 			while((line = br.readLine()) != null) {
-				DriverStation.reportError("HERE AFTER WHILE", false);
 				if (line.equals("")) {
 					continue;
 				}
 				commands.add(line);
 			}
-			this.start();
+			if (this.getState().equals(Thread.State.TIMED_WAITING)) {
+				this.resume();
+			}
+			else {
+				this.start();
+			}
+			br.close();
 		}
 		catch(Exception e) {
-			DriverStation.reportError(e + "", true);
+			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
 		}
 	}
 }
