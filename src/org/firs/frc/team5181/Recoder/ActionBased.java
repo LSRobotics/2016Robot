@@ -39,7 +39,7 @@ public class ActionBased extends Thread {
 	
 	public void startRecording() {
 		isRecording = true;
-		this.start();
+		this.pause();
 	}
 	
 	public void record() {
