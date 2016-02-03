@@ -42,8 +42,11 @@ public class RevX {
 		return revX.getYaw(); 
 	}
 	
+	/**
+	 * Use at own expense
+	 */
 	public void thisIsVoidAndHasNoUseDoNotUseItOrElseYouWillBeDoomed() {
-		
+		System.exit(0);
 	}
 	
 	public double[] getDisplacement() {

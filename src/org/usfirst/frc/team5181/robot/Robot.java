@@ -37,12 +37,9 @@ public class Robot extends SampleRobot {
 		auton = new Autonomous(this);
 		recorder = new ActionBased(timeStep);
 		t = new Timer();
-		linAct = new Victor(4);
 		drive = new DriveTrain(speedLimit);
 		t.start();
 		
-		potent = new Potentiometer();
-		limitSwitch = new LimitSwitch(0);
 	}
 	
 	public void autonomous() {
@@ -60,15 +57,6 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		if (Gamepad.Y_Button_State) {
-			DriverStation.reportError("" + potent.getPosition(), false);
-		}
-		
-		if(limitSwitch.get()) {
-			//DriverStation.reportError("LimitSwitch Pressed", false);
-		}
-		
-		linAct.set(Gamepad.LEFT_Stick_Y_State);
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 	}
