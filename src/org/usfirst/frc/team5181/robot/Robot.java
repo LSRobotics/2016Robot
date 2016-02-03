@@ -26,7 +26,7 @@ public class Robot extends SampleRobot {
 	Victor linAct;
 	
 	//Recorder Vars
-	final long timeStep = 100; //in Milliseconds
+	final long timeStep = 100; //in Milliseconds //TODO reduce timeSTep
 	boolean isRecording;
 	
 	//Sensors
