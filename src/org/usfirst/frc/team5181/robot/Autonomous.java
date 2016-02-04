@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.Timer;
 public class Autonomous extends Thread {
 	private String recordingFile; //for actionPlayback
 	private Robot robot;
+	private long avgDelay = 0;
+	private int countSample = 0;
+	private final int delay = 0;
 	
 	//for actionPlayback only
 	ArrayList<String> commands;
@@ -29,17 +32,23 @@ public class Autonomous extends Thread {
 	}
 	
 	public void run() {
-		try {			
+		try {
+			long time = System.currentTimeMillis();
 			for (String command:commands) {
 				int count = 0;
 				while(count <= timeStep) {
 					Gamepad.setSyntheticState(command);
 					robot.teleopMaster(true);
-					//Thread.sleep(1);
-					count++;
+					Thread.sleep(delay - delay);
+					count += delay;
 				}
 			}
-			this.suspend();
+			//this.suspend();
+			time = System.currentTimeMillis()-time;
+			this.avgDelay = (this.avgDelay * countSample + time)/(avgDelay+1);
+			System.out.println(this.avgDelay);
+			countSample++;
+			this.wait();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "", true);
@@ -63,7 +72,8 @@ public class Autonomous extends Thread {
 				commands.add(line);
 			}
 			if (this.getState().equals(Thread.State.TIMED_WAITING)) {
-				this.resume();
+				//this.resume();
+				this.notify();
 			}
 			else {
 				this.start();
