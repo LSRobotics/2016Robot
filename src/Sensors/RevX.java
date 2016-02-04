@@ -1,10 +1,10 @@
 package Sensors;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.SPI.Port;
 
 public class RevX {
+	/*
 	AHRS revX;
 	
 	//Variables for Collision
@@ -42,14 +42,12 @@ public class RevX {
 		return revX.getYaw(); 
 	}
 	
-	/**
-	 * Use at own expense
-	 */
-	public void thisIsVoidAndHasNoUseDoNotUseItOrElseYouWillBeDoomed() {
-		System.exit(0);
+	public void resetRotation() {
+		revX.zeroYaw();
 	}
 	
 	public double[] getDisplacement() {
 		return new double[] {revX.getDisplacementX(), revX.getDisplacementY(), revX.getDisplacementZ()};
 	}
+	*/
 }

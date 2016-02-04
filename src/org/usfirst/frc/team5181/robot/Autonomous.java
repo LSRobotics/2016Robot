@@ -31,9 +31,13 @@ public class Autonomous extends Thread {
 	public void run() {
 		try {			
 			for (String command:commands) {
-				Gamepad.setSyntheticState(command);
-				robot.teleopMaster(true);
-				Thread.sleep(timeStep);
+				int count = 0;
+				while(count <= timeStep) {
+					Gamepad.setSyntheticState(command);
+					robot.teleopMaster(true);
+					//Thread.sleep(1);
+					count++;
+				}
 			}
 			this.suspend();
 		}
