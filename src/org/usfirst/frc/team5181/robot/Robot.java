@@ -55,6 +55,9 @@ public class Robot extends SampleRobot {
 	
 	public void autonomous() {
 		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeStep);
+		while(this.isAutonomous()) {
+			auton.setAutonState(this.isAutonomous());
+		}
 	}
 	
 	public void operatorControl() {

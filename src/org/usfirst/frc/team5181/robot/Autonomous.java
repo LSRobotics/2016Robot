@@ -1,22 +1,14 @@
 package org.usfirst.frc.team5181.robot;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.io.*;
-import java.net.Socket;
+import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 
 public class Autonomous extends Thread {
-	private String recordingFile; //for actionPlayback
 	private Robot robot;
-	private long avgDelay = 0;
-	private int countSample = 0;
-	private final int delay = 0;
+	
+	private boolean inAuton;
 	
 	//for actionPlayback only
 	ArrayList<String> commands;
@@ -29,25 +21,29 @@ public class Autonomous extends Thread {
 	 */
 	public Autonomous(Robot r) {
 		robot = r;
+		
+		inAuton = false;
 	}
 	
 	public void run() {
 		try {
-			long time = System.currentTimeMillis();
 			for (String command:commands) {
-				int count = 0;
-				while(count <= timeStep) {
-					Gamepad.setSyntheticState(command);
+				double count = 0;
+				while(count <= timeStep) {	
+					DriverStation.reportError("\tHere\n", false);
 					robot.teleopMaster(true);
-					Thread.sleep(delay - delay);
-					count += delay;
+					Gamepad.setSyntheticState(command);
+					Thread.sleep(2);
+					count += (2 - 1.388);					
+					if(!inAuton) {
+						break;
+					}
+				}
+				if(!inAuton) {
+					break;
 				}
 			}
-			//this.suspend();
-			time = System.currentTimeMillis()-time;
-			this.avgDelay = (this.avgDelay * countSample + time)/(avgDelay+1);
-			System.out.println(this.avgDelay);
-			countSample++;
+			DriverStation.reportError("Finished", false);
 			this.wait();
 		}
 		catch(Exception e) {
@@ -56,9 +52,8 @@ public class Autonomous extends Thread {
 	}
 
 	/**
-	 * 
 	 * @param interval amount of time to round the recording's time so that the action occurs
-	 */
+	 **/
 	public void actionPlayback(String recordingFileName,  long step) {
 		timeStep = step;
 		commands = new ArrayList<String>();
@@ -71,17 +66,26 @@ public class Autonomous extends Thread {
 				}
 				commands.add(line);
 			}
+			
+			br.close();
+			
 			if (this.getState().equals(Thread.State.TIMED_WAITING)) {
-				//this.resume();
 				this.notify();
 			}
 			else {
+				DriverStation.reportError("Started", false);
 				this.start();
 			}
-			br.close();
+//			
+//			while(inAuton) {
+//				robot.teleopMaster(true);
+//			}
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
 		}
+	}
+	public void setAutonState(boolean inAuton) {
+		this.inAuton = inAuton;
 	}
 }

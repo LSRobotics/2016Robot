@@ -8,50 +8,50 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActionBased extends Thread {
 	
-	String recording;
+	List<String> recording;
 	long timeStep;
 	boolean isRecording;
 	int recordingNumber;
 	
 	public ActionBased(long step) {
-		recording = "";
+		recording = new ArrayList<String>();
 		isRecording = false;
 		timeStep = step;
 		recordingNumber = 0;
 	}
 	
 	private void recordAction(int button, double magnitude) {
-		recording += button + ":" + magnitude + ";";
+		recording.add(button + ":" + magnitude + ";");
 	}
 	
 	private void sendActions() {
 		try {
-			DriverStation.reportError(recording + "\n", false);
+			DriverStation.reportError("Finished\n", false);
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
-			bw.write(recording);
+			for(String command:recording) {
+				bw.write(command);
+			}
 			bw.flush();
 			bw.close();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e.getMessage(), false);
 		}
-	}
+	} 
 	
 	public void incrementRecording() {
 		recordingNumber++;
 	}
 	public void startRecording() {
 		isRecording = true;
-		if(this.getState().equals(Thread.State.TIMED_WAITING)) {
-			this.resume();
-		}
-		else {
-			this.start();
-		}
+		
+		this.start();
 	}
 	
 	public void record() {
@@ -71,15 +71,20 @@ public class ActionBased extends Thread {
 		recordAction(14, Gamepad.RIGHT_Trigger_State);
 		recordAction(13, Gamepad.LEFT_Trigger_State);
 	
-		recording += "\n";
+		recording.add("\n");
 	}
 	
 	public void stopRecording() {
-		if (isRecording) {
-			sendActions();
+		try {
+			if (isRecording) {
+				sendActions();
+			}
+			isRecording = false;
+			this.stop();
 		}
-		isRecording = false;
-		this.suspend();
+		catch(Exception e) {
+			DriverStation.reportError(e.getMessage(), true);
+		}
 	}
 	
 	private double toDouble(boolean bool) {
@@ -94,7 +99,7 @@ public class ActionBased extends Thread {
 			while(true) {
 				if(isRecording) {
 					record();
-					Thread.sleep(timeStep);
+					Thread.sleep(timeStep, -503000);
 				}
 			}
 		}
