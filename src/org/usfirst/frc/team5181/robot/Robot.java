@@ -27,18 +27,19 @@ public class Robot extends SampleRobot {
 	DriveTrain drive;
 	
 	//Sensors
-	//RevX revX;
+	RevX revX;
 	
 	//Actuators
-	LinearActuator linAct;
+	//LinearActuator linAct;
 	
 	//Recorder Vars
-	final long timeStep = 100; //in Milliseconds
+	final long timeStep = 1; //in Milliseconds
 	boolean isRecording;
 	
 	//Sensors
 	Potentiometer potent;
 	LimitSwitch limitSwitch;
+
 	
 	public void robotInit(){ 
 		auton = new Autonomous(this);
@@ -46,11 +47,11 @@ public class Robot extends SampleRobot {
 		drive = new DriveTrain(speedLimit);
 		
 		//Sensors
-		//revX = new RevX(SPI.Port.kMXP);
-		//revX.resetRotation();
+		revX = new RevX(SPI.Port.kMXP);
+		revX.resetRotation();
 		
 		//Actuators
-		linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
+		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
 	}
 	
 	public void autonomous() {
@@ -74,7 +75,7 @@ public class Robot extends SampleRobot {
 		//linAct.move(-Gamepad.LEFT_Stick_Y_State);
 		//DriverStation.reportError(linAct.getPotentiometerValue() + "\n", false);
 		
-		/*
+		
 		if(Gamepad.Y_Button_State) {
 			DriverStation.reportError(revX.getRotation() + "\n", false);
 		}
@@ -85,7 +86,7 @@ public class Robot extends SampleRobot {
 				DriverStation.reportError(temp[i] + "\n", false);
 			}
 		}
-		*/
+		
 		
 		
 		
@@ -103,7 +104,7 @@ public class Robot extends SampleRobot {
 			   
 			recorder.startRecording();
 			
-			DriverStation.reportError("Started", false); 	
+			DriverStation.reportError("Started\n", false); 	
 		}
 		
 		if(Gamepad.BACK_State && isRecording)  {

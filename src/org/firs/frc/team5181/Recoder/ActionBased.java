@@ -14,14 +14,14 @@ import java.util.List;
 public class ActionBased extends Thread {
 	
 	List<String> recording;
-	long timeStep;
+	int timeStep;
 	boolean isRecording;
 	int recordingNumber;
 	
 	public ActionBased(long step) {
 		recording = new ArrayList<String>();
 		isRecording = false;
-		timeStep = step;
+		timeStep = (int)step;
 		recordingNumber = 0;
 	}
 	
@@ -31,7 +31,7 @@ public class ActionBased extends Thread {
 	
 	private void sendActions() {
 		try {
-			DriverStation.reportError("Finished\n", false);
+			DriverStation.reportError("\nFinished\n", false);
 			
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
 			for(String command:recording) {
@@ -75,17 +75,9 @@ public class ActionBased extends Thread {
 	}
 	
 	public void stopRecording() {
-		try {
-			if (isRecording) {
-				sendActions();
-			}
-			isRecording = false;
-			this.stop();
-		}
-		catch(Exception e) {
-			DriverStation.reportError(e.getMessage(), true);
-		}
+		isRecording = false;
 	}
+	
 	
 	private double toDouble(boolean bool) {
 		if (bool) {
@@ -96,15 +88,17 @@ public class ActionBased extends Thread {
 	
 	public void run() {
 		try {
-			while(true) {
-				if(isRecording) {
-					record();
-					Thread.sleep(timeStep, -503000);
-				}
+			while(isRecording) {
+				record();
+				Thread.sleep((timeStep - 1), (1000000 - 503000));
+			}
+			
+			if(!isRecording) {
+				sendActions();
 			}
 		}
 		catch(Exception e) {
-			DriverStation.reportError(e.getStackTrace() + "", false);
+			DriverStation.reportError(e.getMessage() + "\n", false);
 		}
 	}
 }

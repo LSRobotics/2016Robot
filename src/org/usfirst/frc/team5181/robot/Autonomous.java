@@ -30,11 +30,10 @@ public class Autonomous extends Thread {
 			for (String command:commands) {
 				double count = 0;
 				while(count <= timeStep) {	
-					DriverStation.reportError("\tHere\n", false);
 					robot.teleopMaster(true);
 					Gamepad.setSyntheticState(command);
-					Thread.sleep(2);
-					count += (2 - 1.388);					
+					Thread.sleep(1);
+					count += (1 + 0.388);					
 					if(!inAuton) {
 						break;
 					}
@@ -44,7 +43,7 @@ public class Autonomous extends Thread {
 				}
 			}
 			DriverStation.reportError("Finished", false);
-			this.wait();
+			this.stop();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "", true);
@@ -70,16 +69,13 @@ public class Autonomous extends Thread {
 			br.close();
 			
 			if (this.getState().equals(Thread.State.TIMED_WAITING)) {
-				this.notify();
+				//this.notify();
+				this.start();
 			}
 			else {
 				DriverStation.reportError("Started", false);
 				this.start();
 			}
-//			
-//			while(inAuton) {
-//				robot.teleopMaster(true);
-//			}
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
