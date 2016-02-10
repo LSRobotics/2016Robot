@@ -1,6 +1,6 @@
-package Actuators;
+package actuators;
 
-import Sensors.LimitSwitch;
+import sensors.LimitSwitch;
 
 public class LadderArm {
 	LinearActuator linAct;

@@ -1,4 +1,4 @@
-package Sensors;
+package sensors;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -31,10 +31,10 @@ public class RevX {
 		PrevAccY = AccY;
 		
 		if(Math.abs(JerkX) < Collision_DealtaG || Math.abs(JerkY) < Collision_DealtaG) {
-			return true;
+			return false;
 		}
 		else {
-			return false;
+			return true;
 		}
 	}
 	
@@ -42,10 +42,7 @@ public class RevX {
 		return revX.getYaw(); 
 	}
 	
-	public void resetRotation() {
-		revX.zeroYaw();
-	}
-	
+
 	public double[] getDisplacement() {
 		return new double[] {revX.getDisplacementX(), revX.getDisplacementY(), revX.getDisplacementZ()};
 	}

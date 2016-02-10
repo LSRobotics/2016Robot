@@ -1,4 +1,4 @@
-package Sensors;
+package sensors;
 
 import java.io.IOException;
 
@@ -12,15 +12,31 @@ public class Vision {
 	
 	public Vision() {
 		try {
-            new ProcessBuilder(GRIP_CMD).inheritIO().start();
+            new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 	}
 	
-	public double[] getCountorAreas() {
-		//grip.retrieveValue(key, externalValue);
-		//grip.getNumberArray("targets/area", new double[0]);
-		return new double[0];
+	
+	public double getBallCenterX() {
+		double maxCenterX = 0;
+		for (double centerX : grip.getNumberArray("ballContourReport/centerX", new double[0])) {
+            if (centerX > maxCenterX) {
+            	maxCenterX = centerX;
+            }
+        }
+		
+        return maxCenterX;
+	} 
+	
+	public double getBallCenterY() {
+		double maxCenterY = 0;
+		for (double centerY : grip.getNumberArray("ballContourReport/centerY", new double[0])) {
+            if (centerY > maxCenterY) {
+            	maxCenterY = centerY;
+            }
+		}
+		return maxCenterY;
 	}
 }
