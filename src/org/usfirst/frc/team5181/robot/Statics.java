@@ -7,6 +7,10 @@ public class Statics {
 	public static final int LEFTPortBack= 2;
 	public static final int RIGHTPortFront = 1;
 	public static final int RIGHTPortBack = 3;
+	
+	//Ball pick up /* yes it is implied */
+	public static final int LeftBall = 4;
+	public static final int RightBall = 5;
 
 	// Gamepad ports
 	public static int A_Button = 1;
@@ -18,7 +22,7 @@ public class Statics {
 	public static int BACK = 7;
 	public static int START = 8;
 	public static int LEFT_Stick_DOWN = 9;
-	public static int RIGHT_Stick_DOWN = 10;
+	public static int RIGHT_Stick_DOWN = 10;                                                                                                                                                                                                                                                                                                                                                    
 	
 	// Axis
 	public static int LEFT_Stick_X = 0;

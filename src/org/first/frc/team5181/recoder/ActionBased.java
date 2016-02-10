@@ -1,4 +1,4 @@
-package org.firs.frc.team5181.Recoder;
+package org.first.frc.team5181.recoder;
 
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Statics;

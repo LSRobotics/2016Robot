@@ -1,19 +1,22 @@
 package org.usfirst.frc.team5181.robot;
 
-import org.firs.frc.team5181.Recoder.ActionBased;
+import org.first.frc.team5181.recoder.ActionBased;
 
-import Actuators.LinearActuator;
-import Sensors.LimitSwitch;
-import Sensors.Potentiometer;
-import Sensors.RevX;
+import sensors.LimitSwitch;
+import sensors.Potentiometer;
+import sensors.RevX;
+import actuators.LinearActuator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.DigitalOutput;
 
 public class Robot extends SampleRobot {
 	
@@ -25,6 +28,7 @@ public class Robot extends SampleRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
+	Relay light;
 	
 	//Sensors
 	RevX revX;
@@ -42,13 +46,14 @@ public class Robot extends SampleRobot {
 
 	
 	public void robotInit(){ 
+		light = new Relay(0);
+		light.set(Relay.Value.kOn);
 		auton = new Autonomous(this);
 		recorder = new ActionBased(timeStep);
 		drive = new DriveTrain(speedLimit);
 		
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		revX.resetRotation();
 		
 		//Actuators
 		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
@@ -86,9 +91,9 @@ public class Robot extends SampleRobot {
 				DriverStation.reportError(temp[i] + "\n", false);
 			}
 		}
-		
-		
-		
+		if(revX.hadCollision()) {
+			DriverStation.reportError("Collision\n", false);
+		}
 		
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
