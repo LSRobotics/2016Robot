@@ -77,14 +77,6 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		//linAct.move(-Gamepad.LEFT_Stick_Y_State);
-		//DriverStation.reportError(linAct.getPotentiometerValue() + "\n", false);
-		
-		
-		if(Gamepad.Y_Button_State) {
-			DriverStation.reportError(revX.getRotation() + "\n", false);
-		}
-		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
 			for(int i = 0; i < 2; i++) {

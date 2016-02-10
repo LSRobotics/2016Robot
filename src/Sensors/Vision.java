@@ -19,7 +19,7 @@ public class Vision {
 	}
 	
 	
-	public double[] getBallCenter() {
+	public double[] getBallCoord() {
 		
 		double maxArea = 0;
 		int areaIndex = 0, maxAreaIndex = 0;		
