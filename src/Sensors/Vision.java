@@ -19,24 +19,20 @@ public class Vision {
 	}
 	
 	
-	public double getBallCenterX() {
-		double maxCenterX = 0;
-		for (double centerX : grip.getNumberArray("ballContourReport/centerX", new double[0])) {
-            if (centerX > maxCenterX) {
-            	maxCenterX = centerX;
-            }
-        }
+	public double[] getBallCenter() {
 		
-        return maxCenterX;
-	} 
-	
-	public double getBallCenterY() {
-		double maxCenterY = 0;
-		for (double centerY : grip.getNumberArray("ballContourReport/centerY", new double[0])) {
-            if (centerY > maxCenterY) {
-            	maxCenterY = centerY;
-            }
+		double maxArea = 0;
+		int areaIndex = 0, maxAreaIndex = 0;		
+		for (double area : grip.getNumberArray("ballContourReport/area", new double[0])) {
+			if (area > maxArea) { 
+				maxArea = area; 
+				maxAreaIndex = areaIndex;
+			}
+			areaIndex++;
 		}
-		return maxCenterY;
-	}
+		double centerX = grip.getNumberArray("ballContourReport/centerX", new double[0])[maxAreaIndex];
+		double centerY = grip.getNumberArray("ballContourReport/centerY", new double[0])[maxAreaIndex];
+        
+		return new double[] {centerX, centerY};
+	} 
 }
