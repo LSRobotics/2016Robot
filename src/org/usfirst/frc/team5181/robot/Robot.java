@@ -82,6 +82,10 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
+		if (Gamepad.X_Button_State) {
+			
+		}
+		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
 			for(int i = 0; i < 2; i++) {

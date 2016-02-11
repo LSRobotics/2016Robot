@@ -30,11 +30,11 @@ public class Server extends Thread {
 				serverSocket.setPerformancePreferences(1, 2, 0);
 				serverSocket.setReceiveBufferSize(128);
 				while(appIndicator == true) {
-					//DataInputStream dataIn = new DataInputStream(server.getInputStream());
-					//handoff = dataIn.read();
-					//OutputStream out = server.getOutputStream();
-					//DataOutputStream dout = new DataOutputStream(out);
-					//dout.writeByte(handin);
+					DataInputStream dataIn = new DataInputStream(server.getInputStream());
+					dataIn.read(handoff);
+					OutputStream out = server.getOutputStream();
+					DataOutputStream dout = new DataOutputStream(out);
+					dout.write(handin);
 				}
 				server.close();
 				indicator = false;

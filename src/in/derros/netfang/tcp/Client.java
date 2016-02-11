@@ -20,6 +20,7 @@ public class Client extends Thread {
 	
 	private void startClient() {
 		try {
+			host = InetAddress.getByName("");
 			Socket socket = new Socket(host, port, localAddress, localPort);
 			//OutputStream out = socket.getOutputStream();
 			//DataOutputStream dout = new DataOutputStream(out);
