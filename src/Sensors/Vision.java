@@ -1,4 +1,4 @@
-package sensors;
+package Sensors;
 
 import java.io.IOException;
 
