@@ -30,6 +30,9 @@ public class Robot extends SampleRobot {
 	DriveTrain drive;
 	Relay light;
 	
+	//Special
+	Bear koala;
+	
 	//Sensors
 	RevX revX;
 	
@@ -57,6 +60,8 @@ public class Robot extends SampleRobot {
 		
 		//Actuators
 		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
+		
+		koala = new Bear();
 	}
 	
 	public void autonomous() {
@@ -85,6 +90,11 @@ public class Robot extends SampleRobot {
 		}
 		if(revX.hadCollision()) {
 			DriverStation.reportError("Collision\n", false);
+			koala.write();
+		}
+		
+		if(Gamepad.Y_Button_State) {
+			koala.write();
 		}
 		
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);

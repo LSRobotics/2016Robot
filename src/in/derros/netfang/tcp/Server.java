@@ -14,10 +14,10 @@ public class Server extends Thread {
 	public boolean indicator;
 	public boolean appIndicator;
 	public String statusListener;
-	public String handoff;
+	public byte[] handoff;
 	public byte[] handin;
-	public void runServer(int i) {
-		
+	public void runServer(int i, byte[] data) {
+		//TODO add something?
 	}
 		
 	private void startServer() throws IOException {
@@ -30,10 +30,11 @@ public class Server extends Thread {
 				serverSocket.setPerformancePreferences(1, 2, 0);
 				serverSocket.setReceiveBufferSize(128);
 				while(appIndicator == true) {
-					DataInputStream dataIn = new DataInputStream(server.getInputStream());
-					handoff = dataIn.readUTF();
-					BufferedReader out = new BufferedReader(server.getOutputStream());
-					out.writeUTF(handin);
+					//DataInputStream dataIn = new DataInputStream(server.getInputStream());
+					//handoff = dataIn.read();
+					//OutputStream out = server.getOutputStream();
+					//DataOutputStream dout = new DataOutputStream(out);
+					//dout.writeByte(handin);
 				}
 				server.close();
 				indicator = false;

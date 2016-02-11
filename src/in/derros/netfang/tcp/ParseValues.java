@@ -12,11 +12,11 @@ public class ParseValues {
 			ByteBuffer.wrap(sendingPacket).putDouble(0, left);
 			ByteBuffer.wrap(sendingPacket).putDouble(1, right);
 			return true;
-		} else if (left == 0 && right == 0 || statusIndicator == false) {
-			return false;
-		} else {
-			statusIndicator = false;
+		
+		}
+		else {
 			return false;
 		}
 	}
 }
+

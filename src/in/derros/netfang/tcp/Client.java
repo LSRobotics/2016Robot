@@ -11,19 +11,19 @@ public class Client extends Thread {
 	public int port;
 	public InetAddress localAddress;
 	public int localPort;
-	public String handin;
-	public String handout;
+	public byte[] handin;
+	public byte[] handout;
 	
-	public void runClient(int i) {
-		
+	public void runClient(int i, byte[] sendingPacket) {
+		handin = sendingPacket;
 	}
 	
 	private void startClient() {
 		try {
 			Socket socket = new Socket(host, port, localAddress, localPort);
-			OutputStream out = socket.getOutputStream();
-			DataOutputStream dout = new DataOutputStream(out);
-			dout.writeUTF(handout);
+			//OutputStream out = socket.getOutputStream();
+			//DataOutputStream dout = new DataOutputStream(out);
+			//dout.writeByte(handout);
 			
 		} catch(Exception e) {
 			indicator = false;
