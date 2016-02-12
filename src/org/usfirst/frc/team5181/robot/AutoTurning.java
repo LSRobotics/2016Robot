@@ -1,6 +1,6 @@
 package org.usfirst.frc.team5181.robot;
 
-import Sensors.RevX;
+import sensors.RevX;
 
 public class AutoTurning {
 	RevX revX;

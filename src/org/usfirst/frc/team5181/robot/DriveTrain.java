@@ -66,7 +66,7 @@ public class DriveTrain {
 		else if(stop) {
 			speedLimit = 0;
 		}
-		else if(increase && !speedBool) {
+		else if(decrease && !speedBool) {
 			speedLimit -= 0.1;
 			speedBool = true;
 		}

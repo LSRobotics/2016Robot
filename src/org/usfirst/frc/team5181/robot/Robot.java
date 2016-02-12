@@ -2,10 +2,10 @@ package org.usfirst.frc.team5181.robot;
 
 import org.first.frc.team5181.recoder.ActionBased;
 
-import Sensors.LimitSwitch;
-import Sensors.Potentiometer;
-import Sensors.RevX;
-import Actuators.LinearActuator;
+import sensors.LimitSwitch;
+import sensors.Potentiometer;
+import sensors.RevX;
+import actuators.LinearActuator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -94,11 +94,11 @@ public class Robot extends SampleRobot {
 		}
 		if(revX.hadCollision()) {
 			DriverStation.reportError("Collision\n", false);
-			koala.write();
+			koala.start();
 		}
 		
 		if(Gamepad.Y_Button_State) {
-			koala.write();
+			koala.start();
 		}
 		
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
