@@ -29,7 +29,7 @@ public class Autonomous extends Thread {
 		try {
 			for (String command:commands) {
 				double count = 0;
-				while(count <= timeStep) {	
+				while(count < timeStep) {	
 					robot.teleopMaster(true);
 					Gamepad.setSyntheticState(command);
 					Thread.sleep(0, 722000);
