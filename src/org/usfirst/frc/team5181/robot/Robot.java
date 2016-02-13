@@ -2,10 +2,11 @@ package org.usfirst.frc.team5181.robot;
 
 import org.first.frc.team5181.recoder.ActionBased;
 
-import sensors.LimitSwitch;
-import sensors.Potentiometer;
-import sensors.RevX;
-import actuators.LinearActuator;
+import Sensors.LimitSwitch;
+import Sensors.Potentiometer;
+import Sensors.RevX;
+import Actuators.BallPickup;
+import Actuators.LinearActuator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,7 +30,7 @@ public class Robot extends SampleRobot {
 	Autonomous auton;
 	DriveTrain drive;
 	Relay light;
-	
+	BallPickup ballPickUp;
 	//Special
 	Bear koala;
 	
@@ -82,9 +83,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		if (Gamepad.X_Button_State) {
-			
-		}
+		ballPickUp.setBallIntake(Gamepad.LEFT_Stick_Y_State);
 		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
@@ -97,10 +96,10 @@ public class Robot extends SampleRobot {
 			koala.start();
 		}
 		
-		if(Gamepad.Y_Button_State) {
-			koala.start();
-		}
-		
+//		if(Gamepad.Y_Button_State) {
+//			koala.start();
+//		}
+//		
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 	}

@@ -1,4 +1,4 @@
-package actuators;
+package Actuators;
 
 import org.usfirst.frc.team5181.robot.Statics;
 
@@ -12,13 +12,8 @@ public class BallPickup {
 		right = new Talon(Statics.RightBall);
 	}
 	
-	public void pickupBall(double axisControl) {
-		left.set(axisControl);
-		right.set(-axisControl);
-	}
-	
-	public void throwBall(double axisControl) {
-		left.set(axisControl);
-		right.set(-axisControl);
+	public void setBallIntake(double magnitude) {
+		left.set(magnitude);
+		right.set(-magnitude);
 	}
 }
