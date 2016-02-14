@@ -2,11 +2,11 @@ package org.usfirst.frc.team5181.robot;
 
 import org.first.frc.team5181.recoder.ActionBased;
 
-import Sensors.LimitSwitch;
-import Sensors.Potentiometer;
-import Sensors.RevX;
-import Actuators.BallPickup;
-import Actuators.LinearActuator;
+import sensors.LimitSwitch;
+import sensors.Potentiometer;
+import sensors.RevX;
+import actuators.BallPickup;
+import actuators.LinearActuator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -55,7 +55,7 @@ public class Robot extends SampleRobot {
 		auton = new Autonomous(this);
 		recorder = new ActionBased(timeStep);
 		drive = new DriveTrain(speedLimit);
-		
+		ballPickUp = new BallPickup();
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		
@@ -84,6 +84,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		ballPickUp.setBallIntake(Gamepad.LEFT_Stick_Y_State);
+		
 		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
