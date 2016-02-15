@@ -24,8 +24,8 @@ public class Bear extends Thread {
 				"ssssssssssssmysssssssssssssssmy//d+``hmNmh:``.hdsssssssssssssssdhsssssssssssssss" + "\n" , 
 				"ssssssssssssNsssssssssssssssssyyN+```..--.````-NysssssssssssssssNsssssssssssssss" + "\n" , 
 				"sssssssssssymsssssssssssssssssssM-`````````````dhsssssssssssssssdhssssssssssssss" + "\n" , 
-				"ssssssssssshdsssssssssssssssssssN:````-/oosy:`.mhsssssssssssssssymssssssssssssss" + "\n" , 
-				"sssssssssssdhsssssssssssssssssssdy```+ho:--/-`+Nsssssssssssssssssmysssssssssssss" + "\n" , 
+				"ssssssssssshdsssssssssssssssssssN:```+ho:--/-.mhsssssssssssssssymsssssssssssssss" + "\n" , 
+				"sssssssssssdhsssssssssssssssssssdy`````-/oosy:`+Nsssssssssssssssssmyssssssssssss" + "\n" , 
 				"sssssssssssmyssssssssssssssssssssms:.--```.-:sdysssssssssssssssssdhsssssssssssss" + "\n" , 
 				"sssssssssssmssssssssssssssssssssssyhyssosyhhhyssssssssssssssssssshdsssssssssssss" };
 		koala = temp;
@@ -35,7 +35,7 @@ public class Bear extends Thread {
 	 * Does bear koala, or does bear bear?
 	 */
 	public void run() {
-		for(int i = 0; i < 1/*koala.length*/; i++) {
+		for(int i = 0; i < koala.length; i++) {
 			DriverStation.reportError(koala[12], false);
 		}
 	}

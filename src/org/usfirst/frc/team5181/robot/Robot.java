@@ -94,13 +94,12 @@ public class Robot extends SampleRobot {
 		}
 		if(revX.hadCollision()) {
 			DriverStation.reportError("Collision\n", false);
+		}
+		
+		if(Gamepad.Y_Button_State) {
 			koala.start();
 		}
 		
-//		if(Gamepad.Y_Button_State) {
-//			koala.start();
-//		}
-//		
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 	}

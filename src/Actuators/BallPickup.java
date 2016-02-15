@@ -3,28 +3,43 @@ package actuators;
 import org.usfirst.frc.team5181.robot.Filters;
 import org.usfirst.frc.team5181.robot.Statics;
 
+import sensors.LimitSwitch;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
 
 public class BallPickup {
 	Talon left, right;
 	static double speedLimit = .3;
+	LimitSwitch ballInTrap;
 	
 	public BallPickup() {
 		left = new Talon(Statics.LeftBall);
-		right = new Talon(Statics.RightBall);
+		right = new Talon(Statics.RightBall); 
+		
+		ballInTrap = new LimitSwitch(9);
 	}
 	
 	public void setBallIntake(double magnitude) {
-		
-		if (Math.abs(magnitude) < .05) {
-			magnitude = 0;
+		if(!ballInTrap.get()) {
+			if(magnitude < -.1) {
+				left.set(-1);
+				right.set(1);
+				return;
+			}
+			else {
+				left.set(0.2);
+				right.set(-.2);
+				return;
+			}
 		}
-		else if (Math.abs(magnitude) > speedLimit) {
-			magnitude = (Math.abs(magnitude)/magnitude) * speedLimit;
-		}
 		
-		left.set(Filters.powerCurving(magnitude, (magnitude < 0) ? 0.85 : 2)); //Slower for intake, faster for output
-		right.set(-Filters.powerCurving(magnitude, (magnitude < 0) ? 0.85 : 2));
+		if(magnitude > 0.2) {
+			left.set(0.2);
+			right.set(-0.2);
+		}
+		if(Math.abs(magnitude) < 0.1) {
+			left.set(0);
+			right.set(0);
+		}
 	}
 }
