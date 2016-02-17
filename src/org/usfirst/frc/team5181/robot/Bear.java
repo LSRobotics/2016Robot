@@ -1,43 +1,46 @@
 package org.usfirst.frc.team5181.robot;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Bear extends Thread {
-	String[] koala = new String[23]; //bear
+	ArrayList<String> koala = new ArrayList<String>(); //bear
 	public void Bear() {
-		String[] temp = {"sssssssssssssssssssssssssssssssssyhhhhdhyysyNyssssssssssssssoooooo++++++++++++++" + "\n",  
-				"ssssssssssssssssssssssssssssyddhyssooooooooohdssssssssssssssssssssssssssssssssss" + "\n" , 
-				"sssssssssssssssssssssssssssssNoooooooooooooosNsssssssyyyssssssssssssssssssssssss" + "\n" , 
-				"sssssssssssssssssssssssssssssmsooooosssyhhddmNdhhyyyhddhdhysssssssssssssssssssss" + "\n" , 
-				"sssssssssssssssyyysssssssssymhyhhdmmNNNmdhyyssssshNysshsymssssssssssssssssssssss" + "\n" , 
-				"sssssssssssssydhhhhhdyssyhhhdddyysssoooosyhddddhddhyssddssmhssssssssssssssssssss" + "\n" , 
-				"sssssssssssssmysssssshmdssoooosyhdddhhhhhyssssssssssssysssmhssssssssssssssssssss" + "\n" , 
-				"ssssssssssssydsssdmsssydhddddddhysssssssssssssssssssssssssyNysssssssssssssssssss" + "\n" , 
-				"sssssssssssssmyssshdssssssssssssssssssssssssssssssssssssssshmsssssssssssssssssss" + "\n" , 
-				"sssssssssssssymsssssssssssssssssssssssssssssssssssssssssssssmyssssssssssssssssss" + "\n" , 
-				"ssssssssssssshdsssssssssssssssssssssssssssyhhysssssssssssssshdssssssssssssssssss" + "\n" , 
-				"sssssssssssssdyssssssssssssssssssssssssshmo//smysssssssssssssNysssssssssssssssss" + "\n" , 
-				"sssssssssssssmssssssssssssssshdyyyhdyssyN-````:Nhssssssssssssymsssssssssssssssss" + "\n" ,
-				"sssssssssssssNsssssssssssssshh-.:../NyshN/:``:+mdsssssssssssssmyssssssssssssssss" + "\n" ,
-				"ssssssssssssymssssssssssssssmo`./`./mNNMMMNso/oNysssssssssssssdhssssssssssssssss" + "\n" , 
-				"sssssssssssshdsssssssssssssshh```-ho:MMMMMN.:yNyssssssssssssssymssssssssssssssss" + "\n" ,
-				"ssssssssssssmysssssssssssssssmy//d+``hmNmh:``.hdsssssssssssssssdhsssssssssssssss" + "\n" , 
-				"ssssssssssssNsssssssssssssssssyyN+```..--.````-NysssssssssssssssNsssssssssssssss" + "\n" , 
-				"sssssssssssymsssssssssssssssssssM-`````````````dhsssssssssssssssdhssssssssssssss" + "\n" , 
-				"ssssssssssshdsssssssssssssssssssN:```+ho:--/-.mhsssssssssssssssymsssssssssssssss" + "\n" , 
-				"sssssssssssdhsssssssssssssssssssdy`````-/oosy:`+Nsssssssssssssssssmyssssssssssss" + "\n" , 
-				"sssssssssssmyssssssssssssssssssssms:.--```.-:sdysssssssssssssssssdhsssssssssssss" + "\n" , 
-				"sssssssssssmssssssssssssssssssssssyhyssosyhhhyssssssssssssssssssshdsssssssssssss" };
-		koala = temp;
+			koala.add("sssssssssssssssssssssssssssssssssyhhhhdhyysyNyssssssssssssssoooooo++++++++++++++");  
+			koala.add("ssssssssssssssssssssssssssssyddhyssooooooooohdssssssssssssssssssssssssssssssssss");
+			koala.add("sssssssssssssssssssssssssssssNoooooooooooooosNsssssssyyyssssssssssssssssssssssss");
+			koala.add("sssssssssssssssssssssssssssssmsooooosssyhhddmNdhhyyyhddhdhysssssssssssssssssssss"); 
+			koala.add("sssssssssssssssyyysssssssssymhyhhdmmNNNmdhyyssssshNysshsymssssssssssssssssssssss"); 
+			koala.add("sssssssssssssydhhhhhdyssyhhhdddyysssoooosyhddddhddhyssddssmhssssssssssssssssssss"); 
+			koala.add("sssssssssssssmysssssshmdssoooosyhdddhhhhhyssssssssssssysssmhssssssssssssssssssss"); 
+			koala.add("ssssssssssssydsssdmsssydhddddddhysssssssssssssssssssssssssyNysssssssssssssssssss"); 
+			koala.add("sssssssssssssmyssshdssssssssssssssssssssssssssssssssssssssshmsssssssssssssssssss"); 
+			koala.add("sssssssssssssymsssssssssssssssssssssssssssssssssssssssssssssmyssssssssssssssssss"); 
+			koala.add("ssssssssssssshdsssssssssssssssssssssssssssyhhysssssssssssssshdssssssssssssssssss"); 
+			koala.add("sssssssssssssdyssssssssssssssssssssssssshmo//smysssssssssssssNysssssssssssssssss"); 
+			koala.add("sssssssssssssmssssssssssssssshdyyyhdyssyN-````:Nhssssssssssssymsssssssssssssssss");
+			koala.add("sssssssssssssNsssssssssssssshh-.:../NyshN/:``:+mdsssssssssssssmyssssssssssssssss");
+			koala.add("ssssssssssssymssssssssssssssmo`./`./mNNMMMNso/oNysssssssssssssdhssssssssssssssss"); 
+			koala.add("sssssssssssshdsssssssssssssshh```-ho:MMMMMN.:yNyssssssssssssssymssssssssssssssss");
+			koala.add("ssssssssssssmysssssssssssssssmy//d+``hmNmh:``.hdsssssssssssssssdhsssssssssssssss"); 
+			koala.add("ssssssssssssNsssssssssssssssssyyN+```..--.````-NysssssssssssssssNsssssssssssssss"); 
+			koala.add("sssssssssssymsssssssssssssssssssM-`````````````dhsssssssssssssssdhssssssssssssss"); 
+			koala.add("ssssssssssshdsssssssssssssssssssN:```+ho:--/-.mhsssssssssssssssymsssssssssssssss"); 
+			koala.add("sssssssssssdhsssssssssssssssssssdy`````-/oosy:`+Nsssssssssssssssssmyssssssssssss"); 
+			koala.add("sssssssssssmyssssssssssssssssssssms:.--```.-:sdysssssssssssssssssdhsssssssssssss"); 
+			koala.add("sssssssssssmssssssssssssssssssssssyhyssosyhhhyssssssssssssssssssshdsssssssssssss");
 	}
 	
 	/**
 	 * Does bear koala, or does bear bear?
 	 */
 	public void run() {
-		for(int i = 0; i < koala.length; i++) {
-			DriverStation.reportError(koala[12], false);
+		for(String s: koala) {
+			DriverStation.reportError(s + "\n", false);
 		}
+		DriverStation.reportError("3.1415926535 8979323846 2643383279 5028841971 6939937510\n", false);
+		DriverStation.reportError("  5820974944 5923078164 0628620899 8628034825 3421170679\n", false);
 	}
 	public void start() {
 		this.start();

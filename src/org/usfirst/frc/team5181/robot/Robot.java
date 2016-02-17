@@ -38,7 +38,6 @@ public class Robot extends SampleRobot {
 	RevX revX;
 	
 	//Actuators
-	//LinearActuator linAct;
 	
 	//Recorder Vars
 	final long timeStep = 1; //in Milliseconds
@@ -84,7 +83,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		ballPickUp.setBallIntake(Gamepad.LEFT_Stick_Y_State);
+		ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		
 		
 		if(Gamepad.A_Button_State) {

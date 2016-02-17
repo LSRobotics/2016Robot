@@ -1,34 +1,45 @@
 package actuators;
 
+import edu.wpi.first.wpilibj.Talon;
 import sensors.LimitSwitch;
 
 public class LadderArm {
-	LinearActuator linAct;
+	Talon armController;
 	LimitSwitch Bounds15, BoundsMax, BoundsMin;
 	
-	public LadderArm(int linearActuatorPort, int potentiometerPort, int limitMaxPort, int limitMinPort, int limit15Port) {
+	public LadderArm(int armPort, int limitMaxPort, int limitMinPort, int limit15Port) {
 		Bounds15 = new LimitSwitch(limit15Port);
 		BoundsMin = new LimitSwitch(limitMinPort);
 		BoundsMax = new LimitSwitch(limitMaxPort);
+		
+		armController = new Talon(armPort); 
 	}
 	
 	public void moveFree(double value) {
-		linAct.move(value);
+		armController.set(value);
+	}
+	
+	
+	public enum Positions {
+		MIN, BOUNDS15, MAX;
 	}
 	
 	/**
-	 * 
-	 * @param toWhere 1 = min, 2 = 15 bound, 3 = max
+	 * Moves the arm to specified position
+	 * @param toWhere reference enum Positions
 	 */
-	public void moveTo(int toWhere, double magnitude) {
-		if(toWhere == 1 && magnitude < 0 && !BoundsMin.get()) {
-			linAct.move(magnitude);
+	public void moveTo(Positions toWhere, double magnitude) {
+		if(toWhere == Positions.MIN) {
+			armController.set(- Math.abs(magnitude));
 		}
-		if(toWhere == 3 && magnitude > 0 && !BoundsMax.get()) {
-			linAct.move(toWhere);
+		else if(toWhere == Positions.BOUNDS15) {
+			armController.set(magnitude);
 		}
-		if(toWhere == 2 && !Bounds15.get()) {
-			
+		else if(toWhere == Positions.MAX) {
+			armController.set(Math.abs(magnitude));
+		}
+		else {
+			armController.set(0);
 		}
 	}
 }

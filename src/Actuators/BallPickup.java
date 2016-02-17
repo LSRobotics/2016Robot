@@ -19,27 +19,28 @@ public class BallPickup {
 		ballInTrap = new LimitSwitch(9);
 	}
 	
-	public void setBallIntake(double magnitude) {
+	public void setBallIntake(double leftMag, double rightMag) {
 		if(!ballInTrap.get()) {
-			if(magnitude < -.1) {
+			if(rightMag > .1) {
 				left.set(-1);
 				right.set(1);
 				return;
 			}
-			else {
-				left.set(0.2);
-				right.set(-.2);
+			else if(!(rightMag > .1)) {
+				left.set(0);
+				right.set(0);
 				return;
 			}
 		}
-		
-		if(magnitude > 0.2) {
-			left.set(0.2);
-			right.set(-0.2);
-		}
-		if(Math.abs(magnitude) < 0.1) {
-			left.set(0);
-			right.set(0);
+		if(!(rightMag > .1)) {
+			if(leftMag > 0.2) {
+				left.set(0.2);
+				right.set(-0.2);
+			}
+			if(Math.abs(leftMag) < 0.1) {
+				left.set(0);
+				right.set(0);
+			}
 		}
 	}
 }

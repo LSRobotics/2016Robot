@@ -9,7 +9,7 @@ public class RevX {
 	
 	//Variables for Collision
 	double AccX, AccY, PrevAccX, PrevAccY;
-	final static double Collision_DealtaG = 0.5f;
+	final static double Collision_DealtaG = 1f;
 	
 	public RevX(Port port) {
 		revX = new AHRS(port);
