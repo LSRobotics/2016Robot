@@ -33,7 +33,7 @@ public class Robot extends SampleRobot {
 	BallPickup ballPickUp;
 	//Special
 	Bear koala;
-	
+	SimpleClient client;
 	//Sensors
 	RevX revX;
 	
@@ -63,6 +63,7 @@ public class Robot extends SampleRobot {
 		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
 		
 		koala = new Bear();
+		client = new SimpleClient();
 	}
 	
 	public void autonomous() {
