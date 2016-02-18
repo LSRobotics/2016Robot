@@ -110,13 +110,13 @@ public class ActionBased extends Thread {
 				long delayMS ;
 				int delayNS;
 				if(!includeTimes) {
-					delayMS = ((1/timeFrequency) * (1000)) - (int)currentRunTime;
-					delayNS = (int) (((currentRunTime % 1) * 1000000) + 0.5); //Rounds in the case that the result is a decimal
+					delayMS = ((1/timeFrequency) * (1000)) - (int) (currentRunTime + 1);
+					delayNS = (int) (((((long) currentRunTime) - currentRunTime) * 1000) + 0.5); //Rounds in the case that the result is a decimal
 					Thread.sleep(delayMS, delayNS);
 				}
 				else {
 					delayMS = timeFrequency - (int)currentRunTime;
-					delayNS = (int) (((currentRunTime % 1) * 1000000) + 0.5); //Rounds in the case that the result is a decimal
+					delayNS = (int) (((((long) currentRunTime) - currentRunTime) * 1000) + 0.5); //Rounds in the case that the result is a decimal
 					Thread.sleep(delayMS, delayNS);
 				}
 				

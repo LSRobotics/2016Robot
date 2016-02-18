@@ -49,6 +49,8 @@ public class BallPickup {
 			}
 		}
 	}
+	
+	//TODO Fix
 	public void setBallIntake(double rightMag) {
 		//Launch
 		if(!ballInTrap.get() && canLaunch) {

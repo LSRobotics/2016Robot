@@ -67,8 +67,8 @@ public class TimedAutonomous extends Thread implements Autonomous {
 					commands.add(line);
 				}	
 			}
-			
 			br.close();
+			this.start();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
