@@ -69,6 +69,11 @@ public class BallPickup {
 			left.set(0.2);
 			right.set(-0.2);
 			canLaunch = false;
+			
+			if(!ballInTrap.get()) {
+				left.set(0);
+				right.set(0);
+			}
 		}
 		
 		if(rightMag < 0.1) {

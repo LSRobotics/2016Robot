@@ -72,6 +72,7 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 			}
 			
 			br.close();
+			this.start();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
