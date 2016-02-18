@@ -124,6 +124,7 @@ public class ActionBased extends Thread {
 				//Timing error, but error is minimal
 				if(includeTimes) {
 					recordPeriod(delayMS + (delayNS / 1000000)); //in MS //More accurate than simply adding timeFrequency (ie period)
+					recording.add("\n");
 				}
 			}
 			

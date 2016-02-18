@@ -20,6 +20,12 @@ public class TimedAutonomous extends Thread implements Autonomous {
 	ArrayList<Double> timePeriods;
 	double commandStartTime = 0;
 	
+	public TimedAutonomous(Robot r) {
+		robot = r;
+		
+		inAuton = false;
+	}
+	
 	public void run() {
 		try {
 			int iterative = 0;
@@ -63,9 +69,9 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				}
 				if(line.contains("t:")) {
 					timePeriods.add(Double.parseDouble(line.substring(line.indexOf("t:") + 2, line.lastIndexOf(";"))));
-					line = line.substring(0, line.indexOf(";t:"));
-					commands.add(line);
+					continue;
 				}	
+				commands.add(line);
 			}
 			br.close();
 			this.start();

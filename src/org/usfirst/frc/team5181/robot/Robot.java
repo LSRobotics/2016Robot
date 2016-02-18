@@ -8,6 +8,7 @@ import actuators.LinearActuator;
 import autonomousThreads.ActionBased;
 import autonomousThreads.Autonomous;
 import autonomousThreads.FrequencyAutonomous;
+import autonomousThreads.TimedAutonomous;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -52,7 +53,7 @@ public class Robot extends SampleRobot {
 
 	
 	public void robotInit(){ 
-		auton = new FrequencyAutonomous(this);
+		auton = new TimedAutonomous(this);
 		recorder = new ActionBased();
 		drive = new DriveTrain(speedLimit);
 		
@@ -113,7 +114,7 @@ public class Robot extends SampleRobot {
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			   
-			recorder.startRecording(false, timeFrequency);
+			recorder.startRecording(true, period);
 			
 			DriverStation.reportError("Started\n", false); 	
 		}
