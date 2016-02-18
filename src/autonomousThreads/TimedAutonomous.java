@@ -32,7 +32,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 			for (String command:commands) {
 				commandStartTime = System.currentTimeMillis();
 				
-				while(System.currentTimeMillis() - commandStartTime <= timePeriods.get(iterative)) {
+				while(System.currentTimeMillis() - commandStartTime < timePeriods.get(iterative)) {
 					robot.teleopMaster(true);
 					Gamepad.setSyntheticState(command);
 					

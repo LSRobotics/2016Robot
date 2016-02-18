@@ -51,6 +51,8 @@ public class Robot extends SampleRobot {
 	Potentiometer potent;
 	LimitSwitch limitSwitch;
 
+	private boolean ballTracker;
+
 	
 	public void robotInit(){ 
 		auton = new TimedAutonomous(this);
@@ -65,6 +67,7 @@ public class Robot extends SampleRobot {
 		
 		koala = new Bear();
 		client = new SimpleClient();
+		ballTracker = false;
 	}
 	
 	public void autonomous() {
@@ -87,6 +90,25 @@ public class Robot extends SampleRobot {
 		
 		ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		
+		if (Gamepad.B_Button_State && !ballTracker) {
+			ballTracker = true;
+		}
+		if (Gamepad.X_Button_State && ballTracker) {
+			ballTracker = false;
+		}
+		
+		if (ballTracker) {
+			double currX = client.centerX;
+			if (currX == -1) {
+				drive.tankDrive(0, 0);
+			}
+			else if (currX > 320) {
+				drive.tankDrive(.2, 0);
+			}
+			else {
+				drive.tankDrive(0, .2);
+			}
+		}
 		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
