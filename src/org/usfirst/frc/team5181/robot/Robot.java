@@ -30,14 +30,16 @@ public class Robot extends SampleRobot {
 	Autonomous auton;
 	DriveTrain drive;
 	Relay light;
-	BallPickup ballPickUp;
+	
 	//Special
 	Bear koala;
 	SimpleClient client;
+	
 	//Sensors
 	RevX revX;
 	
 	//Actuators
+	BallPickup ballPickUp;
 	
 	//Recorder Vars
 	final long timeStep = 1; //in Milliseconds
@@ -54,13 +56,14 @@ public class Robot extends SampleRobot {
 		auton = new Autonomous(this);
 		recorder = new ActionBased(timeStep);
 		drive = new DriveTrain(speedLimit);
-		ballPickUp = new BallPickup();
+		
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		
 		//Actuators
-		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
+		ballPickUp = new BallPickup();
 		
+		//Special
 		koala = new Bear();
 		client = new SimpleClient();
 	}
@@ -125,5 +128,9 @@ public class Robot extends SampleRobot {
 		if(Gamepad.LEFT_Stick_DOWN_State) {
 			recorder.incrementRecording();
 		}
+	}
+	private String benjaminLaMay () {
+		DriverStation.reportError("Benjamin LaMay is very unhappy\n", printTrace);
+		return "Ben La May";
 	}
 }

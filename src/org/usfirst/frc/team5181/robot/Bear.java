@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+/**
+ * 
+ * @author Connor Devitt | Mark Bense | Alex Fang
+ *
+ **/
+
 public class Bear extends Thread {
 	ArrayList<String> koala = new ArrayList<String>(); //bear
 	public void Bear() {
