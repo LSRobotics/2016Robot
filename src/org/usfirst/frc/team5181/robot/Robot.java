@@ -1,12 +1,13 @@
 package org.usfirst.frc.team5181.robot;
 
-import org.first.frc.team5181.recoder.ActionBased;
-
 import sensors.LimitSwitch;
 import sensors.Potentiometer;
 import sensors.RevX;
 import actuators.BallPickup;
 import actuators.LinearActuator;
+import autonomousThreads.ActionBased;
+import autonomousThreads.Autonomous;
+import autonomousThreads.FrequencyAutonomous;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,7 +30,6 @@ public class Robot extends SampleRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
-	Relay light;
 	
 	//Special
 	Bear koala;
@@ -42,7 +42,8 @@ public class Robot extends SampleRobot {
 	BallPickup ballPickUp;
 	
 	//Recorder Vars
-	final long timeStep = 1; //in Milliseconds
+	final long timeFrequency = 1000; //in actions/second
+	final long period = 1; //in MS
 	boolean isRecording;
 	
 	//Sensors
@@ -51,10 +52,8 @@ public class Robot extends SampleRobot {
 
 	
 	public void robotInit(){ 
-		light = new Relay(0);
-		light.set(Relay.Value.kOn);
-		auton = new Autonomous(this);
-		recorder = new ActionBased(timeStep);
+		auton = new FrequencyAutonomous(this);
+		recorder = new ActionBased();
 		drive = new DriveTrain(speedLimit);
 		
 		//Sensors
@@ -63,13 +62,12 @@ public class Robot extends SampleRobot {
 		//Actuators
 		ballPickUp = new BallPickup();
 		
-		//Special
 		koala = new Bear();
 		client = new SimpleClient();
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeStep);
+		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeFrequency);
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -86,7 +84,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
+		ballPickUp.setBallIntake(Gamepad.RIGHT_Trigger_State);
 		
 		
 		if(Gamepad.A_Button_State) {
@@ -115,7 +113,7 @@ public class Robot extends SampleRobot {
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			   
-			recorder.startRecording();
+			recorder.startRecording(false, timeFrequency);
 			
 			DriverStation.reportError("Started\n", false); 	
 		}
@@ -128,9 +126,5 @@ public class Robot extends SampleRobot {
 		if(Gamepad.LEFT_Stick_DOWN_State) {
 			recorder.incrementRecording();
 		}
-	}
-	private String benjaminLaMay () {
-		DriverStation.reportError("Benjamin LaMay is very unhappy\n", printTrace);
-		return "Ben La May";
 	}
 }

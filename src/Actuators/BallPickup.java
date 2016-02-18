@@ -11,15 +11,19 @@ public class BallPickup {
 	Talon left, right;
 	static double speedLimit = .3;
 	LimitSwitch ballInTrap;
+	boolean canLaunch;
 	
 	public BallPickup() {
 		left = new Talon(Statics.LeftBall);
 		right = new Talon(Statics.RightBall); 
 		
 		ballInTrap = new LimitSwitch(9);
+
+		canLaunch = false;
 	}
 	
 	public void setBallIntake(double leftMag, double rightMag) {
+		//Launch
 		if(!ballInTrap.get()) {
 			if(rightMag > .1) {
 				left.set(-1);
@@ -32,6 +36,8 @@ public class BallPickup {
 				return;
 			}
 		}
+		
+		//Take in
 		if(!(rightMag > .1)) {
 			if(leftMag > 0.2) {
 				left.set(0.2);
@@ -41,6 +47,41 @@ public class BallPickup {
 				left.set(0);
 				right.set(0);
 			}
+		}
+	}
+	public void setBallIntake(double rightMag) {
+		//Launch
+		if(!ballInTrap.get() && canLaunch) {
+			if(rightMag > .1) {
+				left.set(-1);
+				right.set(1);
+				return;
+			}
+			else if(!(rightMag > .1)) {
+				left.set(0);
+				right.set(0);
+				return;
+			}
+		}
+		
+		//Take in
+		if(rightMag >= .1) {
+			left.set(0.2);
+			right.set(-0.2);
+			canLaunch = false;
+		}
+		
+		if(rightMag < 0.1) {
+			left.set(0);
+			right.set(0);
+		}
+		
+		//set can launch
+		if(!ballInTrap.get() && rightMag < 0.1) {
+			canLaunch = true;
+		}
+		else if(ballInTrap.get() && rightMag < 0.1) {
+			canLaunch = false;
 		}
 	}
 }
