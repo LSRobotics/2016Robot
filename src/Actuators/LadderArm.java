@@ -4,42 +4,55 @@ import edu.wpi.first.wpilibj.Talon;
 import sensors.LimitSwitch;
 
 public class LadderArm {
-	Talon armController;
+	Talon armRotationController, armExtensionController;
 	LimitSwitch Bounds15, BoundsMax, BoundsMin;
 	
-	public LadderArm(int armPort, int limitMaxPort, int limitMinPort, int limit15Port) {
+	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort, int limitMinPort, int limit15Port) {
 		Bounds15 = new LimitSwitch(limit15Port);
 		BoundsMin = new LimitSwitch(limitMinPort);
 		BoundsMax = new LimitSwitch(limitMaxPort);
 		
-		armController = new Talon(armPort); 
+		armRotationController = new Talon(rotationPort); 
+		armExtensionController = new Talon(extensionPort);
 	}
 	
-	public void moveFree(double value) {
-		armController.set(value);
+	public void rotateFree(double value) {
+		armRotationController.set(value);
 	}
 	
 	
-	public enum Positions {
+	public enum rotationalPositions {
 		MIN, BOUNDS15, MAX;
+	}
+	public enum extensionPositions {
+		EXTEND, CONTRACT;
 	}
 	
 	/**
 	 * Moves the arm to specified position
 	 * @param toWhere reference enum Positions
 	 */
-	public void moveTo(Positions toWhere, double magnitude) {
-		if(toWhere == Positions.MIN) {
-			armController.set(- Math.abs(magnitude));
+	public void rotateTo(rotationalPositions toWhere, double magnitude) {
+		if(toWhere == rotationalPositions.MIN && Math.abs(magnitude) > 0.1) {
+			armRotationController.set(- Math.abs(magnitude));
 		}
-		else if(toWhere == Positions.BOUNDS15) {
-			armController.set(magnitude);
+		else if(toWhere == rotationalPositions.BOUNDS15 && Math.abs(magnitude) > 0.1) {
+			armRotationController.set(magnitude);
 		}
-		else if(toWhere == Positions.MAX) {
-			armController.set(Math.abs(magnitude));
+		else if(toWhere == rotationalPositions.MAX && Math.abs(magnitude) > 0.1) {
+			armRotationController.set(Math.abs(magnitude));
 		}
 		else {
-			armController.set(0);
+			armRotationController.set(0);
+		}
+	}
+	
+	public void extend(extensionPositions direction, double magnitude) {
+		if(direction == extensionPositions.EXTEND && Math.abs(magnitude) > 0.1) {
+			armExtensionController.set(Math.abs(magnitude));
+		}
+		if(direction == extensionPositions.CONTRACT && Math.abs(magnitude) > 0.1) {
+			armExtensionController.set(-Math.abs(magnitude));
 		}
 	}
 }

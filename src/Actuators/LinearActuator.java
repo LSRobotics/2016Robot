@@ -2,7 +2,7 @@ package actuators;
 
 import sensors.Potentiometer;
 import edu.wpi.first.wpilibj.Victor;
-
+ 
 public class LinearActuator {
 	Victor linAct;
 	

@@ -1,12 +1,14 @@
 package org.usfirst.frc.team5181.robot;
 
-import org.first.frc.team5181.recoder.ActionBased;
-
 import sensors.LimitSwitch;
 import sensors.Potentiometer;
 import sensors.RevX;
 import actuators.BallPickup;
 import actuators.LinearActuator;
+import autonomousThreads.ActionBased;
+import autonomousThreads.Autonomous;
+import autonomousThreads.FrequencyAutonomous;
+import autonomousThreads.TimedAutonomous;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,44 +31,47 @@ public class Robot extends SampleRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
-	Relay light;
-	BallPickup ballPickUp;
+	
 	//Special
 	Bear koala;
 	SimpleClient client;
+	
 	//Sensors
 	RevX revX;
 	
 	//Actuators
+	BallPickup ballPickUp;
 	
 	//Recorder Vars
-	final long timeStep = 1; //in Milliseconds
+	final long timeFrequency = 500; //in actions/second
+	final long period = 2; //in MS
 	boolean isRecording;
 	
 	//Sensors
 	Potentiometer potent;
 	LimitSwitch limitSwitch;
 
+	private boolean ballTracker;
+
 	
 	public void robotInit(){ 
-		light = new Relay(0);
-		light.set(Relay.Value.kOn);
-		auton = new Autonomous(this);
-		recorder = new ActionBased(timeStep);
+		auton = new TimedAutonomous(this);
+		recorder = new ActionBased();
 		drive = new DriveTrain(speedLimit);
-		ballPickUp = new BallPickup();
+		
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		
 		//Actuators
-		//linAct = new LinearActuator(4, 0, 0.5, 17.5, 24, -0.1); //24 inch
+		ballPickUp = new BallPickup();
 		
 		koala = new Bear();
 		client = new SimpleClient();
+		ballTracker = false;
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeStep);
+		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeFrequency);
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -85,6 +90,25 @@ public class Robot extends SampleRobot {
 		
 		ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		
+		if (Gamepad.B_Button_State && !ballTracker) {
+			ballTracker = true;
+		}
+		if (Gamepad.X_Button_State && ballTracker) {
+			ballTracker = false;
+		}
+		
+		if (ballTracker) {
+			double currX = client.centerX;
+			if (currX == -1) {
+				drive.tankDrive(0, 0);
+			}
+			else if (currX > 320) {
+				drive.tankDrive(.2, 0);
+			}
+			else {
+				drive.tankDrive(0, .2);
+			}
+		}
 		
 		if(Gamepad.A_Button_State) {
 			double[] temp = revX.getDisplacement();
@@ -112,7 +136,7 @@ public class Robot extends SampleRobot {
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			   
-			recorder.startRecording();
+			recorder.startRecording(true, period);
 			
 			DriverStation.reportError("Started\n", false); 	
 		}

@@ -60,14 +60,14 @@ public class DriveTrain {
 
 		//Speed Limit Control
 		if(increase && !speedBool) {
-			speedLimit += 0.1;
+			speedLimit += 0.05;
 			speedBool = true;
 		}
 		else if(stop) {
 			speedLimit = 0;
 		}
 		else if(decrease && !speedBool) {
-			speedLimit -= 0.1;
+			speedLimit -= 0.05;
 			speedBool = true;
 		}
 		else if(!decrease && !increase && speedBool) {

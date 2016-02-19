@@ -9,6 +9,7 @@ public class AutoTurning {
 	 * For use with a revX sensor
 	 * @param revX The purple thing (you know what we mean from that website...)
 	 */
+	
 	public AutoTurning(RevX revX) {
 		this.revX = revX;
 	}
