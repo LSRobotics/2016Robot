@@ -17,7 +17,6 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	ArrayList<String> commands;
 	long timeFrequency;
 	double currentRunTime = 0; //Time to run code in MS
-	
 	/**
 	 * 
 	 * @param r robot object
@@ -39,8 +38,8 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 				
 				currentRunTime -= System.currentTimeMillis();
 				
-				long delayMS = ((1/timeFrequency) * (1000)) - (int) (currentRunTime + 1);
-				int delayNS =  (int) (((((long) currentRunTime) - currentRunTime) * 1000) + 0.5); //Rounds in the case that the result is a decimal
+				long delayMS = ((1/timeFrequency) * (1000)) - (int) (currentRunTime / 1000000);
+				int delayNS = (int) (currentRunTime % 1000000); //Rounds in the case that the result is a decimal
 				
 				Thread.sleep(delayMS, delayNS);	//Note: if frequency is extremely low, robot will stop between actions
 				

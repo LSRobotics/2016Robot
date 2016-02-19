@@ -43,8 +43,8 @@ public class Robot extends SampleRobot {
 	BallPickup ballPickUp;
 	
 	//Recorder Vars
-	final long timeFrequency = 1000; //in actions/second
-	final long period = 1; //in MS
+	final long timeFrequency = 500; //in actions/second
+	final long period = 2; //in MS
 	boolean isRecording;
 	
 	//Sensors

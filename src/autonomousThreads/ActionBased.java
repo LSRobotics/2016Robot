@@ -19,7 +19,7 @@ public class ActionBased extends Thread {
 	int recordingNumber;
 	boolean includeTimes = false;
 	
-	double currentRunTime = 0; //Time to run code in MS
+	long currentRunTime = 0; //Time to run code in NS
 	
 	public ActionBased() {
 		recording = new ArrayList<String>();
@@ -101,23 +101,23 @@ public class ActionBased extends Thread {
 	public void run() {
 		try {
 			while(isRecording) {
-				currentRunTime = System.currentTimeMillis();
+				currentRunTime = System.nanoTime();
 				
 				record();
 				
-				currentRunTime -= System.currentTimeMillis();
+				currentRunTime = System.nanoTime() - currentRunTime;
 				
-				long delayMS ;
+				long delayMS;
 				int delayNS;
 				if(!includeTimes) {
-					delayMS = ((1/timeFrequency) * (1000)) - (int) (currentRunTime + 1);
-					delayNS = (int) (((((long) currentRunTime) - currentRunTime) * 1000) + 0.5); //Rounds in the case that the result is a decimal
+					delayMS = ((1/timeFrequency) * (1000)) - (int) (currentRunTime / 1000000);
+					delayNS = (int) (currentRunTime % 1000000); //Rounds in the case that the result is a decimal
 					Thread.sleep(delayMS, delayNS);
 				}
 				else {
-					delayMS = timeFrequency - (int)currentRunTime;
-					delayNS = (int) (((((long) currentRunTime) - currentRunTime) * 1000) + 0.5); //Rounds in the case that the result is a decimal
-					Thread.sleep(delayMS, delayNS);
+					delayMS = timeFrequency - (int) (currentRunTime / 1000000);
+					delayNS = (int) (currentRunTime % 1000000); //Rounds in the case that the result is a decimal
+					Thread.sleep(Math.abs(delayMS), delayNS);
 				}
 				
 				//Records total time between actions
