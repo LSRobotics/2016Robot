@@ -88,7 +88,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State);
+		ballPickUp.setBallIntake(Gamepad.RIGHT_Trigger_State, Gamepad.LEFT_Stick_Y_State);
 		
 		if (Gamepad.B_Button_State && !ballTracker) {
 			ballTracker = true;
