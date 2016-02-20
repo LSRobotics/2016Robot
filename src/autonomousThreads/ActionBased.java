@@ -117,7 +117,7 @@ public class ActionBased extends Thread {
 				else {
 					delayMS = timeFrequency - (int) (currentRunTime / 1000000);
 					delayNS = (int) (currentRunTime % 1000000); //Rounds in the case that the result is a decimal
-					Thread.sleep(Math.abs(delayMS), delayNS);
+					Thread.sleep(delayMS, delayNS);
 				}
 				
 				//Records total time between actions

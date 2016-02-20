@@ -44,7 +44,7 @@ public class Robot extends SampleRobot {
 	
 	//Recorder Vars
 	final long timeFrequency = 500; //in actions/second
-	final long period = 2; //in MS
+	final long period = 5; //in MS
 	boolean isRecording;
 	
 	//Sensors
