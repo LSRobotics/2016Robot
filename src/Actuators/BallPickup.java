@@ -50,7 +50,7 @@ public class BallPickup {
 		}
 	}
 	
-<<<<<<< HEAD
+
 	int state = 0; //0 as stop, 1 as take ball, 2 as shoot ball
 	
 	public void setBallIntake(double Mag) {
@@ -74,56 +74,10 @@ public class BallPickup {
 				left.set(0.2);
 				right.set(-0.2);
 			}
-			else {
-=======
-	//TODO Fix
-	public void setBallIntake(double rightMag) {
-		//Launch
-		if(!ballInTrap.get() && canLaunch) {
-			if(rightMag > .1) {
-				left.set(-1);
-				right.set(1);
-				return;
-			}
-			else if(!(rightMag > .1)) {
-				left.set(0);
-				right.set(0);
-				return;
-			}
+			else {}
 		}
-		
-		//Take in
-		if(rightMag >= .1) {
-			left.set(0.2);
-			right.set(-0.2);
-			canLaunch = false;
-			
-			if(!ballInTrap.get()) {
->>>>>>> refs/remotes/origin/master
-				left.set(0);
-				right.set(0);
-			}
-		}
-<<<<<<< HEAD
-		if (state == 2){//shoot ball
-			left.set(-1);
-		    right.set(1);
-		}
-		
-=======
-		
-		if(rightMag < 0.1) {
-			left.set(0);
-			right.set(0);
-		}
-		
-		//set can launch
-		if(!ballInTrap.get() && rightMag < 0.1) {
-			canLaunch = true;
-		}
-		else if(ballInTrap.get() && rightMag < 0.1) {
-			canLaunch = false;
-		}
->>>>>>> refs/remotes/origin/master
 	}
+
+	//TODO Fix
+	
 }

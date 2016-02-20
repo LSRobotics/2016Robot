@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class SimpleClient extends Thread {
 	
 	public volatile double centerX;
@@ -15,6 +17,8 @@ public class SimpleClient extends Thread {
 	private SocketAddress ip;
 	
 	public SimpleClient() {
+		centerX = -1;
+		centerY = -1;
 		socket = new Socket();
 		this.start();
 	}
@@ -22,6 +26,7 @@ public class SimpleClient extends Thread {
 	public void run() {
 		try {
 			socket.connect(ip, 12000);
+			DriverStation.reportError("HERE", false);
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			while (true) {
 				byte[] packet = new byte[16];
