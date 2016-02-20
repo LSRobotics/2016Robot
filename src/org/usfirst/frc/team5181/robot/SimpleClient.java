@@ -8,10 +8,12 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class SimpleClient extends Thread {
 	
-	public volatile double centerX;
-	public volatile double centerY;
+	public volatile int centerX;
+	public volatile int centerY;
 	private int port = 5805;
 	private Socket socket;
 	private InetAddress ip;
@@ -30,11 +32,14 @@ public class SimpleClient extends Thread {
 			socket = new Socket(ip, port);
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			while (true) {
-				byte[] packet = new byte[16];
-				dIn.read(packet, 0, 16);
-				ByteBuffer buffer = ByteBuffer.wrap(packet);
-				centerX = buffer.getDouble(0);
-				centerY = buffer.getDouble(1);
+				//byte[] packet = new byte[8];
+				//dIn.read(packet);
+				//ByteBuffer buffer = ByteBuffer.wrap(packet);
+				//centerX = buffer.getInt(0);
+				//centerY = buffer.getInt(1);
+				String point = dIn.readUTF();
+				point = point.substring(1, point.length() - 1);
+				//int centerX = Integer.par
 			}
 			
 		} catch (IOException e) {
