@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 public class Robot extends SampleRobot {
 	
 	//Speed Limit vars
-	private static double speedLimit = .6; 
+	private static double speedLimit = .7; 
 	
 	//General vars
 	ActionBased recorder;
@@ -46,7 +46,7 @@ public class Robot extends SampleRobot {
 	
 	//Recorder Vars
 	final long timeFrequency = 500; //in actions/second
-	final long period = 5; //in MS
+	final long period = 25; //in MS
 	boolean isRecording;
 	
 	//Sensors
@@ -93,7 +93,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		//Ball pickup
-			ballPickUp.setBallIntake(Gamepad.RIGHT_Trigger_State, Gamepad.LEFT_Stick_Y_State);
+			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		//End ball pickup
 		
 		// Start Raspberry Pi client
@@ -104,6 +104,7 @@ public class Robot extends SampleRobot {
 		//End Start Raspberry Pi Client 
 			
 		//Ball Tracking
+		/*
 			if (Gamepad.B_Button_State && !ballTracker) {
 				ballTracker = true;
 			}
@@ -125,6 +126,7 @@ public class Robot extends SampleRobot {
 					drive.tankDrive(0, 0);
 				}
 			}
+			*/
 		//End Ball Tracking
 		
 		//Colliison
@@ -146,7 +148,12 @@ public class Robot extends SampleRobot {
 				arm.extendFree(0);
 			}
 			
-			arm.rotateFree(-Gamepad.LEFT_Stick_Y_State, 0.3);
+			if(Gamepad.LEFT_Stick_DOWN_State) {
+				arm.stayRotated();
+			}
+			else if(!Gamepad.LEFT_Stick_DOWN_State) {
+				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.25);
+			}
 		//End ladder
 		
 		//Drive

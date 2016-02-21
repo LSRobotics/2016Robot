@@ -39,13 +39,12 @@ public class LadderArm {
 	  * @param value
 	  * @param speedLimit
 	  */
-	public void rotateFree(double value, double speedLimit) {
+	public void rotate(double value, double speedLimit) {
 		if (Math.abs(value) > speedLimit) {
 			value = (Math.abs(value)/value) * speedLimit;
 		}
-		
 		if(value < -0.05) {
-			armRotationController.set(Math.abs(value / 5)); 
+			armRotationController.set(value); 
 		}
 		else if(value > 0.05) {
 			armRotationController.set(value);
@@ -53,6 +52,13 @@ public class LadderArm {
 		else {
 			armRotationController.set(0);
 		}
+	}
+	public void rotateFree(double magnitude) {
+		armRotationController.set(magnitude);
+	}
+	
+	public void stayRotated() {
+		armRotationController.set(0.15);
 	}
 	
 	public enum extensionDirections {
@@ -62,10 +68,10 @@ public class LadderArm {
 	
 	public void extend(extensionDirections direction, double magnitude) {
 		if(direction == extensionDirections.EXTEND && Math.abs(magnitude) > 0.1) {
-			armExtensionController.set(Math.abs(magnitude));
+			armExtensionController.set(-Math.abs(magnitude));
 		}
 		if(direction == extensionDirections.CONTRACT && Math.abs(magnitude) > 0.1) {
-			armExtensionController.set(-Math.abs(magnitude));
+			armExtensionController.set(Math.abs(magnitude));
 		}
 		
 		if(BoundsMin != null && BoundsMax != null) {
