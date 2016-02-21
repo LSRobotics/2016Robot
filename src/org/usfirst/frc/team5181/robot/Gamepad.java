@@ -143,6 +143,11 @@ public class Gamepad {
 		    	case 13:
 		    		LEFT_Trigger_State = Double.parseDouble(magnitude);
 		    		break;
+		    	case 17:
+		    		LEFT_Stick_DOWN_State = magnitude.equals("1.0");
+		    		break;
+		    	case 18:
+		    		RIGHT_Stick_DOWN_State = magnitude.equals("1.0");
 			}
 		}
 	}
