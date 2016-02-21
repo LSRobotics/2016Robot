@@ -40,48 +40,19 @@ public class LadderArm {
 	  * @param speedLimit
 	  */
 	public void rotateFree(double value, double speedLimit) {
-		if(value <= speedLimit && value > 0.05) {
-			armRotationController.set(speedLimit);
-		}
-		else if(value <= speedLimit && value < 0.05) {
-			armRotationController.set(speedLimit / 5);
-		}
-		else if(value < 0.05) {
-			armRotationController.set(value / 5); 
-		}
-		else if(value > 0.05) {
-			armRotationController.set(value);
-		}
-		else {
-			armRotationController.set(0);
-		}
-	}
-	
-	/**
-	 * Limit by encoder
-	 * @param value
-	 * @param speedLimit
-	 */
-	public void rotate(double value, double speedLimit) {
-		if(value <= speedLimit && value > 0.05) {
-			armRotationController.set(speedLimit);
-		}
-		else if(value <= speedLimit && value < 0.05) {
-			armRotationController.set(speedLimit / 5);
-		}
-		else if(value < 0.05) {
-			armRotationController.set(value / 5); 
-		}
-		else if(value > 0.05) {
-			armRotationController.set(value);
-		}
-		else {
-			armRotationController.set(0);
+		if (Math.abs(value) > speedLimit) {
+			value = (Math.abs(value)/value) * speedLimit;
 		}
 		
-		/*
-		 * Encoder goes here
-		 */
+		if(value < -0.05) {
+			armRotationController.set(Math.abs(value / 5)); 
+		}
+		else if(value > 0.05) {
+			armRotationController.set(value);
+		}
+		else {
+			armRotationController.set(0);
+		}
 	}
 	
 	public enum extensionDirections {
