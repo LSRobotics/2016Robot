@@ -68,7 +68,7 @@ public class Robot extends SampleRobot {
 		
 		//Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7);
+		arm = new LadderArm(6, 7); //TODO change constructor
 		
 		koala = new Bear();
 		ballTracker = false;
@@ -92,57 +92,67 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		
-		ballPickUp.setBallIntake(Gamepad.RIGHT_Trigger_State, Gamepad.LEFT_Stick_Y_State);
+		//Ball pickup
+			ballPickUp.setBallIntake(Gamepad.RIGHT_Trigger_State, Gamepad.LEFT_Stick_Y_State);
+		//End ball pickup
 		
-//		if (!clientStarted) {
-//			client = new SimpleClient();
-//			clientStarted = true;
-//		}
-		
-		if (Gamepad.B_Button_State && !ballTracker) {
-			ballTracker = true;
-		}
-		if (Gamepad.X_Button_State && ballTracker) {
-			ballTracker = false;
-		}
-		
-		if (ballTracker) {
-			int currX = client.centerX;
-			int currY = client.centerY;
-			DriverStation.reportError("\n(" + currX + ", " + currY + ")", false);
-			if (currX == -1) {
-				drive.tankDrive(0, 0);
+		// Start Raspberry Pi client
+			if (!clientStarted) {
+				client = new SimpleClient();
+				clientStarted = true;
 			}
-			else if (currX > 320) {
-				drive.tankDrive(0, 0);
+		//End Start Raspberry Pi Client 
+			
+		//Ball Tracking
+			if (Gamepad.B_Button_State && !ballTracker) {
+				ballTracker = true;
 			}
-			else {
-				drive.tankDrive(0, 0);
+			if (Gamepad.X_Button_State && ballTracker) {
+				ballTracker = false;
 			}
-		}
+			
+			if (ballTracker) {
+				int currX = client.centerX;
+				int currY = client.centerY;
+				DriverStation.reportError("\n(" + currX + ", " + currY + ")", false);
+				if (currX == -1) {
+					drive.tankDrive(0, 0);
+				}
+				else if (currX > 320) {
+					drive.tankDrive(0, 0);
+				}
+				else {
+					drive.tankDrive(0, 0);
+				}
+			}
+		//End Ball Tracking
 		
-		if(revX.hadCollision()) {
-			DriverStation.reportError("Collision\n", false);
-		}
+		//Colliison
+			if(revX.hadCollision()) {
+				DriverStation.reportError("Collision\n", false);
+			}
+		//End Collision
 		
 		//Ladder
-		if(Gamepad.A_Button_State) {
-			arm.extend(LadderArm.extensionPositions.CONTRACT, 1);
-		}
-		
-		if(Gamepad.Y_Button_State) {
-			arm.extend(LadderArm.extensionPositions.EXTEND, 1);
-		}
-		
-		if(!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
-			arm.extendFree(0);
-		}
-		
-		arm.rotateFree(-Gamepad.LEFT_Stick_Y_State, 0.4);
+			if(Gamepad.A_Button_State) {
+				arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
+			}
+			
+			if(Gamepad.Y_Button_State) {
+				arm.extend(LadderArm.extensionDirections.EXTEND, 1); 
+			}
+			
+			if(!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
+				arm.extendFree(0);
+			}
+			
+			arm.rotateFree(-Gamepad.LEFT_Stick_Y_State, 0.3);
 		//End ladder
 		
-		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
-		drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
+		//Drive
+			drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
+			drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
+		//End Drive
 	}
 	
 	

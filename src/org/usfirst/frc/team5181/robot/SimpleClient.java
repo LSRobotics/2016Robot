@@ -38,8 +38,10 @@ public class SimpleClient extends Thread {
 				//centerX = buffer.getInt(0);
 				//centerY = buffer.getInt(1);
 				String point = dIn.readUTF();
-				point = point.substring(1, point.length() - 1);
-				//int centerX = Integer.par
+				String xString = point.substring(1, point.indexOf(','));
+				String yString = point.substring(point.indexOf(',') + 1, point.length() - 1);
+				centerX = Integer.parseInt(xString);
+				centerY = Integer.parseInt(yString);
 			}
 			
 		} catch (IOException e) {

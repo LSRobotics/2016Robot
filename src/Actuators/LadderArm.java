@@ -6,18 +6,17 @@ import sensors.LimitSwitch;
 
 public class LadderArm {
 	Talon armRotationController, armExtensionController;
-	LimitSwitch Bounds15, BoundsMax, BoundsMin;
+	LimitSwitch BoundsMax, BoundsMin; //extension
 	
 	/**
 	 * Controlled movement 
-	 * @param rotationPort
-	 * @param extensionPort
-	 * @param limitMaxPort
-	 * @param limitMinPort
-	 * @param limit15Port
+	 * @param rotationPort rotation motor port
+	 * @param extensionPort extension motor port
+	 * @param limitMaxPort max extension
+	 * @param limitMinPort min extension
+	 * @param limit15Port 15" extension
 	 */
-	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort, int limitMinPort, int limit15Port) {
-		Bounds15 = new LimitSwitch(limit15Port);
+	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort, int limitMinPort) {
 		BoundsMin = new LimitSwitch(limitMinPort);
 		BoundsMax = new LimitSwitch(limitMaxPort);
 		
@@ -35,45 +34,77 @@ public class LadderArm {
 		armExtensionController = new Talon(extensionPort);
 	}
 	
+	 /**
+	  * Control without limit switches
+	  * @param value
+	  * @param speedLimit
+	  */
 	public void rotateFree(double value, double speedLimit) {
-		if(value <= speedLimit) {
+		if(value <= speedLimit && value > 0.05) {
 			armRotationController.set(speedLimit);
 		}
-	}
-	
-	
-	public enum rotationalPositions {
-		MIN, BOUNDS15, MAX;
-	}
-	public enum extensionPositions {
-		EXTEND, CONTRACT;
-	}
-	
-	/**
-	 * Moves the arm to specified position
-	 * @param toWhere reference enum Positions
-	 */
-	public void rotateTo(rotationalPositions toWhere, double magnitude) {
-		if(toWhere == rotationalPositions.MIN && Math.abs(magnitude) > 0.1) {
-			armRotationController.set(-Math.abs(magnitude));
+		else if(value <= speedLimit && value < 0.05) {
+			armRotationController.set(speedLimit / 5);
 		}
-		else if(toWhere == rotationalPositions.BOUNDS15 && Math.abs(magnitude) > 0.1) {
-			armRotationController.set(magnitude);
+		else if(value < 0.05) {
+			armRotationController.set(value / 5); 
 		}
-		else if(toWhere == rotationalPositions.MAX && Math.abs(magnitude) > 0.1) {
-			armRotationController.set(Math.abs(magnitude));
+		else if(value > 0.05) {
+			armRotationController.set(value);
 		}
 		else {
 			armRotationController.set(0);
 		}
 	}
 	
-	public void extend(extensionPositions direction, double magnitude) {
-		if(direction == extensionPositions.EXTEND && Math.abs(magnitude) > 0.1) {
+	/**
+	 * Limit by encoder
+	 * @param value
+	 * @param speedLimit
+	 */
+	public void rotate(double value, double speedLimit) {
+		if(value <= speedLimit && value > 0.05) {
+			armRotationController.set(speedLimit);
+		}
+		else if(value <= speedLimit && value < 0.05) {
+			armRotationController.set(speedLimit / 5);
+		}
+		else if(value < 0.05) {
+			armRotationController.set(value / 5); 
+		}
+		else if(value > 0.05) {
+			armRotationController.set(value);
+		}
+		else {
+			armRotationController.set(0);
+		}
+		
+		/*
+		 * Encoder goes here
+		 */
+	}
+	
+	public enum extensionDirections {
+		EXTEND, CONTRACT;
+	}
+	
+	
+	public void extend(extensionDirections direction, double magnitude) {
+		if(direction == extensionDirections.EXTEND && Math.abs(magnitude) > 0.1) {
 			armExtensionController.set(Math.abs(magnitude));
 		}
-		if(direction == extensionPositions.CONTRACT && Math.abs(magnitude) > 0.1) {
+		if(direction == extensionDirections.CONTRACT && Math.abs(magnitude) > 0.1) {
 			armExtensionController.set(-Math.abs(magnitude));
+		}
+		
+		if(BoundsMin != null && BoundsMax != null) {
+			//Limit Switches
+			if(BoundsMin.get()) {
+				armExtensionController.set(0);
+			}
+			else if(BoundsMax.get()) {
+				armExtensionController.set(0);
+			}
 		}
 	}
 	
