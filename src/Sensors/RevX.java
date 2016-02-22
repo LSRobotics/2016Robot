@@ -11,6 +11,13 @@ public class RevX {
 	double AccX, AccY, PrevAccX, PrevAccY;
 	final static double Collision_DealtaG = 1f;
 	
+	final static double kP = 0.03;
+	final static double kI = 0.00;
+	final static double kD = 0.00;
+	final static double kF = 0.00;
+	
+	final static double degreeTolerance = 2.0;
+	
 	public RevX(Port port) {
 		revX = new AHRS(port);
 		
@@ -45,5 +52,9 @@ public class RevX {
 
 	public double[] getDisplacement() {
 		return new double[] {revX.getDisplacementX(), revX.getDisplacementY(), revX.getDisplacementZ()};
+	}
+	
+	public void resetDisplacement() {
+		revX.resetDisplacement();
 	}
 }
