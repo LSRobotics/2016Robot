@@ -7,11 +7,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 
-public class Autonomous extends Thread implements PIDOutput {
+public class Autonomous extends Thread {
 	private Robot robot;
-	
 	private boolean inAuton;
-	private double angleRate;
 	
 	//for actionPlayback only
 	ArrayList<String> commands;
@@ -24,7 +22,6 @@ public class Autonomous extends Thread implements PIDOutput {
 	 */
 	public Autonomous(Robot r) {
 		robot = r;
-		angleRate = 0;
 		inAuton = false;
 	}
 	
@@ -86,35 +83,5 @@ public class Autonomous extends Thread implements PIDOutput {
 	}
 	public void setAutonState(boolean inAuton) {
 		this.inAuton = inAuton;
-	}
-	
-	/**
-	 * Moves the robot across the x/y plane
-	 * @param distance The distances to travel (in meters) 
-	 */
-	public void revXMoveDistance(double x, double y) { 	
-		robot.revX.resetDisplacement();
-		double angle = Math.atan2(y, x);
-		
-	}
-	
-	public void turnToAnglePID(double angle) {
-		double kP = 0.03;
-		double kI = 0.00;
-		double kD = 0.00;
-		double kF = 0.00;
-		double degreeTolerance = 2.0;
-		
-		PIDController pid = new PIDController(kP, kI, kD, kF, robot.revX.revX, robot);
-		pid.setInputRange(-180.0, 180.0);
-		pid.setOutputRange(-1, 1);
-		pid.setAbsoluteTolerance(2);
-		pid.setContinuous(true);
-		pid.enable();
-		
-	}
-	
-	public void pidWrite(double output) {
-		angleRate = output;
 	}
 }

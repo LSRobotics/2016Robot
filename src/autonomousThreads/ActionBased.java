@@ -3,7 +3,9 @@ package autonomousThreads;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Statics;
 
+import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.io.*;
@@ -18,13 +20,17 @@ public class ActionBased extends Thread {
 	boolean isRecording;
 	int recordingNumber;
 	boolean includeTimes = false;
+	boolean addedSetpoint = false;
+	RevX revX;
 	
 	long currentRunTime = 0; //Time to run code in NS
 	
-	public ActionBased() {
+	public ActionBased(RevX revX) {
 		recording = new ArrayList<String>();
 		isRecording = false;
 		recordingNumber = 0;
+		
+		this.revX = revX;
 	}
 	
 	private void recordAction(int button, double magnitude) {
@@ -66,6 +72,15 @@ public class ActionBased extends Thread {
 		this.start();
 	}
 	
+	public void addSetpoint() {
+		double displacement[] = revX.getDisplacement();
+		recording.add("SETPOINT;X:" + displacement[0] + "Y:" + displacement[1] + "R:" + revX.getRotation() + "\n");
+		
+		addedSetpoint = true;
+	}
+	public void resetSetpoint() {
+		addedSetpoint = false;
+	}
 	public void record() {
 		//for buttons
 		recordAction(Statics.A_Button, toDouble(Gamepad.A_Button_State));

@@ -30,7 +30,7 @@ public class DriveTrain {
 	 * @param controlStickX magnitude of turning axis
 	 * @param controlStickY magnitude of driving axis
 	 */
-	public void ArcadeDrive(double controlStickX, double controlStickY) {
+	public void arcadeDrive(double controlStickX, double controlStickY) {
 		double xRotation = controlStickX;
 		double yDrive    = controlStickY;
 		

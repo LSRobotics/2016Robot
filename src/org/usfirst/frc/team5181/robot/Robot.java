@@ -9,6 +9,7 @@ import actuators.LinearActuator;
 import autonomousThreads.ActionBased;
 import autonomousThreads.Autonomous;
 import autonomousThreads.FrequencyAutonomous;
+import autonomousThreads.PIDFunctions;
 import autonomousThreads.TimedAutonomous;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -32,6 +33,7 @@ public class Robot extends SampleRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	DriveTrain drive;
+	PIDFunctions pidi;
 	
 	//Special
 	Bear koala;
@@ -59,8 +61,6 @@ public class Robot extends SampleRobot {
 
 	
 	public void robotInit(){ 
-		auton = new TimedAutonomous(this);
-		recorder = new ActionBased();
 		drive = new DriveTrain(speedLimit);
 		
 		//Sensors
@@ -69,6 +69,12 @@ public class Robot extends SampleRobot {
 		//Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7); //TODO change constructor
+		clientStarted = false;
+		
+		//Auton
+		auton = new TimedAutonomous(this, drive);
+		recorder = new ActionBased(revX);
+		pidi = new PIDFunctions(this, drive);
 		
 		koala = new Bear();
 		ballTracker = false;
@@ -91,7 +97,7 @@ public class Robot extends SampleRobot {
 		if (!inAuton) {
 			Gamepad.setNaturalState();
 		}
-		
+		/*
 		//Ball pickup
 			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		//End ball pickup
@@ -104,7 +110,7 @@ public class Robot extends SampleRobot {
 		//End Start Raspberry Pi Client 
 			
 		//Ball Tracking
-		/*
+		
 			if (Gamepad.B_Button_State && !ballTracker) {
 				ballTracker = true;
 			}
@@ -117,16 +123,16 @@ public class Robot extends SampleRobot {
 				int currY = client.centerY;
 				DriverStation.reportError("\n(" + currX + ", " + currY + ")", false);
 				if (currX == -1) {
-					drive.tankDrive(0, 0);
+					drive.tankDrive(.5, 0);
 				}
 				else if (currX > 320) {
-					drive.tankDrive(0, 0);
+					drive.tankDrive(0, .5);
 				}
 				else {
 					drive.tankDrive(0, 0);
 				}
 			}
-			*/
+		
 		//End Ball Tracking
 		
 		//Colliison
@@ -155,11 +161,20 @@ public class Robot extends SampleRobot {
 				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.25);
 			}
 		//End ladder
-		
+			
 		//Drive
 			drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
-			drive.ArcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
+			drive.arcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 		//End Drive
+		*/
+		
+		if(Gamepad.A_Button_State) {
+			revX.reset();
+		}
+		if(Gamepad.X_Button_State) {
+			pidi.turnToAngle(90);
+		}
+		DriverStation.reportError(revX.getRotation() + "\n", false);
 	}
 	
 	
@@ -171,8 +186,16 @@ public class Robot extends SampleRobot {
 			isRecording = true;
 			   
 			recorder.startRecording(true, period);
-			
+
 			DriverStation.reportError("Started\n", false); 	
+		}
+		
+		//Setpoint
+		if(Gamepad.START_State && isRecording) {
+			recorder.addSetpoint();
+		}
+		if(Gamepad.START_State && !isRecording) {
+			recorder.resetSetpoint();
 		}
 		
 		if(Gamepad.BACK_State && isRecording)  {
@@ -183,5 +206,8 @@ public class Robot extends SampleRobot {
 		if(Gamepad.LEFT_Stick_DOWN_State) {
 			recorder.incrementRecording();
 		}
+	}
+	public RevX getRevX() {
+		return revX;
 	}
 }
