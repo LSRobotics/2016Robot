@@ -39,7 +39,7 @@ public class RevX extends AHRS {
 	}
 	
 	public double getRotation() {
-		return this.getAngle(); 
+		return this.getYaw(); 
 	}
 	
 

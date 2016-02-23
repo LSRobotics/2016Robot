@@ -169,12 +169,14 @@ public class Robot extends SampleRobot {
 		*/
 		
 		if(Gamepad.A_Button_State) {
-			revX.reset();
+			revX.zeroYaw();
 		}
 		if(Gamepad.X_Button_State) {
 			pidi.turnToAngle(90);
 		}
-		DriverStation.reportError(revX.getRotation() + "\n", false);
+		if(Gamepad.B_Button_State) {
+			pidi.turnToAngle(0);
+		}
 	}
 	
 	

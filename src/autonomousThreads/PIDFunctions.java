@@ -15,12 +15,12 @@ public class PIDFunctions implements PIDOutput {
 	
 	PIDController pidiR, pidiD;
 	
-	static final double kPr = 0.07, kPd = 0.03; 
-	static final double kIr = 0.00, kId = 0.00; 
-	static final double kDr = 0.00, kDd = 0.00; 
-	static final double kFr = 0.00, kFd = 0.00; 
+	public static double kPr = 0.21, kPd = 0.03; 
+	public static double kIr = 0.0175, kId = 0.00; 
+	public static double kDr = 0.20, kDd = 0.00; 
+	public static double kFr = 0.00, kFd = 0.00; 
 	
-	static final double toleranceRotation = 2;
+	static final double toleranceRotation = 0.5;
 	static final double toleranceDistance = .5;
 	
 	double rotationRate = 0;
@@ -36,20 +36,25 @@ public class PIDFunctions implements PIDOutput {
 		pidiR.setOutputRange(-1, 1);
 		pidiR.setAbsoluteTolerance(toleranceRotation);
 		pidiR.setContinuous(true);
-		pidiR.enable();
+		
+		pidiD = new PIDController(kPr, kIr, kDr, kFr, revX, this);
+		pidiD.setInputRange(0, 3);
+		pidiD.setOutputRange(-1, 1);
+		pidiD.setAbsoluteTolerance(toleranceDistance);
+		pidiD.setContinuous(true);
 		
 	}
 	public void turnToAngle(double angle) {
 		pidiR.setSetpoint(angle);
 		pidiR.enable();
 		
-		while(!pidiR.onTarget()) {
-			DriverStation.reportError(revX.getAngle() + "\n", false);
-			drive.arcadeDrive(rotationRate, 0);
-		}
+		drive.arcadeDrive(rotationRate, 0);
 	}
-	public void move(double setpoint) {
-		//TODO
+	public void move(double distance) {
+		pidiD.setSetpoint(distance);
+		pidiD.enable();
+		
+		
 	}
 	
 	public void pidWrite(double output) {
