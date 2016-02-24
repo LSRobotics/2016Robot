@@ -28,6 +28,9 @@ public class Gamepad {
 	public static double RIGHT_Trigger_State = 0;
 	public static double RIGHT_Stick_X_State = 0;
 	public static double RIGHT_Stick_Y_State = 0;
+
+	//DPAD
+	public static double D_PAD_State = -1;
 	
 	public static void setNaturalState(int port) {
 		portNumber = port;
@@ -56,6 +59,8 @@ public class Gamepad {
 			RIGHT_Stick_X_State = j.getRawAxis(Statics.RIGHT_Stick_X);
 			RIGHT_Stick_Y_State = j.getRawAxis(Statics.RIGHT_Stick_Y);
 			 
+			//DPAD
+			D_PAD_State = j.getPOV();
 		}
 		catch (Exception e) {
 			DriverStation.reportError(e.getMessage(), true);
@@ -86,7 +91,9 @@ public class Gamepad {
 			RIGHT_Trigger_State = j.getRawAxis(Statics.RIGHT_Trigger);
 			RIGHT_Stick_X_State = j.getRawAxis(Statics.RIGHT_Stick_X);
 			RIGHT_Stick_Y_State = j.getRawAxis(Statics.RIGHT_Stick_Y);
-			 
+			
+			//DPAD
+			D_PAD_State = j.getPOV();
 		}
 		catch (Exception e) {
 			DriverStation.reportError(e.getMessage(), true);

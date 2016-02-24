@@ -25,8 +25,7 @@ public class LadderArm {
 	}
 	
 	/**
-	 * Free movement
-	 * @param rotationPoer
+	 * @param rotationPort
 	 * @param extensionPort
 	 */
 	public LadderArm(int rotationPort, int extensionPort) {

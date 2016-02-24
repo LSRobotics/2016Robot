@@ -13,7 +13,6 @@ public class RevX extends AHRS {
 	
 	public RevX(Port port) {
 		super(port);
-		
 		AccX = 0;
 		AccY = 0;
 		PrevAccX = 0;
@@ -50,4 +49,5 @@ public class RevX extends AHRS {
 	public void reset() {
 		this.reset();
 	}
+
 }

@@ -45,6 +45,7 @@ public class Robot extends SampleRobot {
 	//Actuators
 	BallPickup ballPickUp;
 	LadderArm arm;
+	boolean rotateMAXPOWER;
 	
 	//Recorder Vars
 	final long timeFrequency = 500; //in actions/second
@@ -59,25 +60,28 @@ public class Robot extends SampleRobot {
 
 	private boolean clientStarted;
 
+
 	
 	public void robotInit(){ 
 		drive = new DriveTrain(speedLimit);
-		
+
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		
 		//Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7); //TODO change constructor
-		clientStarted = false;
+		rotateMAXPOWER = false;
 		
 		//Auton
 		auton = new TimedAutonomous(this, drive);
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
-		
+	
 		koala = new Bear();
 		ballTracker = false;
+		clientStarted = false;
+		
 	}
 	
 	public void autonomous() {
@@ -97,7 +101,6 @@ public class Robot extends SampleRobot {
 		if (!inAuton) {
 			Gamepad.setNaturalState();
 		}
-		/*
 		//Ball pickup
 			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		//End ball pickup
@@ -110,7 +113,7 @@ public class Robot extends SampleRobot {
 		//End Start Raspberry Pi Client 
 			
 		//Ball Tracking
-		
+		/*
 			if (Gamepad.B_Button_State && !ballTracker) {
 				ballTracker = true;
 			}
@@ -132,7 +135,7 @@ public class Robot extends SampleRobot {
 					drive.tankDrive(0, 0);
 				}
 			}
-		
+		*/
 		//End Ball Tracking
 		
 		//Colliison
@@ -160,23 +163,19 @@ public class Robot extends SampleRobot {
 			else if(!Gamepad.LEFT_Stick_DOWN_State) {
 				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.25);
 			}
+			
+			if(Gamepad.D_PAD_State == 90) {
+				rotateMAXPOWER = true;
+			}
+			if(rotateMAXPOWER) {
+				arm.rotateFree(-Gamepad.LEFT_Stick_Y_State);
+			}
 		//End ladder
 			
 		//Drive
 			drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 			drive.arcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 		//End Drive
-		*/
-		
-		if(Gamepad.A_Button_State) {
-			revX.zeroYaw();
-		}
-		if(Gamepad.X_Button_State) {
-			pidi.turnToAngle(90);
-		}
-		if(Gamepad.B_Button_State) {
-			pidi.turnToAngle(0);
-		}
 	}
 	
 	
@@ -211,5 +210,41 @@ public class Robot extends SampleRobot {
 	}
 	public RevX getRevX() {
 		return revX;
+	}
+	
+	private boolean left_bumper = false;
+	private boolean right_bumper = false;
+	private double kPr = 0.15;
+	private double kDr = 0.1;
+	private double kIr = 0.00003;
+	
+	public void test() {
+		if (Gamepad.LEFT_Bumper_State && !left_bumper) {
+			kPr += 0.05;
+			DriverStation.reportError("kPr: " + kPr + " kDr: " + kDr + "\n", false);
+			left_bumper = true;
+		}
+		if (!Gamepad.LEFT_Bumper_State) {left_bumper = false;}
+		if (Gamepad.RIGHT_Bumper_State && !right_bumper) {
+			kIr += 0.0001;
+			DriverStation.reportError("kIr " + kIr + "\n", false);
+			right_bumper = true;
+		}
+		if (!Gamepad.RIGHT_Bumper_State) {right_bumper = false;}
+		if(Gamepad.A_Button_State) {
+			revX.zeroYaw();
+		}
+		if(Gamepad.X_Button_State) {
+			pidi.turnToAngle(90);
+		}
+		if(Gamepad.B_Button_State) {
+			pidi.turnToAngle(0);
+		}
+		if (Gamepad.Y_Button_State) {
+			DriverStation.reportError("" + revX.getYaw() + "\n", false);
+		}
+		//DriverStation.reportError("\tYAW " + revX.getYaw() + "\n", false);
+		pidi.pidiR.setPID(0.15, kIr, 0.1);
+		DriverStation.reportError("" + revX.getPIDSourceType() + "\n", false);
 	}
 }

@@ -49,7 +49,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 					
 					while(Math.sqrt(Math.pow(revX.getDisplacement()[0], 2) + Math.pow(revX.getDisplacement()[1], 2)) - 
 						  Math.sqrt(Math.pow(displacement[0], 2) + Math.pow(displacement[1], 2)) >= 0.5) {
-						pidi.move(Math.sqrt(Math.pow(displacement[0], 2) + Math.pow(displacement[1], 2)));
+						pidi.moveTo(Math.sqrt(Math.pow(displacement[0], 2) + Math.pow(displacement[1], 2)));
 					}
 					pidi.turnToAngle(-Math.atan(displacement[0] / displacement[1]));
 					
