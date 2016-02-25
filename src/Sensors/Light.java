@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Relay;
 
 public class Light{
 	Relay redRelay;
@@ -14,14 +15,12 @@ public class Light{
 	final Color BLUE = new Color(0, 0, 255);
 	
 	public Light(){
-		redRelay = new Relay(1,kForwardOnly);
-		greenRelay = new Relay(3,kForwardOnly);
-		blueRelay = new Relay(2,kForwardOnly);
-		
+		redRelay = new Relay(1, Relay.Direction.kForward);
+		greenRelay = new Relay(3,Relay.Direction.kForward);
+		blueRelay = new Relay(2, Relay.Direction.kForward);
 	}
 	
-	public void setColor(Color c){
-		
+	public void setColor(Color c) {
 		redRelay.set( 1 - (c.getRed()/255));
 		greenRelay.set(1 - (c.getGreen()/255));
 		blueRelay.set(1 - (c.getBlue()/255));
