@@ -2,7 +2,10 @@ package autonomousThreads;
 
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Robot;
+import org.usfirst.frc.team5181.robot.SimpleClient;
 
+import autonomousThreads.PIDSources.DisplacementSource;
+import autonomousThreads.PIDSources.GyroSource;
 import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
@@ -106,51 +109,4 @@ public class PIDFunctions implements PIDOutput {
 		}
 	}
 	
-	
-	public class GyroSource implements PIDSource {
-		
-		RevX revX;
-		
-		public GyroSource(RevX r) {
-			revX = r;
-		}
-		
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			//do nothing lololololz
-		}
-
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-
-		public double pidGet() {
-			return revX.getYaw();
-		}
-	}
-	
-	class DisplacementSource implements PIDSource {
-
-		RevX revX;
-		
-		public DisplacementSource(RevX r) {
-			revX = r;
-		}
-		
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			//do nothing lololololz
-		}
-
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-
-		/**
-		 * returns the hypotenuse
-		 */
-		public double pidGet() {
-			//return Math.sqrt(Math.pow(revX.getDisplacementX(), 2) + Math.pow(revX.getDisplacementY(), 2));
-			return revX.getDisplacementX();
-		}
-		
-	}
 }
