@@ -212,8 +212,10 @@ public class Robot extends SampleRobot {
 
 	
 	public void test() {
-		Gamepad.setNaturalState();
-		autoTunePID(Controllers.ROTATION);
+		while(this.isEnabled()) {
+			Gamepad.setNaturalState();
+			autoTunePID(Controllers.ROTATION);
+		}
 	}
 	
 	/**
@@ -233,6 +235,8 @@ public class Robot extends SampleRobot {
 		pidi.upadtePID(controller, currP, currD, currI, 0);
 		pidi.setPID(controller);
 		
+		DriverStation.reportError("P: " + currP + "  ,  D: " + currD + "  ,  I: " + currI + "  ,  Delta: " + currDelta + "\n", false);
+		
 		if(turnTo90) {
 			pidi.turnToAngle(90);
 		}
@@ -248,15 +252,18 @@ public class Robot extends SampleRobot {
 				case 0: //P
 					stableP = currP;
 					currP += currDelta;
+					break;
 				case 1: //D
 					stableD = currD;
 					xGain = 0; //D is stable increase P
+					break;
 				case 2://I
 					stableI = currI;
 					DriverStation.reportError("P: " + stableP + "  ,  D: " + stableD + "  ,  I: " + stableI + "\n", false);
+					break;
 			}
 		}
-		else {
+		else if(!Gamepad.A_Button_State) {
 			aPressed = false;
 		}
 		
@@ -266,14 +273,19 @@ public class Robot extends SampleRobot {
 			turnTo90 = !turnTo90;
 			switch(xGain) {
 				case 0: //P
-					xGain++;
+					xGain = 1;
+					break;
 				case 1: //D
-					xGain = 2; //revert D and tune I
+					stableD = currD;
+					currD += currDelta;
+					break;
 				case 2://I
 					stableI = currI;
+					currI += currDelta;
+					break;
 			}	
 		}
-		else {
+		else if(!Gamepad.B_Button_State) {
 			bPressed = false;
 		}
 		
@@ -285,17 +297,39 @@ public class Robot extends SampleRobot {
 			switch(xGain) {
 				case 0: //P
 					currP = stableP;
-					currDelta /= 10;
+					break;
 				case 1: //D
 					currD = stableD;
-					currDelta /= 10;
+					break;
 				case 2://I
 					currI = stableI;
-					currDelta /= 10;
+					break;
+			}
+			currDelta /= 5;
+		}
+		else if(!Gamepad.Y_Button_State) {
+			yPressed = false;
+		}
+		//If for when DGAin dosent stablize
+		if(Gamepad.X_Button_State && !xPressed) {
+			xPressed = true;
+			turnTo90 = !turnTo90;
+			
+			switch(xGain) {
+				case 0: //P
+					//
+					break;
+				case 1: //D
+					currD = stableD;
+					xGain = 2;
+					break;
+				case 2://I
+					//
+					break;
 			}	
 		}
-		else {
-			yPressed = false;
+		else if(!Gamepad.X_Button_State) {
+			xPressed = false;
 		}
 	}
 }

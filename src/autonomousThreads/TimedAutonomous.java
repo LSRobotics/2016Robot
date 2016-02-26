@@ -9,6 +9,7 @@ import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
 
+import autonomousThreads.PIDFunctions.Controllers;
 import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -36,23 +37,12 @@ public class TimedAutonomous extends Thread implements Autonomous {
 			int iterative = 0;
 			for (String command:commands) {
 				if(command.contains("SETPOINT")) {
-					double[] displacement = {Double.parseDouble(command.substring(command.indexOf("X:") + 2, command.indexOf("Y:"))), 
-											 Double.parseDouble(command.substring(command.indexOf("Y:") + 2, command.indexOf("R:")))}; 
 					double rotation = Double.parseDouble(command.substring(command.indexOf("R:") + 2));
 					
 					//Correct E-r
-					while((Math.abs(revX.getRotation() - rotation)) >= 2.1) {
+					while(pidi.onTarget(Controllers.ROTATION)) {
 						pidi.turnToAngle(rotation);
 					}
-					
-					pidi.turnToAngle(Math.atan(displacement[0] / displacement[1]));
-					
-					while(Math.sqrt(Math.pow(revX.getDisplacement()[0], 2) + Math.pow(revX.getDisplacement()[1], 2)) - 
-						  Math.sqrt(Math.pow(displacement[0], 2) + Math.pow(displacement[1], 2)) >= 0.5) {
-						pidi.moveTo(Math.sqrt(Math.pow(displacement[0], 2) + Math.pow(displacement[1], 2)));
-					}
-					pidi.turnToAngle(-Math.atan(displacement[0] / displacement[1]));
-					
 					continue;
 				}
 				
@@ -99,6 +89,11 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				commands.add(line);
 			}
 			br.close();
+			
+			do {
+				revX.zeroYaw();
+			} while(Math.abs(revX.getRotation()) < 0.5);
+			
 			this.start();
 		}
 		catch(Exception e) {

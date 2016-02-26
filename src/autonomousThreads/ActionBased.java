@@ -69,12 +69,16 @@ public class ActionBased extends Thread {
 		includeTimes = includeTimeInvervals;
 		this.timeFrequency = timeFrequency;
 		
+		do {
+			revX.zeroYaw();
+		} while(Math.abs(revX.getRotation()) < 0.5);
+		
 		this.start();
 	}
 	
 	public void addSetpoint() {
 		double displacement[] = revX.getDisplacement();
-		recording.add("SETPOINT;X:" + displacement[0] + "Y:" + displacement[1] + "R:" + revX.getRotation() + "\n");
+		recording.add("SETPOINT;R:" + revX.getRotation() + "\n");
 		
 		addedSetpoint = true;
 	}

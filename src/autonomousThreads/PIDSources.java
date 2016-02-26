@@ -8,7 +8,7 @@ import sensors.RevX;
 
 public class PIDSources {
 	
-	public class GyroSource implements PIDSource {
+	public static class GyroSource implements PIDSource {
 		
 		private RevX revX;
 		private PIDSourceType sourceType;
@@ -31,7 +31,7 @@ public class PIDSources {
 		}
 	}
 	
-	public class DisplacementSource implements PIDSource {
+	public static class DisplacementSource implements PIDSource {
 
 		private RevX revX;
 		private PIDSourceType sourceType;

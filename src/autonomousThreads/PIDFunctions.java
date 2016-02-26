@@ -109,4 +109,16 @@ public class PIDFunctions implements PIDOutput {
 		}
 	}
 	
+	public boolean onTarget(Controllers c) {
+		boolean onTar = false;
+		switch (c) {
+			case ROTATION:
+				onTar = pidiR.onTarget();
+				break;
+			case DISPLACEMENT:
+				onTar = pidiD.onTarget();
+				break;
+		}
+		return onTar;
+	}
 }

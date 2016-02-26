@@ -1,4 +1,4 @@
-package Actuators;
+package actuators;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
