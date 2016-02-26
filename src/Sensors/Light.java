@@ -1,4 +1,4 @@
-package Actuators;
+package Sensors;
 
 import java.awt.Color;
 
