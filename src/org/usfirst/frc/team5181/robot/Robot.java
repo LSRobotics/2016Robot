@@ -293,5 +293,8 @@ public class Robot extends SampleRobot {
 					currDelta /= 10;
 			}	
 		}
+		else {
+			yPressed = false;
+		}
 	}
 }
