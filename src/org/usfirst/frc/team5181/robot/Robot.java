@@ -10,6 +10,7 @@ import autonomousThreads.ActionBased;
 import autonomousThreads.Autonomous;
 import autonomousThreads.FrequencyAutonomous;
 import autonomousThreads.PIDFunctions;
+import autonomousThreads.PIDFunctions.Controllers;
 import autonomousThreads.TimedAutonomous;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -57,11 +58,8 @@ public class Robot extends SampleRobot {
 	LimitSwitch limitSwitch;
 
 	private boolean ballTracker;
-
 	private boolean clientStarted;
 
-
-	
 	public void robotInit(){ 
 		drive = new DriveTrain(speedLimit);
 
@@ -211,40 +209,89 @@ public class Robot extends SampleRobot {
 	public RevX getRevX() {
 		return revX;
 	}
-	
-	private boolean left_bumper = false;
-	private boolean right_bumper = false;
-	private double kPr = 0.15;
-	private double kDr = 0.1;
-	private double kIr = 0.00003;
+
 	
 	public void test() {
-		if (Gamepad.LEFT_Bumper_State && !left_bumper) {
-			kPr += 0.05;
-			DriverStation.reportError("kPr: " + kPr + " kDr: " + kDr + "\n", false);
-			left_bumper = true;
-		}
-		if (!Gamepad.LEFT_Bumper_State) {left_bumper = false;}
-		if (Gamepad.RIGHT_Bumper_State && !right_bumper) {
-			kIr += 0.0001;
-			DriverStation.reportError("kIr " + kIr + "\n", false);
-			right_bumper = true;
-		}
-		if (!Gamepad.RIGHT_Bumper_State) {right_bumper = false;}
-		if(Gamepad.A_Button_State) {
-			revX.zeroYaw();
-		}
-		if(Gamepad.X_Button_State) {
+		autoTunePID(Controllers.ROTATION);
+	}
+	
+	/**
+	 * A button signifies convergence 
+	 * B signifies oscillation
+	 * X signifies divergence
+	 * Y signifies reduce currDelta by a factor of 10 and start gain at last stable value
+	 * @param controller either rotation or displacement
+	 */
+	private boolean xPressed = false, aPressed = false, bPressed = false, yPressed = false;
+	private int xGain = 0; //0 == kP, 1 == kD, 2 == kI
+	private double stableP = 0,stableD = 0, stableI = 0;
+	private double currP = 0.01, currD = 0, currI = 0;
+	private double currDelta = 0.05;
+	private boolean turnTo90 = true;
+	public void autoTunePID(Controllers controller) {
+		pidi.upadtePID(controller, currP, currD, currI, 0);
+		pidi.setPID(controller);
+		
+		if(turnTo90) {
 			pidi.turnToAngle(90);
 		}
-		if(Gamepad.B_Button_State) {
+		else {
 			pidi.turnToAngle(0);
 		}
-		if (Gamepad.Y_Button_State) {
-			DriverStation.reportError("" + revX.getYaw() + "\n", false);
+		
+		//Converges and gain needs to be increased if P, if D then P needs to be increased again
+		if(Gamepad.A_Button_State) {
+			aPressed = true;
+			turnTo90 = !turnTo90;
+			switch(xGain) {
+				case 0: //P
+					stableP = currP;
+					currP += currDelta;
+				case 1: //D
+					stableD = currD;
+					xGain = 0; //D is stable increase P
+				case 2://I
+					stableI = currI;
+					DriverStation.reportError("P: " + stableP + "  ,  D: " + stableD + "  ,  I: " + stableI + "\n", false);
+			}
 		}
-		//DriverStation.reportError("\tYAW " + revX.getYaw() + "\n", false);
-		pidi.pidiR.setPID(0.15, kIr, 0.1);
-		DriverStation.reportError("" + revX.getPIDSourceType() + "\n", false);
+		else {
+			aPressed = false;
+		}
+		
+		//If P-gain causes oscillation OR D-gain causes spasms
+		if(Gamepad.B_Button_State) {
+			bPressed = true;
+			turnTo90 = !turnTo90;
+			switch(xGain) {
+				case 0: //P
+					xGain++;
+				case 1: //D
+					xGain = 2; //revert D and tune I
+				case 2://I
+					stableI = currI;
+			}	
+		}
+		else {
+			bPressed = false;
+		}
+		
+		//If currDelta is too high
+		if(Gamepad.Y_Button_State) {
+			yPressed = true;
+			turnTo90 = !turnTo90;
+			
+			switch(xGain) {
+				case 0: //P
+					currP = stableP;
+					currDelta /= 10;
+				case 1: //D
+					currD = stableD;
+					currDelta /= 10;
+				case 2://I
+					currI = stableI;
+					currDelta /= 10;
+			}	
+		}
 	}
 }

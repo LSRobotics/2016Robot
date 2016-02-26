@@ -65,6 +65,46 @@ public class PIDFunctions implements PIDOutput {
 	public void pidWrite(double output) {
 		pidValue = output;
 	}
+	public enum Controllers {
+		ROTATION, DISPLACEMENT
+	}
+	public static void upadtePID(Controllers controller, double kP, double kI, double kD, double kF) {
+		if(controller == Controllers.ROTATION) {
+			kPr = kP;
+			kIr = kI;
+			kDr = kD;
+			kFr = kF;
+		}
+		else if(controller == Controllers.DISPLACEMENT) {
+			kPd = kP;
+			kId = kI;
+			kDd = kD;
+			kFd = kF;
+		}
+	}
+	public void setPID(Controllers controller) {
+		if(controller == Controllers.ROTATION) {
+			if(pidiR != null) {
+				pidiR.setPID(kPr, kIr, kDr, kFr);
+			}
+		}
+		else if(controller == Controllers.DISPLACEMENT) {
+			if(pidiD != null) {
+				pidiD.setPID(kPd, kId, kDd, kFd);
+			}
+		}
+	}
+	public static double[] getPIDTunings(Controllers controller) {
+		if(controller == Controllers.ROTATION) {
+			return new double[]{kPr, kIr, kDr, kFr};
+		}
+		else if(controller == Controllers.DISPLACEMENT) {
+			return new double[]{kPd, kId, kDd, kFd};
+		}
+		else {
+			return null;
+		}
+	}
 	
 	
 	public class GyroSource implements PIDSource {
