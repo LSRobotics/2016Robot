@@ -241,7 +241,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		//Converges and gain needs to be increased if P, if D then P needs to be increased again
-		if(Gamepad.A_Button_State) {
+		if(Gamepad.A_Button_State && !aPressed) {
 			aPressed = true;
 			turnTo90 = !turnTo90;
 			switch(xGain) {
@@ -261,7 +261,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		//If P-gain causes oscillation OR D-gain causes spasms
-		if(Gamepad.B_Button_State) {
+		if(Gamepad.B_Button_State && !bPressed) {
 			bPressed = true;
 			turnTo90 = !turnTo90;
 			switch(xGain) {
@@ -278,7 +278,7 @@ public class Robot extends SampleRobot {
 		}
 		
 		//If currDelta is too high
-		if(Gamepad.Y_Button_State) {
+		if(Gamepad.Y_Button_State && !yPressed) {
 			yPressed = true;
 			turnTo90 = !turnTo90;
 			
