@@ -32,24 +32,24 @@ public class Light{
 	public void setColor(Color c) {
 		switch (c) {
 			case RED:
-				redRelay.set(Value.kOn);
-				greenRelay.set(Value.kOff);
-				blueRelay.set(Value.kOff);
-				break;
-			case BLUE:
 				redRelay.set(Value.kOff);
-				greenRelay.set(Value.kOff);
-				blueRelay.set(Value.kOn);
-				break;
-			case WHITE:
-				redRelay.set(Value.kOn);
 				greenRelay.set(Value.kOn);
 				blueRelay.set(Value.kOn);
 				break;
-			case OFF:
+			case BLUE:
+				redRelay.set(Value.kOn);
+				greenRelay.set(Value.kOn);
+				blueRelay.set(Value.kOff);
+				break;
+			case WHITE:
 				redRelay.set(Value.kOff);
 				greenRelay.set(Value.kOff);
 				blueRelay.set(Value.kOff);
+				break;
+			case OFF:
+				redRelay.set(Value.kOn);
+				greenRelay.set(Value.kOn);
+				blueRelay.set(Value.kOn);
 				break;
 			default:
 				break;
