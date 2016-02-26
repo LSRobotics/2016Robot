@@ -1,5 +1,7 @@
-package Sensors;
+package Actuators;
 
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import java.awt.Color;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,10 +18,9 @@ public class Light{
 	//final Color BLUE = new Color(0, 0, 255);
 	enum Color {
 		RED,
-		GREEN,
 		BLUE,
 		OFF, //all off
-		ON   //all on
+		WHITE   //all on
 	}
 	
 	public Light(){
@@ -40,12 +41,7 @@ public class Light{
 				greenRelay.set(Value.kOff);
 				blueRelay.set(Value.kOn);
 				break;
-			case GREEN:
-				redRelay.set(Value.kOff);
-				greenRelay.set(Value.kOn);
-				blueRelay.set(Value.kOff);
-				break;
-			case ON:
+			case WHITE:
 				redRelay.set(Value.kOn);
 				greenRelay.set(Value.kOn);
 				blueRelay.set(Value.kOn);
@@ -72,7 +68,7 @@ public class Light{
 				this.setColor(Color.RED);
 			}
 			else {
-				this.setColor(Color.ON);
+				this.setColor(Color.WHITE);
 			}
 		}
 	}
