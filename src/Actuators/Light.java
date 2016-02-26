@@ -60,16 +60,12 @@ public class Light{
 	}
 	
 	public void periodic(){
-		while (true){
-			if (DriverStation.getInstance().getAlliance().equals(Alliance.Blue)) {
-				this.setColor(Color.BLUE);
-			}
-			else if (DriverStation.getInstance().getAlliance().equals(Alliance.Red)) {
-				this.setColor(Color.RED);
-			}
-			else {
-				this.setColor(Color.WHITE);
-			}
+		if (DriverStation.getInstance().getAlliance().equals(Alliance.Blue)) {
+			this.setColor(Color.BLUE);
+		} else if (DriverStation.getInstance().getAlliance().equals(Alliance.Red)) {
+			this.setColor(Color.RED);
+		} else {
+			this.setColor(Color.WHITE);
 		}
 	}
 }
