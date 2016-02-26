@@ -212,6 +212,7 @@ public class Robot extends SampleRobot {
 
 	
 	public void test() {
+		Gamepad.setNaturalState();
 		autoTunePID(Controllers.ROTATION);
 	}
 	
