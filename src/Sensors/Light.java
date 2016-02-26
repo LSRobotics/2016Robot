@@ -51,7 +51,7 @@ public class Light{
 				blueRelay.set(Value.kOn);
 				break;
 			case OFF:
-				redRelay.set(Value.kOf);
+				redRelay.set(Value.kOff);
 				greenRelay.set(Value.kOff);
 				blueRelay.set(Value.kOff);
 				break;
