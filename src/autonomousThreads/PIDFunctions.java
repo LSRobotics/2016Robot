@@ -21,12 +21,12 @@ public class PIDFunctions implements PIDOutput {
 	public GyroSource gyroPID;
 	public DisplacementSource displacePID;
 	
-	static double kPr = 0.15, kPd = 0.06; 
-	static double kIr = 0.00004, kId = 0.00; 
-	static double kDr = 0.1, kDd = 0.00; 
+	static double kPr = 0.12, kPd = 0.06; 
+	static double kIr = 0.0, kId = 0.00; 
+	static double kDr = 0.06, kDd = 0.00; 
 	static double kFr = 0.00, kFd = 0.00; 
 	
-	static final double toleranceRotation = 0.5;
+	static final double toleranceRotation = 1;
 	static final double toleranceDistance = .5;
 	
 	double pidValue = 0;

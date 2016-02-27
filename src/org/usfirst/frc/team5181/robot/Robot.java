@@ -68,7 +68,7 @@ public class Robot extends SampleRobot {
 		
 		//Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7); //TODO change constructor
+		arm = new LadderArm(6, 7, 8); //TODO change constructor
 		rotateMAXPOWER = false;
 		
 		//Auton
@@ -159,7 +159,7 @@ public class Robot extends SampleRobot {
 				arm.stayRotated();
 			}
 			else if(!Gamepad.LEFT_Stick_DOWN_State) {
-				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.25);
+				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.35);
 			}
 			
 			if(Gamepad.D_PAD_State == 90) {
@@ -227,15 +227,15 @@ public class Robot extends SampleRobot {
 	 */
 	private boolean xPressed = false, aPressed = false, bPressed = false, yPressed = false;
 	private int xGain = 0; //0 == kP, 1 == kD, 2 == kI
-	private double stableP = 0,stableD = 0, stableI = 0;
-	private double currP = 0.01, currD = 0, currI = 0;
+	private double stableP = 0.0, stableD = 0, stableI = 0;
+	private double currP = 0.00, currD = 0, currI = 0;
 	private double currDelta = 0.05;
 	private boolean turnTo90 = true;
 	public void autoTunePID(Controllers controller) {
-		pidi.upadtePID(controller, currP, currD, currI, 0);
+		pidi.upadtePID(controller, currP, currI, currD, 0);
 		pidi.setPID(controller);
 		
-		DriverStation.reportError("P: " + currP + "  ,  D: " + currD + "  ,  I: " + currI + "  ,  Delta: " + currDelta + "\n", false);
+		DriverStation.reportError("P: " + currP + "  ,  D: " + currD + "  ,  I: " + currI + "  ,  Delta: " + currDelta + "  ,  R:" + revX.getRotation() + "\n", false);
 		
 		if(turnTo90) {
 			pidi.turnToAngle(90);
@@ -256,10 +256,11 @@ public class Robot extends SampleRobot {
 				case 1: //D
 					stableD = currD;
 					xGain = 0; //D is stable increase P
+					currDelta = 0.05;
 					break;
 				case 2://I
 					stableI = currI;
-					DriverStation.reportError("P: " + stableP + "  ,  D: " + stableD + "  ,  I: " + stableI + "\n", false);
+					DriverStation.reportError("P: " + stableP + "  ,  D: " + stableD + "  ,  I: " + stableI + "  ,  " + "Rot:" + revX.getRotation() + "\n", false);
 					break;
 			}
 		}
@@ -273,16 +274,17 @@ public class Robot extends SampleRobot {
 			turnTo90 = !turnTo90;
 			switch(xGain) {
 				case 0: //P
+					
 					xGain = 1;
 					break;
 				case 1: //D
-					stableD = currD;
 					currD += currDelta;
 					break;
 				case 2://I
 					stableI = currI;
 					currI += currDelta;
 					break;
+			
 			}	
 		}
 		else if(!Gamepad.B_Button_State) {

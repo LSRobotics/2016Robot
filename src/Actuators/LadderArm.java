@@ -6,7 +6,7 @@ import sensors.LimitSwitch;
 
 public class LadderArm {
 	Talon armRotationController, armExtensionController;
-	LimitSwitch BoundsMax, BoundsMin; //extension
+	LimitSwitch BoundsMax; //extension
 	
 	/**
 	 * Controlled movement 
@@ -16,8 +16,7 @@ public class LadderArm {
 	 * @param limitMinPort min extension
 	 * @param limit15Port 15" extension
 	 */
-	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort, int limitMinPort) {
-		BoundsMin = new LimitSwitch(limitMinPort);
+	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort) {
 		BoundsMax = new LimitSwitch(limitMaxPort);
 		
 		armRotationController = new Talon(rotationPort); 
@@ -73,12 +72,8 @@ public class LadderArm {
 			armExtensionController.set(Math.abs(magnitude));
 		}
 		
-		if(BoundsMin != null && BoundsMax != null) {
-			//Limit Switches
-			if(BoundsMin.get()) {
-				armExtensionController.set(0);
-			}
-			else if(BoundsMax.get()) {
+		if(BoundsMax != null) {
+			if(!BoundsMax.get()) {
 				armExtensionController.set(0);
 			}
 		}
