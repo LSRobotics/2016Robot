@@ -78,7 +78,7 @@ public class ActionBased extends Thread {
 	
 	public void addSetpoint() {
 		double displacement[] = revX.getDisplacement();
-		recording.add("SETPOINT;R:" + revX.getRotation() + "\n");
+		recording.add("\nSETPOINT;R:" + revX.getRotation() + "\n");
 		
 		addedSetpoint = true;
 	}

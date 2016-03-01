@@ -56,7 +56,7 @@ public class LadderArm {
 	}
 	
 	public void stayRotated() {
-		armRotationController.set(0.15);
+		armRotationController.set(0.23);
 	}
 	
 	public enum extensionDirections {

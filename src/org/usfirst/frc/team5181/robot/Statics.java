@@ -13,15 +13,15 @@ public class Statics {
 	public static final int RightBall = 5;
 
 	// Gamepad ports
-	public static int A_Button = 1;
+	public static int A_Button = 1; //FOR GAMEPAD = 1, JOYSTCIK = 3
 	public static int B_Button = 2;
 	public static int X_Button = 3;
-	public static int Y_Button = 4;
+	public static int Y_Button = 4; //FOR GAMEPAD = 4, JOYSTCIK = 4
 	public static int LEFT_Bumper = 5;
 	public static int RIGHT_Bumper = 6;
 	public static int BACK = 7;
 	public static int START = 8;
-	public static int LEFT_Stick_DOWN = 9;
+	public static int LEFT_Stick_DOWN = 1; //FOR GAMEPAD =  9, JOYSTCIK = 1
 	public static int RIGHT_Stick_DOWN = 10;                                                                                                                                                                                                                                                                                                                                                    
 	
 	// Axis
@@ -31,4 +31,7 @@ public class Statics {
 	public static int RIGHT_Trigger = 3;
 	public static int RIGHT_Stick_X = 4;
 	public static int RIGHT_Stick_Y = 5;
+	
+	//MAXPOWERRRRRRRRR
+	public static int MAXPOWER = 2; 
 }
