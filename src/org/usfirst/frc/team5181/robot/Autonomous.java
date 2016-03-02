@@ -84,4 +84,12 @@ public class Autonomous extends Thread {
 	public void setAutonState(boolean inAuton) {
 		this.inAuton = inAuton;
 	}
+	
+	/**
+	 * Turns to either the ball or low goal as detected by the camera
+	 **/
+	public void turnToTargetCenter() {
+		double angle = robot.client.centerX;
+		robot.pidi.turnToAngle(angle);
+	}
 }
