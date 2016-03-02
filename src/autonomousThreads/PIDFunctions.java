@@ -4,7 +4,6 @@ import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Robot;
 import org.usfirst.frc.team5181.robot.SimpleClient;
 
-import autonomousThreads.PIDSources.CenterTrackerSource;
 import autonomousThreads.PIDSources.DisplacementSource;
 import autonomousThreads.PIDSources.GyroSource;
 import sensors.RevX;

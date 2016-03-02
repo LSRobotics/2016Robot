@@ -121,7 +121,7 @@ public class Gamepad {
 			
 			// Axis
 			LEFT_Stick_X_State = jJS.getRawAxis(Statics.LEFT_Stick_X);
-			LEFT_Stick_Y_State = -jJS.getRawAxis(Statics.LEFT_Stick_Y);
+			LEFT_Stick_Y_State = jJS.getRawAxis(Statics.LEFT_Stick_Y);
 			LEFT_Trigger_State = jGP.getRawAxis(Statics.LEFT_Trigger);
 			RIGHT_Trigger_State = jGP.getRawAxis(Statics.RIGHT_Trigger);
 			RIGHT_Stick_X_State = jGP.getRawAxis(Statics.RIGHT_Stick_X);

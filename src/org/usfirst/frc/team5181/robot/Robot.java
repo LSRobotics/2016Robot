@@ -166,7 +166,7 @@ public class Robot extends SampleRobot {
 				rotateMAXPOWER = true;
 			}
 			if(rotateMAXPOWER) {
-				arm.rotateFree(-Gamepad.LEFT_Stick_Y_State);
+				arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
 			}
 		//End ladder
 			
@@ -227,8 +227,8 @@ public class Robot extends SampleRobot {
 	 */
 	private boolean xPressed = false, aPressed = false, bPressed = false, yPressed = false;
 	private int xGain = 0; //0 == kP, 1 == kD, 2 == kI
-	private double stableP = 0.0, stableD = 0, stableI = 0;
-	private double currP = 0.00, currD = 0, currI = 0;
+	private double stableP = 0.00, stableD = 0.00, stableI = 0;
+	private double currP = 0.00, currD = 0.000, currI = 0;
 	private double currDelta = 0.05;
 	private boolean turnTo90 = true;
 	public void autoTunePID(Controllers controller) {

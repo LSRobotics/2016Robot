@@ -28,6 +28,8 @@ public class TimedAutonomous extends Thread implements Autonomous {
 	public TimedAutonomous(Robot r, DriveTrain drive) {
 		robot = r;
 		
+		revX = r.getRevX();
+		
 		pidi = new PIDFunctions(r, drive);
 		inAuton = false;
 	}
@@ -97,7 +99,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 			this.start();
 		}
 		catch(Exception e) {
-			DriverStation.reportError(e + "Autonomous.java, actionPlayback: " + this.getState(), false);
+			DriverStation.reportError(e + "Autonomous.java, actionPlayback:\n", false);
 		}
 	}
 	
