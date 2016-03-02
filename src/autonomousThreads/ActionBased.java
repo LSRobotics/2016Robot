@@ -20,7 +20,7 @@ public class ActionBased extends Thread {
 	boolean isRecording;
 	int recordingNumber;
 	boolean includeTimes = false;
-	boolean addedSetpoint = false;
+	boolean addSetpoint = false;
 	RevX revX;
 	
 	long currentRunTime = 0; //Time to run code in NS
@@ -77,13 +77,10 @@ public class ActionBased extends Thread {
 	}
 	
 	public void addSetpoint() {
-		double displacement[] = revX.getDisplacement();
-		recording.add("\nSETPOINT;R:" + revX.getRotation() + "\n");
-		
-		addedSetpoint = true;
+		addSetpoint = true;
 	}
 	public void resetSetpoint() {
-		addedSetpoint = false;
+		addSetpoint = false;
 	}
 	public void record() {
 		//for buttons
@@ -148,6 +145,9 @@ public class ActionBased extends Thread {
 				if(includeTimes) {
 					recordPeriod(delayMS + (delayNS / 1000000)); //in MS //More accurate than simply adding timeFrequency (ie period)
 					recording.add("\n");
+				}
+				if(addSetpoint) {
+					recording.add("SETPOINT;R:" + revX.getRotation() + "\n");
 				}
 			}
 			

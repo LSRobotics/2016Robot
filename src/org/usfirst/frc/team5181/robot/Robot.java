@@ -180,7 +180,6 @@ public class Robot extends SampleRobot {
 	/**
 	 * Controls the starting and stopping of the recorder
 	 */
-	boolean startPressed = false;
 	public void recording() {	
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
@@ -191,12 +190,10 @@ public class Robot extends SampleRobot {
 		}
 		
 		//Setpoint
-		if(Gamepad.START_State && !startPressed && isRecording) {
-			startPressed = true;
+		if(Gamepad.START_State && isRecording) {
 			recorder.addSetpoint();
 		}
-		if(Gamepad.START_State && startPressed) {
-			startPressed = false;
+		if(!Gamepad.START_State) {
 			recorder.resetSetpoint();
 		}
 		
