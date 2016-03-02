@@ -21,7 +21,6 @@ public class PIDFunctions implements PIDOutput {
 	public PIDController pidiR, pidiD;
 	public GyroSource gyroPID;
 	public DisplacementSource displacePID;
-	public CenterTrackerSource centerTrackerPID;
 	
 	static double kPr = 0.12, kPd = 0.06; 
 	static double kIr = 0.0, kId = 0.00; 
