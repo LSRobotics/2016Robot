@@ -56,50 +56,5 @@ public class PIDSources {
 		
 	}
 	
-	public class BallTrackerXSource implements PIDSource {
 
-		
-		private SimpleClient client;
-		private PIDSourceType sourceType;
-
-		public BallTrackerXSource(SimpleClient c) {
-			client = c;
-			sourceType = PIDSourceType.kDisplacement;
-		}
-		
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			sourceType = pidSource;
-		}
-
-		public PIDSourceType getPIDSourceType() {
-			return sourceType;
-		}
-
-		public double pidGet() {
-			return client.centerX;
-		}
-	}
-	
-	public class BallTrackerYSource implements PIDSource {
-
-		private SimpleClient client;
-		private PIDSourceType sourceType;
-
-		public BallTrackerYSource(SimpleClient c) {
-			client = c;
-			sourceType = PIDSourceType.kDisplacement;
-		}
-		
-		public void setPIDSourceType(PIDSourceType pidSource) {
-			sourceType = pidSource;
-		}
-
-		public PIDSourceType getPIDSourceType() {
-			return sourceType;
-		}
-
-		public double pidGet() {
-			return client.centerY;
-		}
-	}
 }
