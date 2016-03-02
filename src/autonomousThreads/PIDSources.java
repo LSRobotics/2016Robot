@@ -55,4 +55,27 @@ public class PIDSources {
 		}
 		
 	}
+	
+	public static class CenterTrackerSource implements PIDSource {
+		
+		private SimpleClient client;
+		private PIDSourceType sourceType;
+
+		public CenterTrackerSource(SimpleClient c) {
+			client = c;
+			sourceType = PIDSourceType.kDisplacement;
+		}
+		
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			sourceType = pidSource;
+		}
+
+		public PIDSourceType getPIDSourceType() {
+			return sourceType;
+		}
+
+		public double pidGet() {
+			return client.centerX;
+		}
+	}
 }
