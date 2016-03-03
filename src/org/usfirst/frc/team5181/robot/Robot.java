@@ -105,7 +105,7 @@ public class Robot extends SampleRobot {
 		
 		// Start Raspberry Pi client
 			if (!clientStarted) {
-				client = new SimpleClient(inAuton);
+				client = new SimpleClient(false);
 				clientStarted = true;
 			}
 		//End Start Raspberry Pi Client 
