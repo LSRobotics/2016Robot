@@ -31,7 +31,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 		robot = r;
 		
 		revX = r.getRevX();
-		autonSwitch = new LimitSwitch(0);
+		autonSwitch = r.limitSwitch;
 		pidi = new PIDFunctions(r, drive);
 		inAuton = false;
 	}

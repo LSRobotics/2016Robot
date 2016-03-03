@@ -57,7 +57,8 @@ public class Robot extends SampleRobot {
 	
 	//Sensors
 	Potentiometer potent;
-
+	public LimitSwitch limitSwitch;
+	
 	private boolean ballTracker;
 	private boolean clientStarted;
 
@@ -67,7 +68,7 @@ public class Robot extends SampleRobot {
 
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		
+		limitSwitch = new LimitSwitch(0);
 		//Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 8); //TODO change constructor
@@ -110,7 +111,7 @@ public class Robot extends SampleRobot {
 		
 		// Start Raspberry Pi client
 			if (!clientStarted) {
-				client = new SimpleClient(false);
+				client = new SimpleClient();
 				clientStarted = true;
 			}
 		//End Start Raspberry Pi Client 
@@ -222,7 +223,9 @@ public class Robot extends SampleRobot {
 //			Gamepad.setNaturalState();
 //			autoTunePID(Controllers.ROTATION);
 //		}
-		DriverStation.reportError("" + (new LimitSwitch(0)).get() + "\n", false);
+		while (this.isEnabled()) {
+			DriverStation.reportError("" + limitSwitch.get() + "\n", false);
+		}
 	}
 	
 	/**

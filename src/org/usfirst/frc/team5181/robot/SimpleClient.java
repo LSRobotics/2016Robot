@@ -16,28 +16,17 @@ public class SimpleClient extends Thread {
 	public volatile int centerY;
 	public volatile boolean rockWall;
 	private int trackerPort = 5805;
-	private int neuralPort = 5803;
 	private Socket socket;
 	private InetAddress ip;
 	
-	public SimpleClient(boolean neuralNet) {
+	public SimpleClient() {
 		try {
 			ip = InetAddress.getByName("10.51.81.84");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			DriverStation.reportError("Error in constructor", false);
 		}
-		if (neuralNet) {
-			rockWall = getNeuralNetResponse();
-		}
-		else {
-			this.start();
-		}
-	}
-	
-	private boolean getNeuralNetResponse() {
-		
-		return false;
+		this.start();
 	}
 
 	public void run() {

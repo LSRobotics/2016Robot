@@ -93,8 +93,4 @@ public class Autonomous extends Thread {
 		robot.pidi.turnToAngle(angle);
 	}
 	
-	public boolean neuralNetworkChoose() {
-		SimpleClient client = new SimpleClient(true);
-		return false;
-	}
 }

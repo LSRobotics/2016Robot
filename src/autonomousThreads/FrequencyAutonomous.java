@@ -27,7 +27,7 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	 */
 	public FrequencyAutonomous(Robot r) {
 		robot = r;
-		autonSwitch = new LimitSwitch(0);
+		autonSwitch = r.limitSwitch;
 		inAuton = false;
 	}
 	
