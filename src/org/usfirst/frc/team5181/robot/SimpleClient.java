@@ -14,17 +14,20 @@ public class SimpleClient extends Thread {
 	
 	public volatile int centerX;
 	public volatile int centerY;
+	public volatile boolean rockWall;
 	private int port = 5805;
 	private Socket socket;
 	private InetAddress ip;
+	boolean neuralNet;
 	
-	public SimpleClient() {
+	public SimpleClient(boolean neural) {
 		try {
 			ip = InetAddress.getByName("10.51.81.84");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			DriverStation.reportError("Error in constructor", false);
 		}
+		neuralNet = neural;
 		this.start();
 	}
 	
@@ -35,19 +38,16 @@ public class SimpleClient extends Thread {
 			DriverStation.reportError("Here after Connect", false);
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			while (true) {
-				//byte[] packet = new byte[8];
-				//dIn.read(packet);
-				//ByteBuffer buffer = ByteBuffer.wrap(packet);
-				//centerX = buffer.getInt(0);
-				//centerY = buffer.getInt(1);
 				String point = dIn.readUTF();
-				//String xString = point.substring(1, point.indexOf(" ,"));
-				//String yString = point.substring(point.indexOf(" ,") + 1, point.length() - 1);
-				String[] coords = point.split(" ");
-				centerX = Integer.parseInt(coords[0]);
-				centerY = Integer.parseInt(coords[1]);
-				//DriverStation.reportError("." + centerX + "..." + centerY, false);
-				//DriverStation.reportError(xString + " " + yString, false);
+				if (neuralNet) {
+					
+					rockWall = true;
+				}
+				else {
+					String[] coords = point.split(" ");
+					centerX = Integer.parseInt(coords[0]);
+					centerY = Integer.parseInt(coords[1]);
+				}
 			}
 			
 		} catch (IOException e) {
