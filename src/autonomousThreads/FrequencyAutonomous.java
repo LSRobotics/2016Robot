@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
 
+import sensors.LimitSwitch;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class FrequencyAutonomous extends Thread implements Autonomous {
@@ -17,6 +18,8 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	ArrayList<String> commands;
 	long timeFrequency;
 	double currentRunTime = 0; //Time to run code in MS
+
+	private LimitSwitch autonSwitch;
 	/**
 	 * 
 	 * @param r robot object
@@ -24,7 +27,7 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	 */
 	public FrequencyAutonomous(Robot r) {
 		robot = r;
-		
+		autonSwitch = new LimitSwitch(0);
 		inAuton = false;
 	}
 	
@@ -58,11 +61,11 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	/**
 	 * @param interval amount of time to round the recording's time so that the action occurs
 	 **/
-	public void actionPlayback(String recordingFileName, long frequency) {
+	public void actionPlayback(long frequency) {
 		timeFrequency = frequency;
 		commands = new ArrayList<String>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
+			BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
 			String line = "";
 			while((line = br.readLine()) != null) {
 				if (line.equals("")) {

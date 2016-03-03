@@ -95,6 +95,6 @@ public class Autonomous extends Thread {
 	
 	public boolean neuralNetworkChoose() {
 		SimpleClient client = new SimpleClient(true);
-		
+		return false;
 	}
 }

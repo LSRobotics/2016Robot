@@ -10,12 +10,14 @@ import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
 
 import autonomousThreads.PIDFunctions.Controllers;
+import sensors.LimitSwitch;
 import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class TimedAutonomous extends Thread implements Autonomous {
 	private Robot robot;
 	PIDFunctions pidi;
+	LimitSwitch autonSwitch;
 	
 	private boolean inAuton;
 	
@@ -29,7 +31,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 		robot = r;
 		
 		revX = r.getRevX();
-		
+		autonSwitch = new LimitSwitch(0);
 		pidi = new PIDFunctions(r, drive);
 		inAuton = false;
 	}
@@ -74,11 +76,11 @@ public class TimedAutonomous extends Thread implements Autonomous {
 	/**
 	 * 
 	 */
-	public void actionPlayback(String recordingFileName, long period) {
+	public void actionPlayback(long period) {
 		commands = new ArrayList<String>();
 		timePeriods = new ArrayList<Double>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(recordingFileName)));
+			BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
 			String line = "";
 			while((line = br.readLine()) != null) {
 				if (line.equals("")) {

@@ -12,6 +12,7 @@ import autonomousThreads.FrequencyAutonomous;
 import autonomousThreads.PIDFunctions;
 import autonomousThreads.PIDFunctions.Controllers;
 import autonomousThreads.TimedAutonomous;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -39,6 +40,7 @@ public class Robot extends SampleRobot {
 	//Special
 	Bear koala;
 	SimpleClient client;
+	CameraServer server;
 	
 	//Sensors
 	RevX revX;
@@ -55,12 +57,12 @@ public class Robot extends SampleRobot {
 	
 	//Sensors
 	Potentiometer potent;
-	LimitSwitch limitSwitch;
 
 	private boolean ballTracker;
 	private boolean clientStarted;
 
-	public void robotInit(){ 
+	public void robotInit()
+	{ 
 		drive = new DriveTrain(speedLimit);
 
 		//Sensors
@@ -80,10 +82,13 @@ public class Robot extends SampleRobot {
 		ballTracker = false;
 		clientStarted = false;
 		
+		server = CameraServer.getInstance();
+		server.setQuality(100);
+		server.startAutomaticCapture("cam1");
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback("/var/rcrdng/autonRecording4.rcrdng", timeFrequency);
+		auton.actionPlayback(timeFrequency);
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -180,7 +185,8 @@ public class Robot extends SampleRobot {
 	/**
 	 * Controls the starting and stopping of the recorder
 	 */
-	public void recording() {	
+	public void recording() 
+	{	
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			   
@@ -212,10 +218,11 @@ public class Robot extends SampleRobot {
 
 	
 	public void test() {
-		while(this.isEnabled()) {
-			Gamepad.setNaturalState();
-			autoTunePID(Controllers.ROTATION);
-		}
+//		while(this.isEnabled()) {
+//			Gamepad.setNaturalState();
+//			autoTunePID(Controllers.ROTATION);
+//		}
+		DriverStation.reportError("" + (new LimitSwitch(0)).get() + "\n", false);
 	}
 	
 	/**

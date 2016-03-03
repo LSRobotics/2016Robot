@@ -43,7 +43,7 @@ public class SimpleClient extends Thread {
 	public void run() {
 		try {
 			DriverStation.reportError("Here before connect", false);
-			socket = new Socket(ip, (neuralNet) ? neuralPort : trackerPort);
+			socket = new Socket(ip,trackerPort);
 			DriverStation.reportError("Here after Connect", false);
 			DataInputStream dIn = new DataInputStream(socket.getInputStream());
 			while (true) {
