@@ -75,7 +75,7 @@ public class Robot extends SampleRobot {
 		
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		limitSwitch = new LimitSwitch(0);
+		limitSwitch = new LimitSwitch(7);
 		//Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 0); //TODO change constructor
