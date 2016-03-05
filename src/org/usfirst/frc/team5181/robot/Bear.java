@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  **/
 
 public class Bear extends Thread {
-	ArrayList<String> koala = new ArrayList<String>(); //bear
+	ArrayList<String> koala = new   ArrayList<String>(); //bear
 	public Bear() {
 			koala.add("sssssssssssssssssssssssssssssssssyhhhhdhyysyNyssssssssssssssoooooo++++++++++++++");  
 			koala.add("ssssssssssssssssssssssssssssyddhyssooooooooohdssssssssssssssssssssssssssssssssss");

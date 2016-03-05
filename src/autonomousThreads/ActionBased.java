@@ -22,6 +22,7 @@ public class ActionBased extends Thread {
 	boolean includeTimes = false;
 	boolean addSetpoint = false;
 	RevX revX;
+	String fileName = ""; 
 	
 	long currentRunTime = 0; //Time to run code in NS
 	
@@ -43,7 +44,7 @@ public class ActionBased extends Thread {
 		try {
 			DriverStation.reportError("\nFinished\n", false);
 			
-			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));
 			for(String command:recording) {
 				bw.write(command);
 			}
@@ -158,5 +159,8 @@ public class ActionBased extends Thread {
 		catch(Exception e) {
 			DriverStation.reportError(e.getMessage() + "\n", false);
 		}
+	}
+	public void setFile(String file) {
+		fileName = file;
 	}
 }

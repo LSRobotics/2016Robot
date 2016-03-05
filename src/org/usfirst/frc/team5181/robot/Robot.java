@@ -89,7 +89,7 @@ public class Robot extends SampleRobot {
 		autonChooser.addObject("Rough-Terrain", new String("/var/rcrdng/roughTerrain.rcrdng"));
 		autonChooser.addObject("Rock-Wall", new String("/var/rcrdng/rockWall.rcrdng"));
 		autonChooser.addDefault("Low-Bar", new String("/var/rcrdng/lowBar.rcrdng"));
-		SmartDashboard.putData("Autonomous mode chooser", autonChooser);
+		SmartDashboard.putData("Auto Selector", autonChooser);
 		
 		koala = new Bear();
 		ballTracker = false;
@@ -205,7 +205,8 @@ public class Robot extends SampleRobot {
 			isRecording = true;
 			   
 			recorder.startRecording(true, period);
-
+			//recorder.setFile((String) autonChooser.getSelected());
+			recorder.setFile("/var/rcrdng/autonRecordingComp.rcrdng");
 			DriverStation.reportError("Started\n", false); 	
 		}
 		
@@ -219,7 +220,7 @@ public class Robot extends SampleRobot {
 		
 		if(Gamepad.BACK_State && isRecording)  {
 			isRecording = false;
-			recorder.stopRecording((String) autonChooser.getSelected());
+			recorder.stopRecording();
 		}
 
 		if(Gamepad.LEFT_Stick_DOWN_State) {
