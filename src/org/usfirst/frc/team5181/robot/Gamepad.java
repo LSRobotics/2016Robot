@@ -12,7 +12,6 @@ public class Gamepad {
 	
 	//States of Buttons
 	public static boolean A_Button_State = false; //FROM JOYSTICK
-	public static boolean A_Button_GP_State = false; 
 	public static boolean B_Button_State = false; //FROM GAMEPAD
 	public static boolean X_Button_State = false; //FROM GAMEPAD
 	public static boolean Y_Button_State = false; //FROM JOYSTICK
@@ -57,7 +56,6 @@ public class Gamepad {
 				A_Button_State = false;
 			}
 			
-			A_Button_GP_State = jGP.getRawButton(1);
 			B_Button_State = jGP.getRawButton(Statics.B_Button);
 			X_Button_State = jGP.getRawButton(Statics.X_Button);
 			LEFT_Bumper_State = jGP.getRawButton(Statics.LEFT_Bumper);
@@ -111,7 +109,6 @@ public class Gamepad {
 				A_Button_State = false;
 			}
 			
-			A_Button_GP_State = jGP.getRawButton(1);
 			B_Button_State = jGP.getRawButton(Statics.B_Button);
 			X_Button_State = jGP.getRawButton(Statics.X_Button);
 			

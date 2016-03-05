@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj.SampleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends SampleRobot {
 	
@@ -41,6 +44,10 @@ public class Robot extends SampleRobot {
 	Bear koala;
 	SimpleClient client;
 	CameraServer server;
+	
+	//Autonomous Chooser
+	//Command autonCommand;
+	//SendableChooser autonChooser;
 	
 	//Sensors
 	RevX revX;
@@ -65,27 +72,31 @@ public class Robot extends SampleRobot {
 	public void robotInit()
 	{ 
 		drive = new DriveTrain(speedLimit);
-
+		
 		//Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		limitSwitch = new LimitSwitch(0);
 		//Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7, 8); //TODO change constructor
+		arm = new LadderArm(6, 7, 0); //TODO change constructor
 		rotateMAXPOWER = false;
 		
 		//Auton
 		auton = new TimedAutonomous(this, drive);
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
-	
+		//autonChooser = new SendableChooser();
+		//autonChooser.addDefault("Default", object);
+		//autonChooser.addObject("Second Method", object);
+		//SmartDashboard.putData("Autonomous mode chooser", autonChooser);
+		
 		koala = new Bear();
 		ballTracker = false;
 		clientStarted = false;
 		
 		server = CameraServer.getInstance();
 		server.setQuality(100);
-		server.startAutomaticCapture("cam1");
+		server.startAutomaticCapture("cam0");
 	}
 	
 	public void autonomous() {
@@ -110,10 +121,10 @@ public class Robot extends SampleRobot {
 		//End ball pickup
 		
 		// Start Raspberry Pi client
-			if (!clientStarted) {
-				client = new SimpleClient();
-				clientStarted = true;
-			}
+//			if (!clientStarted) {
+//				client = new SimpleClient();
+//				clientStarted = true;
+//			}
 		//End Start Raspberry Pi Client 
 			
 		//Ball Tracking
