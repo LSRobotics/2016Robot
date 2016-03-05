@@ -46,8 +46,8 @@ public class Robot extends SampleRobot {
 	CameraServer server;
 	
 	//Autonomous Chooser
-	//Command autonCommand;
-	//SendableChooser autonChooser;
+	Command autonCommand;
+	SendableChooser autonChooser;
 	
 	//Sensors
 	RevX revX;
@@ -85,10 +85,11 @@ public class Robot extends SampleRobot {
 		auton = new TimedAutonomous(this, drive);
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
-		//autonChooser = new SendableChooser();
-		//autonChooser.addDefault("Default", object);
-		//autonChooser.addObject("Second Method", object);
-		//SmartDashboard.putData("Autonomous mode chooser", autonChooser);
+		autonChooser = new SendableChooser();
+		autonChooser.addObject("Rough-Terrain", new String("/var/rcrdng/roughTerrain.rcrdng"));
+		autonChooser.addObject("Rock-Wall", new String("/var/rcrdng/rockWall.rcrdng"));
+		autonChooser.addDefault("Low-Bar", new String("/var/rcrdng/lowBar.rcrdng"));
+		SmartDashboard.putData("Autonomous mode chooser", autonChooser);
 		
 		koala = new Bear();
 		ballTracker = false;
@@ -100,7 +101,8 @@ public class Robot extends SampleRobot {
 	}
 	
 	public void autonomous() {
-		auton.actionPlayback(timeFrequency);
+		String selectedAuton = (String) autonChooser.getSelected();
+		auton.actionPlayback(selectedAuton, timeFrequency);
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -217,7 +219,7 @@ public class Robot extends SampleRobot {
 		
 		if(Gamepad.BACK_State && isRecording)  {
 			isRecording = false;
-			recorder.stopRecording();
+			recorder.stopRecording((String) autonChooser.getSelected());
 		}
 
 		if(Gamepad.LEFT_Stick_DOWN_State) {

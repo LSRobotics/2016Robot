@@ -61,11 +61,12 @@ public class FrequencyAutonomous extends Thread implements Autonomous {
 	/**
 	 * @param interval amount of time to round the recording's time so that the action occurs
 	 **/
-	public void actionPlayback(long frequency) {
+	public void actionPlayback(String recordingName, long frequency) {
 		timeFrequency = frequency;
 		commands = new ArrayList<String>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
+			//BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
+			BufferedReader br = new BufferedReader(new FileReader(new File(recordingName)));
 			String line = "";
 			while((line = br.readLine()) != null) {
 				if (line.equals("")) {

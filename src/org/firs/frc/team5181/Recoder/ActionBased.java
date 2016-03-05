@@ -27,11 +27,11 @@ public class ActionBased extends Thread {
 		recording += button + ":" + magnitude + ";";
 	}
 	
-	private void sendActions() {
+	private void sendActions(String autonFileName) {
 		try {
 			DriverStation.reportError(recording + "\n", false);
 			
-			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("/var/rcrdng/autonRecording4.rcrdng")));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(autonFileName)));
 			bw.write(recording);
 			bw.flush();
 			bw.close();
@@ -74,9 +74,9 @@ public class ActionBased extends Thread {
 		recording += "\n";
 	}
 	
-	public void stopRecording() {
+	public void stopRecording(String autonName) {
 		if (isRecording) {
-			sendActions();
+			sendActions(autonName);
 		}
 		isRecording = false;
 		this.suspend();

@@ -76,11 +76,12 @@ public class TimedAutonomous extends Thread implements Autonomous {
 	/**
 	 * 
 	 */
-	public void actionPlayback(long period) {
+	public void actionPlayback(String recordingName, long period) {
 		commands = new ArrayList<String>();
 		timePeriods = new ArrayList<Double>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
+			//BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
+			BufferedReader br = new BufferedReader(new FileReader(new File(recordingName)));
 			String line = "";
 			while((line = br.readLine()) != null) {
 				if (line.equals("")) {
