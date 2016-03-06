@@ -1,11 +1,12 @@
 package autonomousThreads;
 
-/*
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
 import org.usfirst.frc.team5181.robot.DriveTrain;
+import org.usfirst.frc.team5181.robot.Robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -17,10 +18,16 @@ public class StupidAutonomous extends Thread {
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
+	private Robot robot;
     /**
      * This function is called periodically during autonomous
-     *//*
-    private void autonomousPeriodic() {
+     */
+	
+	public StupidAutonomous(Robot r) {
+		robot = r;
+	}
+	
+    private void autonomousPeriodic(int recordingName) {
     	if (tStart == false) {
     		t.start();
     		tStart = true;
@@ -36,21 +43,24 @@ public class StupidAutonomous extends Thread {
     		tStart = false;
     	}
 		switch(recordingName) {
-		case "afterDefense":
+			case "afterDefense":
 			/**
 			 * do turn left 90 degrees and go forward; Detect collision
-			 *//*
-			break;
-		case "afterBangLeft":
+			 */
+				break;
+			case "afterBangLeft":
 			/**
 			 * Back up a bit, then turn right 90 degrees, detect collision, then back up a bit
-			 *//*
-			break;
-		case "finalAuton"
-	
-	default:
-		BufferedReader br = new BufferedReader(new FileReader(new File(recordingName)));
-		break;
-	}
+			 */
+				break;
+			case "finalAuton"
+			/**
+			 * Call to the recorded files
+			 */
+				break;
+			default:
+			
+				break;
+		}
     }
-}**/
+}
