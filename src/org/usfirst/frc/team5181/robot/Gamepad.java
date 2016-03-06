@@ -76,7 +76,7 @@ public class Gamepad {
 			//DPAD
 			//D_PAD_State = jGP.getPOV();
 			if(jJS.getRawButton(Statics.MAXPOWER)) {
-				D_PAD_State = 90;
+				D_PAD_State = 0;
 			}
 			else {
 				D_PAD_State = -1;

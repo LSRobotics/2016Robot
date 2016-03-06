@@ -31,13 +31,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends SampleRobot {
 	
 	//Speed Limit vars
-	private static double speedLimit = .7; 
+	
+	private static double speedLimit = .8; 
 	
 	//General vars
 	ActionBased recorder;
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
-	DriveTrain drive;
+	public DriveTrain drive;
 	PIDFunctions pidi;
 	
 	//Special
@@ -86,9 +87,8 @@ public class Robot extends SampleRobot {
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
 		autonChooser = new SendableChooser();
-		autonChooser.addObject("Rough-Terrain", new String("/var/rcrdng/roughTerrain.rcrdng"));
-		autonChooser.addObject("Rock-Wall", new String("/var/rcrdng/rockWall.rcrdng"));
-		autonChooser.addDefault("Low-Bar", new String("/var/rcrdng/lowBar.rcrdng"));
+		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
+		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
 		
 		koala = new Bear();
@@ -102,7 +102,9 @@ public class Robot extends SampleRobot {
 	
 	public void autonomous() {
 		String selectedAuton = (String) autonChooser.getSelected();
+		//auton.actionPlayback("/var/rcrdng/autonRecordingComp.rcrdng", timeFrequency);
 		auton.actionPlayback(selectedAuton, timeFrequency);
+		
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -178,15 +180,19 @@ public class Robot extends SampleRobot {
 				arm.stayRotated();
 			}
 			else if(!Gamepad.LEFT_Stick_DOWN_State) {
-				arm.rotate(-Gamepad.LEFT_Stick_Y_State, 0.35);
+				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
 			}
 			
-			if(Gamepad.D_PAD_State == 90) {
+			if(Gamepad.D_PAD_State == 0) {
 				rotateMAXPOWER = true;
+			}
+			else if(!(Gamepad.D_PAD_State == 0)) {
+				rotateMAXPOWER = false;
 			}
 			if(rotateMAXPOWER) {
 				arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
 			}
+			DriverStation.reportError(rotateMAXPOWER + "\n", false);
 		//End ladder
 			
 		//Drive
@@ -238,7 +244,8 @@ public class Robot extends SampleRobot {
 //			autoTunePID(Controllers.ROTATION);
 //		}
 		while (this.isEnabled()) {
-			DriverStation.reportError("" + limitSwitch.get() + "\n", false);
+			//DriverStation.reportError("" + limitSwitch.get() + "\n", false);
+			DriverStation.reportError(this.autonChooser.getSelected().toString()  + "\n", false);
 		}
 	}
 	

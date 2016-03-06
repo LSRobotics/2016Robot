@@ -66,6 +66,10 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				}
 				iterative++;
 			}
+			for(int i = 0; i <= 1000; i++) {
+				robot.drive.arcadeDrive(0,	.5);
+				Thread.sleep(1);
+			}
 			DriverStation.reportError("Finished", false);
 		}
 		catch(Exception e) {
@@ -80,6 +84,10 @@ public class TimedAutonomous extends Thread implements Autonomous {
 		commands = new ArrayList<String>();
 		timePeriods = new ArrayList<Double>();
 		try {
+			/**
+			 *  @params True : False
+			 *  @params RW   : RT
+			 */
 			//BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingName)));
 			String line = "";
@@ -109,4 +117,5 @@ public class TimedAutonomous extends Thread implements Autonomous {
 	public void setAutonState(boolean inAuton) {
 		this.inAuton = inAuton;
 	}
+	
 }
