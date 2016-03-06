@@ -256,8 +256,12 @@ public class Robot extends SampleRobot {
 //			autoTunePID(Controllers.ROTATION);
 //		}
 		while (this.isEnabled()) {
+			Gamepad.setNaturalState();
 			//DriverStation.reportError("" + limitSwitch.get() + "\n", false);
-			DriverStation.reportError(this.autonChooser.getSelected().toString()  + "\n", false);
+			DriverStation.reportError(revX.getYaw()  + "\n", false);
+			if (Gamepad.RIGHT_Bumper_State) {
+				revX.zeroYaw();
+			}
 		}
 	}
 	

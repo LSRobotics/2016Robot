@@ -67,7 +67,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				iterative++;
 			}
 			for(int i = 0; i <= 1000; i++) {
-				robot.drive.arcadeDrive(0,	.5);
+				robot.drive.arcadeDrive(0,	-.6);
 				Thread.sleep(1);
 			}
 			DriverStation.reportError("Finished", false);
