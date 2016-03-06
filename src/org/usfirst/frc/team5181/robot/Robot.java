@@ -40,7 +40,7 @@ public class Robot extends SampleRobot {
 	DriverStation ds = DriverStation.getInstance();
 	Autonomous auton;
 	public DriveTrain drive;
-	PIDFunctions pidi;
+	public PIDFunctions pidi;
 	StupidAutonomous stupidAuton;
 	
 	//Special
@@ -53,7 +53,7 @@ public class Robot extends SampleRobot {
 	SendableChooser autonChooser;
 	
 	//Sensors
-	RevX revX;
+	public RevX revX;
 	
 	//Actuators
 	BallPickup ballPickUp;
@@ -115,6 +115,11 @@ public class Robot extends SampleRobot {
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
+		stupidAuton.autonomousPeriodic();
+		
+		/**
+		 * Call to the recorded files
+		 */
 	}
 	
 	public void operatorControl() {

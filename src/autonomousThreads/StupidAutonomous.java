@@ -27,40 +27,26 @@ public class StupidAutonomous extends Thread {
 		robot = r;
 	}
 	
-    public void autonomousPeriodic(int recordingName) {
-    	if (tStart == false) {
-    		t.start();
-    		tStart = true;
-    	}
-    	if (t.get() < 2.0) 
-    		{
-    		//driveTrain.tankDrive(.1, .1);
-    		}
-    	else {
-    		t.stop();
-    		t.reset();
-    		//driveTrain.tankDrive(0, 0);
-    		tStart = false;
-    	}
-		switch(recordingName) {
-			case "afterDefense":
-			/**
-			 * do turn left 90 degrees and go forward; Detect collision
-			 */
-				break;
-			case "afterBangLeft":
-			/**
-			 * Back up a bit, then turn right 90 degrees, detect collision, then back up a bit
-			 */
-				break;
-			case "finalAuton"
-			/**
-			 * Call to the recorded files
-			 */
-				break;
-			default:
-			
-				break;
+    public void autonomousPeriodic() {
+		/**
+		 * Back up a bit, turn right 90 degrees (so back is facing ball zone);
+		 */
+		for (int i = 0; i < 500; i++) {
+			robot.drive.arcadeDrive(0.0, -0.3);
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		robot.pidi.turnToAngle(90.0); //TODO
+		for (int i = 0; i < 1000; i++) {
+			robot.drive.arcadeDrive(0.0, -0.5);
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
     }
 }
