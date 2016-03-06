@@ -103,8 +103,14 @@ public class Robot extends SampleRobot {
 	public void autonomous() {
 		String selectedAuton = (String) autonChooser.getSelected();
 		//auton.actionPlayback("/var/rcrdng/autonRecordingComp.rcrdng", timeFrequency);
+		//auton.actionPlayback(selectedAuton, timeFrequency);
+		/**
+		 * Ball scoring selection
+		 */
 		auton.actionPlayback(selectedAuton, timeFrequency);
-		
+		auton.actionPlayback("afterDefense", timeFrequency);
+		auton.actionPlayback("afterBangLeft", timeFrequency);
+		auton.actionPlayback("finalAuton", timeFrequency);
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}

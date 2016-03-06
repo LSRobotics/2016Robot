@@ -88,7 +88,9 @@ public class TimedAutonomous extends Thread implements Autonomous {
 			 *  @params True : False
 			 *  @params RW   : RT
 			 */
+			
 			//BufferedReader br = new BufferedReader(new FileReader(new File((autonSwitch.get()) ? "/var/rcrdng/rockWall.rcrdng" : "/var/rcrdng/roughTerrain.rcrdng")));
+
 			BufferedReader br = new BufferedReader(new FileReader(new File(recordingName)));
 			String line = "";
 			while((line = br.readLine()) != null) {
