@@ -11,6 +11,7 @@ import autonomousThreads.Autonomous;
 import autonomousThreads.FrequencyAutonomous;
 import autonomousThreads.PIDFunctions;
 import autonomousThreads.PIDFunctions.Controllers;
+import autonomousThreads.StupidAutonomous;
 import autonomousThreads.TimedAutonomous;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -40,6 +41,7 @@ public class Robot extends SampleRobot {
 	Autonomous auton;
 	public DriveTrain drive;
 	PIDFunctions pidi;
+	StupidAutonomous stupidAuton;
 	
 	//Special
 	Bear koala;
@@ -86,6 +88,7 @@ public class Robot extends SampleRobot {
 		auton = new TimedAutonomous(this, drive);
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
+		stupidAuton = new StupidAutonomous(this);
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
 		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
@@ -102,15 +105,13 @@ public class Robot extends SampleRobot {
 	
 	public void autonomous() {
 		String selectedAuton = (String) autonChooser.getSelected();
-		//auton.actionPlayback("/var/rcrdng/autonRecordingComp.rcrdng", timeFrequency);
-		//auton.actionPlayback(selectedAuton, timeFrequency);
-		/**
-		 * Ball scoring selection
-		 */
-		auton.actionPlayback(selectedAuton, timeFrequency);
-		auton.actionPlayback("afterDefense", timeFrequency);
-		auton.actionPlayback("afterBangLeft", timeFrequency);
-		auton.actionPlayback("finalAuton", timeFrequency);
+		while(this.isAutonomous()) {
+			auton.setAutonState(this.isAutonomous());
+		}
+	}
+	
+	public void scoreLowGoalAuton() {
+		String selectedAuton = (String) autonChooser.getSelected();
 		while(this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}

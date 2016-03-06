@@ -27,7 +27,7 @@ public class StupidAutonomous extends Thread {
 		robot = r;
 	}
 	
-    private void autonomousPeriodic(int recordingName) {
+    public void autonomousPeriodic(int recordingName) {
     	if (tStart == false) {
     		t.start();
     		tStart = true;
