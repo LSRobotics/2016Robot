@@ -72,8 +72,7 @@ public class Robot extends SampleRobot {
 	private boolean ballTracker;
 	private boolean clientStarted;
 
-	public void robotInit()
-	{ 
+	public void robotInit() { 
 		drive = new DriveTrain(speedLimit);
 		
 		//Sensors
@@ -217,8 +216,7 @@ public class Robot extends SampleRobot {
 	/**
 	 * Controls the starting and stopping of the recorder
 	 */
-	public void recording() 
-	{	
+	public void recording() {	
 		if(Gamepad.START_State && !isRecording) {
 			isRecording = true;
 			   
