@@ -1,12 +1,12 @@
-package autonomousThreads;
+package org.usfirst.frc.team5181.autonomousThreads;
 
 import java.io.*;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
+import org.usfirst.frc.team5181.sensors.LimitSwitch;
 
-import sensors.LimitSwitch;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class FrequencyAutonomous extends Thread implements Autonomous {

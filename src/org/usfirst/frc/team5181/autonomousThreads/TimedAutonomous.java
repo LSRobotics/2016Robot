@@ -1,17 +1,17 @@
-package autonomousThreads;
+package org.usfirst.frc.team5181.autonomousThreads;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
+import org.usfirst.frc.team5181.sensors.LimitSwitch;
+import org.usfirst.frc.team5181.sensors.RevX;
 
-import autonomousThreads.PIDFunctions.Controllers;
-import sensors.LimitSwitch;
-import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class TimedAutonomous extends Thread implements Autonomous {

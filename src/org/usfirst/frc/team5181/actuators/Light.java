@@ -1,4 +1,4 @@
-package actuators;
+package org.usfirst.frc.team5181.actuators;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;

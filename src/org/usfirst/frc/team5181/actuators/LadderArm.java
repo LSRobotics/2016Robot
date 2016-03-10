@@ -1,8 +1,9 @@
-package actuators;
+package org.usfirst.frc.team5181.actuators;
+
+import org.usfirst.frc.team5181.sensors.LimitSwitch;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
-import sensors.LimitSwitch;
 
 public class LadderArm {
 	Talon armRotationController, armExtensionController;

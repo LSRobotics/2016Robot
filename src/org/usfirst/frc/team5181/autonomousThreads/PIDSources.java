@@ -1,10 +1,10 @@
-package autonomousThreads;
+package org.usfirst.frc.team5181.autonomousThreads;
 
 import org.usfirst.frc.team5181.robot.SimpleClient;
+import org.usfirst.frc.team5181.sensors.RevX;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import sensors.RevX;
 
 public class PIDSources {
 	

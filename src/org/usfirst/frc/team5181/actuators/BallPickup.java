@@ -1,9 +1,9 @@
-package actuators;
+package org.usfirst.frc.team5181.actuators;
 
 import org.usfirst.frc.team5181.robot.Filters;
 import org.usfirst.frc.team5181.robot.Statics;
+import org.usfirst.frc.team5181.sensors.LimitSwitch;
 
-import sensors.LimitSwitch;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
 

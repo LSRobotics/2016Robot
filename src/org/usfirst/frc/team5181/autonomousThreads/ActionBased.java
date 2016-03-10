@@ -1,9 +1,9 @@
-package autonomousThreads;
+package org.usfirst.frc.team5181.autonomousThreads;
 
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Statics;
+import org.usfirst.frc.team5181.sensors.RevX;
 
-import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;

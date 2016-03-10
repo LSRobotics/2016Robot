@@ -1,4 +1,4 @@
-package sensors;
+package org.usfirst.frc.team5181.sensors;
 
 import com.kauailabs.navx.frc.AHRS;
 

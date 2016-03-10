@@ -1,12 +1,12 @@
-package autonomousThreads;
+package org.usfirst.frc.team5181.autonomousThreads;
 
+import org.usfirst.frc.team5181.autonomousThreads.PIDSources.DisplacementSource;
+import org.usfirst.frc.team5181.autonomousThreads.PIDSources.GyroSource;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Robot;
 import org.usfirst.frc.team5181.robot.SimpleClient;
+import org.usfirst.frc.team5181.sensors.RevX;
 
-import autonomousThreads.PIDSources.DisplacementSource;
-import autonomousThreads.PIDSources.GyroSource;
-import sensors.RevX;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;

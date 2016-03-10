@@ -1,18 +1,19 @@
 package org.usfirst.frc.team5181.robot;
 
-import sensors.LimitSwitch;
-import sensors.Potentiometer;
-import sensors.RevX;
-import actuators.BallPickup;
-import actuators.LadderArm;
-import actuators.LinearActuator;
-import autonomousThreads.ActionBased;
-import autonomousThreads.Autonomous;
-import autonomousThreads.FrequencyAutonomous;
-import autonomousThreads.PIDFunctions;
-import autonomousThreads.PIDFunctions.Controllers;
-import autonomousThreads.StupidAutonomous;
-import autonomousThreads.TimedAutonomous;
+import org.usfirst.frc.team5181.actuators.BallPickup;
+import org.usfirst.frc.team5181.actuators.LadderArm;
+import org.usfirst.frc.team5181.actuators.LinearActuator;
+import org.usfirst.frc.team5181.autonomousThreads.ActionBased;
+import org.usfirst.frc.team5181.autonomousThreads.Autonomous;
+import org.usfirst.frc.team5181.autonomousThreads.FrequencyAutonomous;
+import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions;
+import org.usfirst.frc.team5181.autonomousThreads.StupidAutonomous;
+import org.usfirst.frc.team5181.autonomousThreads.TimedAutonomous;
+import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
+import org.usfirst.frc.team5181.sensors.LimitSwitch;
+import org.usfirst.frc.team5181.sensors.Potentiometer;
+import org.usfirst.frc.team5181.sensors.RevX;
+
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;

@@ -1,6 +1,7 @@
-package actuators;
+package org.usfirst.frc.team5181.actuators;
 
-import sensors.Potentiometer;
+import org.usfirst.frc.team5181.sensors.Potentiometer;
+
 import edu.wpi.first.wpilibj.Victor;
  
 public class LinearActuator {
