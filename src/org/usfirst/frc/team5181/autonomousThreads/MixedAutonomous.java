@@ -10,15 +10,17 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous extends Thread {
 
-	SonicRangeSensor s = new SonicRangeSensor(0, 0); //TODO Map to port
+	SonicRangeSensor s = new SonicRangeSensor(); // TODO Map to port
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
 	private Robot robot;
 	BallPickup ballPickup = new BallPickup();
-	public void rangeSensingAuton() {
-		if(s.getRange(0) <= 11.811) {
-			if(s.getRange(0) <= 1.811) {
+
+	public void rangeSensingAuton() throws Exception {
+		if (s.getRangeInches() <= 11.811) {
+			if (s.getRangeInches() <= 1.811) {
+			//TODO done
 				shoot();
 			} else {
 				cutThread();
@@ -26,12 +28,22 @@ public class MixedAutonomous extends Thread {
 		} else {
 			robot.drive.arcadeDrive(0.0, -0.3);
 		}
-		
+
 	}
-	
-	public void cutThread() {}
+
+	public void cutThread() {
+	}
+
 	public void shoot() {
-		ballPickup.setBallIntake( .2 , .2 );
+		ballPickup.setBallIntake(.2, .2);
+
+	}
+
+	public void run() {
+		try {
 		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
