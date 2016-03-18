@@ -246,9 +246,10 @@ public class Robot extends SampleRobot {
 			while (this.isEnabled()) {
 				sr.restartSensor();
 				DriverStation.reportError("[SRX]Current distence is:" + sr.getRangeInches() + "inches" + "\n", false);
+				
 				//Gamepad.setNaturalState();
 				//DriverStation.reportError("" + limitSwitch.get() + "\n", false);
-				DriverStation.reportError(revX.getYaw()  + "\n", false);
+				//DriverStation.reportError(revX.getYaw()  + "\n", false);
 				if (Gamepad.RIGHT_Bumper_State) {
 					revX.zeroYaw();
 				}
