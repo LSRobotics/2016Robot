@@ -10,12 +10,16 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous extends Thread {
 
-	SonicRangeSensor s = new SonicRangeSensor(); // TODO Map to port
+	SonicRangeSensor s; // TODO Map to port
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
 	private Robot robot;
 	BallPickup ballPickup = new BallPickup();
+	
+	public MixedAutonomous() throws Exception {
+		s = new SonicRangeSensor();
+	}
 
 	public void rangeSensingAuton() throws Exception {
 		if (s.getRangeInches() <= 11.811) {

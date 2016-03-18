@@ -10,6 +10,7 @@ import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions;
 import org.usfirst.frc.team5181.autonomousThreads.StupidAutonomous;
 import org.usfirst.frc.team5181.autonomousThreads.TimedAutonomous;
 import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
+import org.usfirst.frc.team5181.autonomousThreads.TestingAutonomous;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
 import org.usfirst.frc.team5181.sensors.RevX;
@@ -54,6 +55,9 @@ public class Robot extends SampleRobot {
 	Command autonCommand;
 	SendableChooser autonChooser;
 
+	// Testing Autonomous
+	TestingAutonomous ta;
+
 	// Sensors
 	public RevX revX;
 	SonicRangeSensor sr;
@@ -81,7 +85,13 @@ public class Robot extends SampleRobot {
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		limitSwitch = new LimitSwitch(7);
-		sr = new SonicRangeSensor();
+		try {
+			sr = new SonicRangeSensor();
+			// Autonomous new functions test
+			ta = new TestingAutonomous();
+		} catch (Exception e) {
+			
+		}
 		// Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 0); // TODO change constructor
@@ -105,6 +115,8 @@ public class Robot extends SampleRobot {
 		server = CameraServer.getInstance();
 		server.setQuality(100);
 		server.startAutomaticCapture("cam0");
+
+
 	}
 
 	public void autonomous() {
@@ -243,19 +255,29 @@ public class Robot extends SampleRobot {
 
 	public void test() {
 		try {
+			
+			DriverStation.reportError("" + sr.getRangeCm(), false);
+			ta.testAutonomous();
+			
+			/**
 			while (this.isEnabled()) {
 				sr.restartSensor();
-				DriverStation.reportError("[SRX]Current distence is:" + sr.getRangeInches() + "inches" + "\n", false);
-				
-				//Gamepad.setNaturalState();
-				//DriverStation.reportError("" + limitSwitch.get() + "\n", false);
-				//DriverStation.reportError(revX.getYaw()  + "\n", false);
+				DriverStation.reportError(
+						"[SRX]Current distence is:" + sr.getRangeInches()
+								+ "inches" + "\n", false);
+
+				// Gamepad.setNaturalState();
+				// DriverStation.reportError("" + limitSwitch.get() + "\n",
+				// false);
+				// DriverStation.reportError(revX.getYaw() + "\n", false);
 				if (Gamepad.RIGHT_Bumper_State) {
 					revX.zeroYaw();
 				}
-			}
-		} catch(Exception e) {
-			DriverStation.reportError("here", false);
+			
+			}**/
+			
+		} catch (Exception e) {
+			DriverStation.reportError("Catastrophe", false);
 		}
 	}
 

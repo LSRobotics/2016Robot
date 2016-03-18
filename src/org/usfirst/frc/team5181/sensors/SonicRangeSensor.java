@@ -9,8 +9,8 @@ public class SonicRangeSensor {
 	Ultrasonic ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
 			ULTRASONIC_TRIGGER_PULSE_INPUT);
 
-	public SonicRangeSensor() {
-		restartSensor();
+	public SonicRangeSensor() throws Exception {
+		//restartSensor();
 		ultra.setAutomaticMode(true);
 	}
 
