@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous extends Thread {
 
-	SonicRangeSensor s; // TODO Map to port
+	SonicRangeSensor.UseSonicRangeSensors srs;
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
@@ -18,12 +18,12 @@ public class MixedAutonomous extends Thread {
 	BallPickup ballPickup = new BallPickup();
 	
 	public MixedAutonomous() throws Exception {
-		s = new SonicRangeSensor();
+		srs = new SonicRangeSensor.UseSonicRangeSensors();
 	}
 
 	public void rangeSensingAuton() throws Exception {
-		if (s.getRangeInches() <= 11.811) {
-			if (s.getRangeInches() <= 1.811) {
+		if (srs.srBack.getRangeInches() <= 11.811) {
+			if (srs.srFront.getRangeInches() <= 1.811) {
 			//TODO done
 				shoot();
 			} else {
