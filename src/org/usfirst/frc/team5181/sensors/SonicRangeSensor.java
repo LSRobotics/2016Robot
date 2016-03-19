@@ -6,11 +6,12 @@ public class SonicRangeSensor {
 
 	static int ULTRASONIC_ECHO_PULSE_OUTPUT = 4;
 	static int ULTRASONIC_TRIGGER_PULSE_INPUT = 3;
-	Ultrasonic ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
-			ULTRASONIC_TRIGGER_PULSE_INPUT);
+	Ultrasonic ultra;
 
 	public SonicRangeSensor() throws Exception {
-		//restartSensor();
+		ultra =  = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
+			ULTRASONIC_TRIGGER_PULSE_INPUT);
+		restartSensor();
 		ultra.setAutomaticMode(true);
 	}
 
