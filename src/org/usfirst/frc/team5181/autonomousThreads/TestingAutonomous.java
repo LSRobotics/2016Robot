@@ -14,7 +14,7 @@ public class TestingAutonomous {
 	private Robot robot;
 	
 	public TestingAutonomous() throws Exception {
-		sr = new SonicRangeSensor();
+		sr = new SonicRangeSensor(4, 3);
 	}
 	
 	public void testAutonomous() throws Exception {
