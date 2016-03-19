@@ -132,7 +132,7 @@ public class SonicRangeSensor {
 	 * We don't want hardcoded results while we still don't want to use an associative array,
 	 * so we use a nested class to call to the objects.
 	 */
-	public class UseRangeSensor {
+	public class UseRangeSensors {
 		private Statics st;
 		public SonicRangeSensor srFront, srBack, srRight, srLeft;
 		public UseRangeSensor() {
