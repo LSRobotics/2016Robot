@@ -4,11 +4,13 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class SonicRangeSensor {
 
-	static int ULTRASONIC_ECHO_PULSE_OUTPUT = 4;
-	static int ULTRASONIC_TRIGGER_PULSE_INPUT = 3;
+	static int ULTRASONIC_ECHO_PULSE_OUTPUT; //Currently 4
+	static int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
 	Ultrasonic ultra;
 
-	public SonicRangeSensor() throws Exception {
+	public SonicRangeSensor(int echoOut, int triggerIn) throws Exception {
+		ULTRASONIC_ECHO_PULSE_OUTPUT = echoOut;
+		ULTRASONIC_ECHO_PULSE_OUPUT = triggerIn;
 		ultra =  = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
 			ULTRASONIC_TRIGGER_PULSE_INPUT);
 		restartSensor();
