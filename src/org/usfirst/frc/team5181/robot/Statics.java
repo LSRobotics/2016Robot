@@ -34,4 +34,12 @@ public class Statics {
 	
 	//MAXPOWERRRRRRRRR
 	public static int MAXPOWER = 2; 
+	
+	//Ultrasonic Sensor Ports
+	public static final int UltraFrontLeft_Trigger = 0; 
+	public static final int UltraFrontLeft_Echo = 1;
+	public static final int UltraFrontRight_Trigger = 2;
+	public static final int ULtraFrontRight_Echo = 3;
+	public static final int UltraBack_Tigger = 4;
+	public static final int ultraBAck_Echo = 5;
 }
