@@ -15,6 +15,7 @@ import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
 import org.usfirst.frc.team5181.sensors.RevX;
 import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
+import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -60,7 +61,7 @@ public class Robot extends SampleRobot {
 
 	// Sensors
 	public RevX revX;
-	public SonicRangeSensor ultraSonic;
+	public UseRangeSensors rangeSensors;
 	
 	// Actuators
 	BallPickup ballPickUp;
@@ -85,7 +86,7 @@ public class Robot extends SampleRobot {
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		limitSwitch = new LimitSwitch(7);
-		ultraSonic = new SonicRangeSensor(4, 3);
+		rangeSensors = new UseRangeSensors();
 		// Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 0); // TODO change constructor
@@ -111,7 +112,7 @@ public class Robot extends SampleRobot {
 		server.startAutomaticCapture("cam0");
 		
 		try {
-			ta = new TestingAutonomous();
+			ta = new TestingAutonomous(rangeSensors);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

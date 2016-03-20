@@ -10,20 +10,20 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous extends Thread {
 
-	UseRangeSensors srs;
+	UseRangeSensors rangeSensors;
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
 	private Robot robot;
 	BallPickup ballPickup = new BallPickup();
 	
-	public MixedAutonomous() throws Exception {
-		srs = new UseRangeSensors();
+	public MixedAutonomous(UseRangeSensors sensors) throws Exception {
+		rangeSensors = new UseRangeSensors();
 	}
 
 	public void rangeSensingAuton() throws Exception {
-		if (srs.srBack.getRangeInches() <= 11.811) {
-			if (srs.srFront.getRangeInches() <= 1.811) {
+		if (rangeSensors.srBack.getRangeInches() <= 11.811) {
+			if (rangeSensors.srFront.getRangeInches() <= 1.811) {
 			//TODO done
 				shoot();
 			} else {
