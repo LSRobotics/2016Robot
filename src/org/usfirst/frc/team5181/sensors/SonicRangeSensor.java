@@ -9,11 +9,16 @@ public class SonicRangeSensor {
 	int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
 	Ultrasonic ultra;
 
-	public SonicRangeSensor(int echoOut, int triggerIn) throws Exception {
+	public SonicRangeSensor(int echoOut, int triggerIn) {
 		ULTRASONIC_ECHO_PULSE_OUTPUT = echoOut;
 		ULTRASONIC_TRIGGER_PULSE_INPUT = triggerIn;
-		ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
-			ULTRASONIC_TRIGGER_PULSE_INPUT);
+		try { 
+			ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
+			ULTRASONIC_TRIGGER_PULSE_INPUT, Ultrasonic.Unit.kInches);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		restartSensor();
 		ultra.setAutomaticMode(true);
 	}
@@ -135,15 +140,11 @@ public class SonicRangeSensor {
 	public static class UseRangeSensors {
 		public SonicRangeSensor srFront, srBack, srRight, srLeft;
 		public UseRangeSensors() {
-			try {
-				this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
-				this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
-				this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
-				this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+			this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
+			this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+			this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+			
 		}
 	}
 

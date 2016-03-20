@@ -36,7 +36,7 @@ public class PIDFunctions implements PIDOutput {
 		this.drive = drive;
 		
 		gyroPID = new GyroSource(r.getRevX());
-		displacePID = new DisplacementSource(r.getRevX());
+		displacePID = new DisplacementSource(r.ultraSonic);
 		
 		pidiR = new PIDController(kPr, kIr, kDr, kFr, gyroPID, this);
 		
@@ -46,7 +46,7 @@ public class PIDFunctions implements PIDOutput {
 		pidiR.setContinuous(true);
 		
 		pidiD = new PIDController(kPr, kIr, kDr, kFr, displacePID, this);
-		pidiD.setInputRange(-3, 3);
+		pidiD.setInputRange(0, 120); //inches
 		pidiD.setOutputRange(-1, 1);
 		pidiD.setAbsoluteTolerance(toleranceDistance);
 		pidiD.setContinuous(true);

@@ -59,7 +59,7 @@ public class PIDSources {
 				case kMillimeters:
 					return ultraSonic.getRangeMm();
 				default:
-					return ultraSonic.getRangeMm();
+					return ultraSonic.getRangeInches();
 			}
 		}	
 	}
