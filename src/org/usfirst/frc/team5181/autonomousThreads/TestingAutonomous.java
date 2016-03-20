@@ -9,16 +9,23 @@ public class TestingAutonomous {
  * @param For testing sensors and autonomous ideas...
  * @param Loaded usually in test() method in Robot.java
  */
-	SonicRangeSensor sr;
+	SonicRangeSensor.UseSonicRangeSensors srs;
 	DriveTrain driveTrain;
 	private Robot robot;
 	
 	public TestingAutonomous() throws Exception {
-		sr = new SonicRangeSensor(4, 3);
+		/**
+		 * Example usage for SonicRangeSensor.UseSonicRangeSensors
+		 * srs.srFront.getRangeCm()
+		 * srs.srBack.getRangeCm()
+		 * srs.srRight.getRangeCm()
+		 * srs.srLeft.getRangeCm()
+		 */
+		 srs = new SonicRangeSensor.UseSonicRangeSensors();
 	}
 	
 	public void testAutonomous() throws Exception {
-		while(sr.getRangeCm() > 60.0) {
+		while(srs.srBack.getRangeCm() > 60.0) {
 			robot.drive.arcadeDrive(0.0, -0.3);
 		}
 	}

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team5181.sensors;
 
+import org.usfirst.frc.team5181.robot.Statics;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class SonicRangeSensor {
@@ -124,6 +125,20 @@ public class SonicRangeSensor {
 			ultra.setEnabled(true);
 		} else {
 			ultra.setEnabled(true);
+		}
+	}
+	/**
+	 * @param Using multiple range sensors.
+	 * We don't want hardcoded results while we still don't want to use an associative array,
+	 * so we use a nested class to call to the objects.
+	 */
+	public class UseRangeSensors {
+		public SonicRangeSensor srFront, srBack, srRight, srLeft;
+		public UseRangeSensor() {
+			this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+			this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
+			this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+			this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
 		}
 	}
 
