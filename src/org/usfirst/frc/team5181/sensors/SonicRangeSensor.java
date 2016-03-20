@@ -134,7 +134,7 @@ public class SonicRangeSensor {
 	 */
 	public class UseRangeSensors {
 		public SonicRangeSensor srFront, srBack, srRight, srLeft;
-		public UseRangeSensor() {
+		public UseRangeSensor() throws Exception {
 			this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
 			this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
 			this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
