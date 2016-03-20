@@ -4,13 +4,14 @@ import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
 import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
+import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
 import org.usfirst.frc.team5181.actuators.BallPickup;
 
 import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous extends Thread {
 
-	SonicRangeSensor.UseSonicRangeSensors srs;
+	UseRangeSensors srs;
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
@@ -18,7 +19,7 @@ public class MixedAutonomous extends Thread {
 	BallPickup ballPickup = new BallPickup();
 	
 	public MixedAutonomous() throws Exception {
-		srs = new SonicRangeSensor.UseSonicRangeSensors();
+		srs = new UseRangeSensors();
 	}
 
 	public void rangeSensingAuton() throws Exception {

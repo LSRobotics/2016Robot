@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5181.autonomousThreads;
 
 import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
+import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Robot;
 public class TestingAutonomous {
@@ -9,7 +10,7 @@ public class TestingAutonomous {
  * @param For testing sensors and autonomous ideas...
  * @param Loaded usually in test() method in Robot.java
  */
-	SonicRangeSensor.UseSonicRangeSensors srs;
+	UseRangeSensors srs;
 	DriveTrain driveTrain;
 	private Robot robot;
 	
@@ -21,7 +22,7 @@ public class TestingAutonomous {
 		 * srs.srRight.getRangeCm()
 		 * srs.srLeft.getRangeCm()
 		 */
-		 srs = new SonicRangeSensor.UseSonicRangeSensors();
+		 srs = new UseRangeSensors();
 	}
 	
 	public void testAutonomous() throws Exception {

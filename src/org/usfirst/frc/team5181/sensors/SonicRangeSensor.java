@@ -5,14 +5,14 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class SonicRangeSensor {
 
-	static int ULTRASONIC_ECHO_PULSE_OUTPUT; //Currently 4
-	static int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
+	int ULTRASONIC_ECHO_PULSE_OUTPUT; //Currently 4
+	int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
 	Ultrasonic ultra;
 
 	public SonicRangeSensor(int echoOut, int triggerIn) throws Exception {
 		ULTRASONIC_ECHO_PULSE_OUTPUT = echoOut;
-		ULTRASONIC_ECHO_PULSE_OUPUT = triggerIn;
-		ultra =  = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
+		ULTRASONIC_TRIGGER_PULSE_INPUT = triggerIn;
+		ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
 			ULTRASONIC_TRIGGER_PULSE_INPUT);
 		restartSensor();
 		ultra.setAutomaticMode(true);
@@ -132,13 +132,18 @@ public class SonicRangeSensor {
 	 * We don't want hardcoded results while we still don't want to use an associative array,
 	 * so we use a nested class to call to the objects.
 	 */
-	public class UseRangeSensors {
+	public static class UseRangeSensors {
 		public SonicRangeSensor srFront, srBack, srRight, srLeft;
-		public UseRangeSensor() {
-			this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
-			this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
-			this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
-			this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		public UseRangeSensors() {
+			try {
+				this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+				this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
+				this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+				this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

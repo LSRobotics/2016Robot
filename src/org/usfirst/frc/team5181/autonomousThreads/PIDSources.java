@@ -2,9 +2,11 @@ package org.usfirst.frc.team5181.autonomousThreads;
 
 import org.usfirst.frc.team5181.robot.SimpleClient;
 import org.usfirst.frc.team5181.sensors.RevX;
+import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class PIDSources {
 	
@@ -33,11 +35,11 @@ public class PIDSources {
 	
 	public static class DisplacementSource implements PIDSource {
 
-		private RevX revX;
+		private SonicRangeSensor ultraSonic;
 		private PIDSourceType sourceType;
 		
-		public DisplacementSource(RevX r) {
-			revX = r;
+		public DisplacementSource(SonicRangeSensor us) {
+			ultraSonic = us;
 			sourceType = PIDSourceType.kDisplacement;
 		}
 		
@@ -48,11 +50,17 @@ public class PIDSources {
 		public PIDSourceType getPIDSourceType() {
 			return sourceType;
 		}
-
-		public double pidGet() {
-			//return Math.sqrt(Math.pow(revX.getDisplacementX(), 2) + Math.pow(revX.getDisplacementY(), 2));
-			return revX.getDisplacementX();
-		}
 		
+		@Override
+		public double pidGet() {
+			switch (ultraSonic.feederPID()) {
+				case kInches:
+					return ultraSonic.getRangeInches();
+				case kMillimeters:
+					return ultraSonic.getRangeMm();
+				default:
+					return ultraSonic.getRangeMm();
+			}
+		}	
 	}
 }
