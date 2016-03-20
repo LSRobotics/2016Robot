@@ -133,13 +133,12 @@ public class SonicRangeSensor {
 	 * so we use a nested class to call to the objects.
 	 */
 	public class UseRangeSensors {
-		private Statics st;
 		public SonicRangeSensor srFront, srBack, srRight, srLeft;
 		public UseRangeSensor() {
-			this.srFront = new SonicRangeSensor(st.FRONT_Ultra_Echo, st.FRONT_Ultra_Trigger);
-			this.srBack = new SonicRangeSensor(st.BACK_Ultra_Echo, st.BACK_Ultra_Trigger);
-			this.srRight = new SonicRangeSensor(st.RIGHT_Ultra_Echo, st.LEFT_Ultra_Trigger);
-			this.srLeft = new SonicRangeSensor(st.LEFT_Ultra_Echo, st.LEFT_Ultra_Trigger);
+			this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+			this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
+			this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+			this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
 		}
 	}
 
