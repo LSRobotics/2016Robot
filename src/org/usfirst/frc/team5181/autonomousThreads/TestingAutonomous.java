@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5181.autonomousThreads;
 
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
+import org.usfirst.frc.team5181.sensors.UseRangeSensors;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Robot;
 public class TestingAutonomous {

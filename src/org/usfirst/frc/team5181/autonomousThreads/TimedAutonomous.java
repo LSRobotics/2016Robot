@@ -14,7 +14,7 @@ import org.usfirst.frc.team5181.sensors.RevX;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class TimedAutonomous extends Thread implements Autonomous {
+public class TimedAutonomous implements Autonomous {
 	private Robot robot;
 	PIDFunctions pidi;
 	LimitSwitch autonSwitch;
@@ -66,10 +66,6 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				}
 				iterative++;
 			}
-			for(int i = 0; i <= 1000; i++) {
-				robot.drive.arcadeDrive(0,	-.6);
-				Thread.sleep(1);
-			}
 			DriverStation.reportError("Finished", false);
 		}
 		catch(Exception e) {
@@ -109,7 +105,7 @@ public class TimedAutonomous extends Thread implements Autonomous {
 				revX.zeroYaw();
 			} while(Math.abs(revX.getRotation()) < 0.5);
 			
-			this.start();
+			this.run();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback:\n", false);

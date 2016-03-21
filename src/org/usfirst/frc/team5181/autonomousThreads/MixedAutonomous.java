@@ -2,13 +2,12 @@ package org.usfirst.frc.team5181.autonomousThreads;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
+import org.usfirst.frc.team5181.sensors.UseRangeSensors;
 import org.usfirst.frc.team5181.actuators.BallPickup;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class MixedAutonomous extends Thread {
+public class MixedAutonomous {
 
 	UseRangeSensors rangeSensors;
 	boolean tStart = false;
@@ -17,7 +16,7 @@ public class MixedAutonomous extends Thread {
 	private Robot robot;
 	BallPickup ballPickup = new BallPickup();
 	
-	public MixedAutonomous(UseRangeSensors sensors) throws Exception {
+	public MixedAutonomous(UseRangeSensors sensors) {
 		rangeSensors = new UseRangeSensors();
 	}
 
@@ -41,13 +40,5 @@ public class MixedAutonomous extends Thread {
 	public void shoot() {
 		ballPickup.setBallIntake(.2, .2);
 
-	}
-
-	public void run() {
-		try {
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

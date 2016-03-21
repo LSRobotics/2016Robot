@@ -14,8 +14,7 @@ import org.usfirst.frc.team5181.autonomousThreads.TestingAutonomous;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
 import org.usfirst.frc.team5181.sensors.RevX;
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor;
-import org.usfirst.frc.team5181.sensors.SonicRangeSensor.UseRangeSensors;
+import org.usfirst.frc.team5181.sensors.UseRangeSensors;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -264,14 +263,6 @@ public class Robot extends SampleRobot {
 				DriverStation.reportError(
 						"[SRX]Current distence is:" + sr.getRangeInches()
 								+ "inches" + "\n", false);
-
-				// Gamepad.setNaturalState();
-				// DriverStation.reportError("" + limitSwitch.get() + "\n",
-				// false);
-				// DriverStation.reportError(revX.getYaw() + "\n", false);
-				if (Gamepad.RIGHT_Bumper_State) {
-					revX.zeroYaw();
-				}
 			
 			}**/
 			
@@ -288,8 +279,7 @@ public class Robot extends SampleRobot {
 	 * @param controller
 	 *            either rotation or displacement
 	 */
-	private boolean xPressed = false, aPressed = false, bPressed = false,
-			yPressed = false;
+	private boolean xPressed = false, aPressed = false, bPressed = false, yPressed = false;
 	private int xGain = 0; // 0 == kP, 1 == kD, 2 == kI
 	private double stableP = 0.00, stableD = 0.00, stableI = 0;
 	private double currP = 0.00, currD = 0.000, currI = 0;

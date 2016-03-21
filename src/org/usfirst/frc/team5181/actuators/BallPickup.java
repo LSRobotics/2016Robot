@@ -42,5 +42,9 @@ public class BallPickup {
 			}
 		}
 	}
+	public void shottFree(double leftMag, double rightMag) {
+		left.set(-leftMag);
+		right.set(rightMag);
+	}
 }
 
