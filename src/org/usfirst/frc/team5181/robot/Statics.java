@@ -44,4 +44,6 @@ public class Statics {
 	public static final int RIGHT_Ultra_Trigger = 4;
 	public static final int LEFT_Ultra_Echo = 7;
 	public static final int LEFT_Ultra_Trigger = 6;
+	
+	
 }

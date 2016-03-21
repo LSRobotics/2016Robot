@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5181.robot;
 
 import org.usfirst.frc.team5181.actuators.BallPickup;
+import org.usfirst.frc.team5181.actuators.Boris;
 import org.usfirst.frc.team5181.actuators.LadderArm;
 import org.usfirst.frc.team5181.actuators.LinearActuator;
 import org.usfirst.frc.team5181.autonomousThreads.ActionBased;
@@ -65,6 +66,7 @@ public class Robot extends SampleRobot {
 	// Actuators
 	BallPickup ballPickUp;
 	LadderArm arm;
+	Boris boris;
 	boolean rotateMAXPOWER;
 
 	// Recorder Vars
@@ -199,17 +201,18 @@ public class Robot extends SampleRobot {
 			arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
 		}
 
-		if (Gamepad.D_PAD_State == 0) {
-			rotateMAXPOWER = true;
-		} else if (!(Gamepad.D_PAD_State == 0)) {
-			rotateMAXPOWER = false;
-		}
+		rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
+		
 		if (rotateMAXPOWER) {
 			arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
 		}
-		DriverStation.reportError(rotateMAXPOWER + "\n", false);
+		//DriverStation.reportError(rotateMAXPOWER + "\n", false);
 		// End ladder
 
+		//Boris
+		boris.Set(Gamepad.LEFT_Stick_Y_State);
+		//End Boris
+		
 		// Drive
 		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State,
 				Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);

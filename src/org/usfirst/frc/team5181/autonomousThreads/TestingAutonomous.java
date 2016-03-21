@@ -25,8 +25,8 @@ public class TestingAutonomous {
 	}
 	
 	public void testAutonomous() {
-		while(rangeSensors.srBack.getRangeCm() > 60.0) {
-			robot.drive.arcadeDrive(0.0, -0.3);
+		while(rangeSensors.srFront.getRangeCm() > 60.0) {
+			robot.drive.arcadeDrive(0.0, 0.3);
 		}
 	}
 }
