@@ -2,25 +2,25 @@ package org.usfirst.frc.team5181.autonomousThreads;
 import org.usfirst.frc.team5181.robot.DriveTrain;
 import org.usfirst.frc.team5181.robot.Gamepad;
 import org.usfirst.frc.team5181.robot.Robot;
-import org.usfirst.frc.team5181.sensors.UseRangeSensors;
+import org.usfirst.frc.team5181.sensors.RangeSensors;
 import org.usfirst.frc.team5181.actuators.BallPickup;
 
 import edu.wpi.first.wpilibj.Timer;
 
 public class MixedAutonomous {
 
-	UseRangeSensors rangeSensors;
+	RangeSensors rangeSensors;
 	boolean tStart = false;
 	Timer t = new Timer();
 	DriveTrain driveTrain;
 	private Robot robot;
 	BallPickup ballPickup = new BallPickup();
 	
-	public MixedAutonomous(UseRangeSensors sensors) {
-		rangeSensors = new UseRangeSensors();
+	public MixedAutonomous(RangeSensors sensors) {
+		rangeSensors = sensors;
 	}
 
-	public void rangeSensingAuton() throws Exception {
+	public void rangeSensingAuton() {
 		if (rangeSensors.srBack.getRangeInches() <= 11.811) {
 			if (rangeSensors.srFront.getRangeInches() <= 1.811) {
 			//TODO done

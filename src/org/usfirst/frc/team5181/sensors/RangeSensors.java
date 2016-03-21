@@ -1,16 +1,18 @@
 package org.usfirst.frc.team5181.sensors;
 
 import org.usfirst.frc.team5181.robot.Statics;
+
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 
 /**
  * @param Using multiple range sensors.
  * We don't want hardcoded results while we still don't want to use an associative array,
  * so we use a nested class to call to the objects.
  */
-public class UseRangeSensors {
+public class RangeSensors {
 	public SonicRangeSensor srFront, srBack, srRight, srLeft;
-	public UseRangeSensors() {
+	public RangeSensors() {
 		this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
 		this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
 		this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
@@ -22,7 +24,7 @@ public class UseRangeSensors {
 	 * @author connordevitt2016
 	 *
 	 */
-	public class SonicRangeSensor {
+	public static class SonicRangeSensor {
 
 		int ULTRASONIC_ECHO_PULSE_OUTPUT; //Currently 4
 		int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
@@ -135,10 +137,6 @@ public class UseRangeSensors {
 			}
 		}
 
-		public Ultrasonic.Unit feederPID() {
-			return ultra.getDistanceUnits();
-		}
-
 		public void updateValues() {
 			ultra.updateTable();
 		}
@@ -150,6 +148,10 @@ public class UseRangeSensors {
 			} else {
 				ultra.setEnabled(true);
 			}
+		}
+		
+		public Unit getPIDUnits() {
+			return ultra.getDistanceUnits();
 		}
 	}
 }

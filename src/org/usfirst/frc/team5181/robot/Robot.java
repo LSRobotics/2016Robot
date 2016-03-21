@@ -14,7 +14,7 @@ import org.usfirst.frc.team5181.autonomousThreads.TestingAutonomous;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
 import org.usfirst.frc.team5181.sensors.RevX;
-import org.usfirst.frc.team5181.sensors.UseRangeSensors;
+import org.usfirst.frc.team5181.sensors.RangeSensors;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -60,7 +60,7 @@ public class Robot extends SampleRobot {
 
 	// Sensors
 	public RevX revX;
-	public UseRangeSensors rangeSensors;
+	public RangeSensors rangeSensors;
 	
 	// Actuators
 	BallPickup ballPickUp;
@@ -85,7 +85,7 @@ public class Robot extends SampleRobot {
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
 		limitSwitch = new LimitSwitch(7);
-		rangeSensors = new UseRangeSensors();
+		rangeSensors = new RangeSensors();
 		// Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 0); // TODO change constructor
