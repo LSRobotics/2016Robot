@@ -45,5 +45,6 @@ public class Statics {
 	public static final int LEFT_Ultra_Echo = 8;
 	public static final int LEFT_Ultra_Trigger = 7;
 	
-	
+	//Actuators
+	public static final int BORIS_PORT = 8;
 }

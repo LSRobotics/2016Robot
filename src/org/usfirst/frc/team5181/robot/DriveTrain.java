@@ -37,17 +37,12 @@ public class DriveTrain {
 		xRotation = Filters.powerCurving(controlStickX, 0.75); //filter rotational values
 		
 		if(Math.abs(yDrive) >= speedLimit) {
-			yDrive = 	(Math.abs(yDrive)    /    yDrive) * speedLimit;
+			yDrive = (yDrive < 0)? -1 : 1 * speedLimit;
 		}
 		if(Math.abs(xRotation) >= speedLimit) {
-			xRotation = (Math.abs(xRotation) / xRotation) * speedLimit;
+			xRotation = (xRotation < 0)? -1 : 1 * speedLimit;
 		}
-		try {
-			drive.arcadeDrive(-yDrive, -(xRotation));
-		}
-		catch (Exception e) {
-			DriverStation.reportError("DriveTrain " + e, false);
-		}
+		drive.arcadeDrive(-yDrive, -(xRotation));
 	}
 	
 	public void tankDrive(double controlStickLeft, double controlStickRight) {

@@ -6,7 +6,7 @@ import org.usfirst.frc.team5181.sensors.RangeSensors;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class TestingAutonomous {
+public class TestingAutonomous implements Autonomous {
 	/**
 	 * @author Alex F.
 	 * @param For
@@ -17,33 +17,36 @@ public class TestingAutonomous {
 	RangeSensors rangeSensors;
 	Robot robot;
 
-	public TestingAutonomous(RangeSensors sensors) {
+	public TestingAutonomous(RangeSensors sensors, Robot robot) {
 		/**
 		 * Example usage for SonicRangeSensor.UseSonicRangeSensors
 		 * srs.srFront.getRangeCm() srs.srBack.getRangeCm()
 		 * srs.srRight.getRangeCm() srs.srLeft.getRangeCm()
 		 */
 		rangeSensors = sensors;
+		this.robot = robot;
 
 	}
 
 	public void testAutonomous() {
-		while (rangeSensors.srBack.getRangeCm() > 30.0) {
-			DriverStation.reportError(
-					"[TestingAutonomous] Outside of stop range"
-							+ rangeSensors.srBack.getRangeCm() + "cm \n",
-					false);
-			try {
-				robot.drive.arcadeDrive(0.0, 0.5);
-				DriverStation.reportError("[TestingAutonomous]Here", false);
-			} catch (NullPointerException ne) {
-				DriverStation.reportError(
-						"[TestingAutonomous] Catastrophe right in arcadeDrive"
-								+ ne, true);
-			}
-		}
-		DriverStation.reportError("[TestingAutonomous] Now stopping"
-				+ rangeSensors.srBack.getRangeCm() + "cm \n", false);
+		//robot.pidi.moveTo(900); //millimeters
+//		if (robot.rangeSensors.srBack.getRangeMm() > 900) {
+//			robot.drive.arcadeDrive(0.0, -0.5);
+//			return false;
+//		}
+//		return true;
+	}
+
+	@Override
+	public void actionPlayback(String recordingName, long time) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setAutonState(boolean inAuton) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

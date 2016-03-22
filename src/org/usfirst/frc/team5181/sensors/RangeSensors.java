@@ -36,7 +36,7 @@ public class RangeSensors {
 			ULTRASONIC_TRIGGER_PULSE_INPUT = triggerIn;
 			try { 
 				ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
-				ULTRASONIC_TRIGGER_PULSE_INPUT, Ultrasonic.Unit.kInches);
+				ULTRASONIC_TRIGGER_PULSE_INPUT, Ultrasonic.Unit.kMillimeters);
 				//restartSensor();
 				ultra.setAutomaticMode(true);
 			} catch (Exception e) {
@@ -112,7 +112,7 @@ public class RangeSensors {
 		}
 		
 		/**
-		 * Get range in Dm
+		 * Get range in Decimeter
 		 * @return double
 		 * @return 0.0314159 -> error
 		 */
@@ -137,18 +137,13 @@ public class RangeSensors {
 			}
 		}
 
-		public void updateValues() {
-			ultra.updateTable();
-		}
-
 		public void restartSensor() {
-			/*
 			if (ultra.isEnabled()) {
 				ultra.setEnabled(false);
 				ultra.setEnabled(true);
 			} else {
 				ultra.setEnabled(true);
-			}*/
+			}
 		}
 		
 		public Unit getPIDUnits() {

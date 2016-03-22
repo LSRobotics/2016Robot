@@ -7,7 +7,7 @@ import org.usfirst.frc.team5181.actuators.BallPickup;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class MixedAutonomous {
+public class MixedAutonomous implements Autonomous {
 
 	RangeSensors rangeSensors;
 	boolean tStart = false;
@@ -40,5 +40,17 @@ public class MixedAutonomous {
 	public void shoot() {
 		ballPickup.setBallIntake(.2, .2);
 
+	}
+
+	@Override
+	public void actionPlayback(String recordingName, long time) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAutonState(boolean inAuton) {
+		// TODO Auto-generated method stub
+		
 	}
 }

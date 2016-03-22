@@ -21,7 +21,7 @@ public class PIDFunctions implements PIDOutput {
 	public GyroSource gyroPID;
 	public DisplacementSource displacePID;
 	
-	static double kPr = 0.12, kPd = 0.06; 
+	static double kPr = 0.12, kPd = 0.009; 
 	static double kIr = 0.0, kId = 0.00; 
 	static double kDr = 0.06, kDd = 0.00; 
 	static double kFr = 0.00, kFd = 0.00; 
@@ -45,32 +45,35 @@ public class PIDFunctions implements PIDOutput {
 		pidiR.setAbsoluteTolerance(toleranceRotation);
 		pidiR.setContinuous(true);
 		
-		pidiD = new PIDController(kPr, kIr, kDr, kFr, displacePID, this);
-		pidiD.setInputRange(0, 120); //inches
-		pidiD.setOutputRange(-1, 1);
+		pidiD = new PIDController(kPd, kId, kDd, kFd, displacePID, this);
+		pidiD.setInputRange(0, 5000); //mm
+		pidiD.setOutputRange(-0.5, 0.5);
 		pidiD.setAbsoluteTolerance(toleranceDistance);
 		pidiD.setContinuous(true);
 		
 	}
+	
 	public void turnToAngle(double angle) {
 		pidiR.setSetpoint(angle);
 		pidiR.enable();
 		drive.arcadeDrive(pidValue, 0);
 	}
+	
 	public void moveTo(double distance) {
-		
 		pidiD.setSetpoint(distance);
 		pidiD.enable();
-		
-		drive.arcadeDrive(pidValue, pidValue);
+		DriverStation.reportError(robot.rangeSensors.srBack.getRangeMm() + "\t" + pidValue + " \n", false);
+		drive.arcadeDrive(0, pidValue);
 	}
 	
 	public void pidWrite(double output) {
 		pidValue = output;
 	}
+	
 	public enum Controllers {
 		ROTATION, DISPLACEMENT
 	}
+	
 	public static void upadtePID(Controllers controller, double kP, double kI, double kD, double kF) {
 		if(controller == Controllers.ROTATION) {
 			kPr = kP;
@@ -97,6 +100,7 @@ public class PIDFunctions implements PIDOutput {
 			}
 		}
 	}
+	
 	public static double[] getPIDTunings(Controllers controller) {
 		if(controller == Controllers.ROTATION) {
 			return new double[]{kPr, kIr, kDr, kFr};

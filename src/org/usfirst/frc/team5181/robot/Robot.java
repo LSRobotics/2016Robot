@@ -88,20 +88,22 @@ public class Robot extends SampleRobot {
 		revX = new RevX(SPI.Port.kMXP);
 		limitSwitch = new LimitSwitch(7);
 		rangeSensors = new RangeSensors();
+		
 		// Actuators
 		ballPickUp = new BallPickup();
 		arm = new LadderArm(6, 7, 0); // TODO change constructor
 		rotateMAXPOWER = false;
-
+		boris = new Boris(Statics.BORIS_PORT);
+		
 		// Auton
 		auton = new TimedAutonomous(this, drive);
+		ta = new TestingAutonomous(rangeSensors, this);
 		recorder = new ActionBased(revX);
 		pidi = new PIDFunctions(this, drive);
 		stupidAuton = new StupidAutonomous(this);
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
-		autonChooser.addObject("Rough-Terrain",
-				"/var/rcrdng/roughTerrain.rcrdng");
+		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
 
 		koala = new Bear();
@@ -111,14 +113,6 @@ public class Robot extends SampleRobot {
 		//server = CameraServer.getInstance();
 		//server.setQuality(100);
 		//server.startAutomaticCapture("cam0");
-		
-//		try {
-			ta = new TestingAutonomous(rangeSensors);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-
-
 	}
 
 	public void autonomous() {
@@ -211,14 +205,12 @@ public class Robot extends SampleRobot {
 		// End ladder
 
 		//Boris
-		//boris.Set(Gamepad.LEFT_Stick_Y_State);
+		boris.Set(Gamepad.LEFT_Stick_Y_State);
 		//End Boris
 		
 		// Drive
-		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State,
-				Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
-		drive.arcadeDrive(Gamepad.RIGHT_Stick_X_State,
-				Gamepad.RIGHT_Stick_Y_State);
+		drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
+		drive.arcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
 		// End Drive
 	}
 
@@ -258,22 +250,9 @@ public class Robot extends SampleRobot {
 	}
 
 	public void test() {
-		//try {
-			ta.testAutonomous();
-			//stupidAuton.autonomousPeriodic();
-			
-			/**
-			while (this.isEnabled()) {
-				sr.restartSensor();
-				DriverStation.reportError(
-						"[SRX]Current distence is:" + sr.getRangeInches()
-								+ "inches" + "\n", false);
-			
-			}**/
-			
-		//} catch (Exception e) {
-			//DriverStation.reportError("Catastrophe\n", false);
-		//}
+		while (this.isEnabled()) {
+			pidi.moveTo(900);
+		}
 	}
 
 	/**
