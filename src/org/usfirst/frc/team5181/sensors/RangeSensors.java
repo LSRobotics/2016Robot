@@ -2,6 +2,7 @@ package org.usfirst.frc.team5181.sensors;
 
 import org.usfirst.frc.team5181.robot.Statics;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 
@@ -13,10 +14,10 @@ import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 public class RangeSensors {
 	public SonicRangeSensor srFront, srBack, srRight, srLeft;
 	public RangeSensors() {
-		this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+		//this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
 		this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
-		this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
-		this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		//this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		//this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
 	}
 	
 	/**
@@ -36,12 +37,11 @@ public class RangeSensors {
 			try { 
 				ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
 				ULTRASONIC_TRIGGER_PULSE_INPUT, Ultrasonic.Unit.kInches);
+				//restartSensor();
+				ultra.setAutomaticMode(true);
+			} catch (Exception e) {
+				DriverStation.reportError("Catastrophe at the place where catastrophe happens " + e, true);
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			restartSensor();
-			ultra.setAutomaticMode(true);
 		}
 
 		/**
@@ -142,12 +142,13 @@ public class RangeSensors {
 		}
 
 		public void restartSensor() {
+			/*
 			if (ultra.isEnabled()) {
 				ultra.setEnabled(false);
 				ultra.setEnabled(true);
 			} else {
 				ultra.setEnabled(true);
-			}
+			}*/
 		}
 		
 		public Unit getPIDUnits() {

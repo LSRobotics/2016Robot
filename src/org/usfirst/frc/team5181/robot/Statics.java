@@ -4,7 +4,7 @@ public class Statics {
 	
 	//Wheels
 	public static final int LEFTPortFront = 0;
-	public static final int LEFTPortBack= 2;
+	public static final int LEFTPortBack = 2;
 	public static final int RIGHTPortFront = 1;
 	public static final int RIGHTPortBack = 3;
 	
@@ -36,14 +36,14 @@ public class Statics {
 	public static int MAXPOWER = 2; 
 	
 	//Ultrasonic Ports
-	public static final int FRONT_Ultra_Echo = 1;
-	public static final int FRONT_Ultra_Trigger = 0;
-	public static final int BACK_Ultra_Echo = 3;
-	public static final int BACK_Ultra_Trigger = 2;
-	public static final int RIGHT_Ultra_Echo = 5;
-	public static final int RIGHT_Ultra_Trigger = 4;
-	public static final int LEFT_Ultra_Echo = 7;
-	public static final int LEFT_Ultra_Trigger = 6;
+	public static final int FRONT_Ultra_Echo = 2;
+	public static final int FRONT_Ultra_Trigger = 1;
+	public static final int BACK_Ultra_Echo = 4;
+	public static final int BACK_Ultra_Trigger = 3;
+	public static final int RIGHT_Ultra_Echo = 6;
+	public static final int RIGHT_Ultra_Trigger = 5;
+	public static final int LEFT_Ultra_Echo = 8;
+	public static final int LEFT_Ultra_Trigger = 7;
 	
 	
 }

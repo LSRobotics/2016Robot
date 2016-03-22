@@ -42,8 +42,12 @@ public class DriveTrain {
 		if(Math.abs(xRotation) >= speedLimit) {
 			xRotation = (Math.abs(xRotation) / xRotation) * speedLimit;
 		}
-		
-		drive.arcadeDrive(-yDrive, -(xRotation));
+		try {
+			drive.arcadeDrive(-yDrive, -(xRotation));
+		}
+		catch (Exception e) {
+			DriverStation.reportError("DriveTrain " + e, false);
+		}
 	}
 	
 	public void tankDrive(double controlStickLeft, double controlStickRight) {

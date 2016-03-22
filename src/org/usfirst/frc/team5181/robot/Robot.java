@@ -108,15 +108,15 @@ public class Robot extends SampleRobot {
 		ballTracker = false;
 		clientStarted = false;
 
-		server = CameraServer.getInstance();
-		server.setQuality(100);
-		server.startAutomaticCapture("cam0");
+		//server = CameraServer.getInstance();
+		//server.setQuality(100);
+		//server.startAutomaticCapture("cam0");
 		
-		try {
+//		try {
 			ta = new TestingAutonomous(rangeSensors);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 
 	}
@@ -183,6 +183,7 @@ public class Robot extends SampleRobot {
 		// End Collision
 
 		// Ladder
+		
 		if (Gamepad.A_Button_State) {
 			arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
 		}
@@ -205,12 +206,12 @@ public class Robot extends SampleRobot {
 		
 		if (rotateMAXPOWER) {
 			arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
-		}
+		} 
 		//DriverStation.reportError(rotateMAXPOWER + "\n", false);
 		// End ladder
 
 		//Boris
-		boris.Set(Gamepad.LEFT_Stick_Y_State);
+		//boris.Set(Gamepad.LEFT_Stick_Y_State);
 		//End Boris
 		
 		// Drive
@@ -257,8 +258,9 @@ public class Robot extends SampleRobot {
 	}
 
 	public void test() {
-		try {
+		//try {
 			ta.testAutonomous();
+			//stupidAuton.autonomousPeriodic();
 			
 			/**
 			while (this.isEnabled()) {
@@ -269,9 +271,9 @@ public class Robot extends SampleRobot {
 			
 			}**/
 			
-		} catch (Exception e) {
-			DriverStation.reportError("Catastrophe", false);
-		}
+		//} catch (Exception e) {
+			//DriverStation.reportError("Catastrophe\n", false);
+		//}
 	}
 
 	/**
