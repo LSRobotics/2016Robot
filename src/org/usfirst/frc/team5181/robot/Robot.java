@@ -70,7 +70,6 @@ public class Robot extends SampleRobot {
 	boolean rotateMAXPOWER;
 
 	// Recorder Vars
-	final long timeFrequency = 500; // in actions/second
 	final long period = 25; // in MS
 	boolean isRecording;
 
