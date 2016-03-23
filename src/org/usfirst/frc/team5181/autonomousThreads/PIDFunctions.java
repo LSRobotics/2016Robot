@@ -31,9 +31,9 @@ public class PIDFunctions implements PIDOutput {
 	
 	double pidValue = 0;
 	
-	public PIDFunctions(Robot r, DriveTrain drive) {
+	public PIDFunctions(Robot r) {
 		robot = r;
-		this.drive = drive;
+		this.drive = r.drive;
 		
 		gyroPID = new GyroSource(r.getRevX());
 		displacePID = new DisplacementSource(r.rangeSensors.srBack); //change later //TODO

@@ -37,10 +37,10 @@ public class DriveTrain {
 		xRotation = Filters.powerCurving(controlStickX, 0.75); //filter rotational values
 		
 		if(Math.abs(yDrive) >= speedLimit) {
-			yDrive = (yDrive < 0)? -1 : 1 * speedLimit;
+			yDrive = ((yDrive < 0)? -1 : 1) * speedLimit;
 		}
 		if(Math.abs(xRotation) >= speedLimit) {
-			xRotation = (xRotation < 0)? -1 : 1 * speedLimit;
+			xRotation = ((xRotation < 0)? -1 : 1) * speedLimit;
 		}
 		drive.arcadeDrive(-yDrive, -(xRotation));
 	}

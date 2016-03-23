@@ -16,37 +16,35 @@ public class TestingAutonomous implements Autonomous {
 	 */
 	RangeSensors rangeSensors;
 	Robot robot;
+	PIDFunctions pidiD;
 
-	public TestingAutonomous(RangeSensors sensors, Robot robot) {
+	public TestingAutonomous(Robot robot) {
 		/**
 		 * Example usage for SonicRangeSensor.UseSonicRangeSensors
 		 * srs.srFront.getRangeCm() srs.srBack.getRangeCm()
 		 * srs.srRight.getRangeCm() srs.srLeft.getRangeCm()
 		 */
-		rangeSensors = sensors;
+		rangeSensors = robot.rangeSensors;
 		this.robot = robot;
 
-	}
-
-	public void testAutonomous() {
-		//robot.pidi.moveTo(900); //millimeters
-//		if (robot.rangeSensors.srBack.getRangeMm() > 900) {
-//			robot.drive.arcadeDrive(0.0, -0.5);
-//			return false;
-//		}
-//		return true;
+		pidiD = new PIDFunctions(robot);
 	}
 
 	@Override
-	public void actionPlayback(String recordingName, long time) {
+	public void initializeAuton(String recordingName) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void setAutonState(boolean inAuton) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
+	@Override
+	public void doAuton() {
+		
+		
+	}
 }

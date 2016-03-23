@@ -10,47 +10,40 @@ import edu.wpi.first.wpilibj.Timer;
 public class MixedAutonomous implements Autonomous {
 
 	RangeSensors rangeSensors;
-	boolean tStart = false;
-	Timer t = new Timer();
-	DriveTrain driveTrain;
-	private Robot robot;
-	BallPickup ballPickup = new BallPickup();
+	BallPickup ballPickup;
+	DriveTrain drive;
 	
-	public MixedAutonomous(RangeSensors sensors) {
-		rangeSensors = sensors;
-	}
-
-	public void rangeSensingAuton() {
-		if (rangeSensors.srBack.getRangeInches() <= 11.811) {
-			if (rangeSensors.srFront.getRangeInches() <= 1.811) {
-			//TODO done
-				shoot();
-			} else {
-				cutThread();
-			}
-		} else {
-			robot.drive.arcadeDrive(0.0, -0.3);
-		}
-
-	}
-
-	public void cutThread() {
-	}
-
-	public void shoot() {
-		ballPickup.setBallIntake(.2, .2);
-
-	}
-
-	@Override
-	public void actionPlayback(String recordingName, long time) {
-		// TODO Auto-generated method stub
+	private boolean inAuton;
+	
+	TimedAutonomous recordingAuton;
+	
+	public MixedAutonomous(Robot robot) {
+		rangeSensors = robot.rangeSensors;
+		ballPickup = robot.ballPickUp;
+		drive = robot.drive;
+		recordingAuton = new TimedAutonomous(robot);
+	}	
+	public void initializeAuton(String recordingName) {
+		recordingAuton.initializeAuton(recordingName);                 
 		
 	}
 
 	@Override
 	public void setAutonState(boolean inAuton) {
-		// TODO Auto-generated method stub
+		this.inAuton = inAuton;
 		
+	}
+
+	@Override
+	public void doAuton() {
+		if (rangeSensors.srBack.getRangeInches() <= 11.811) {
+			if (rangeSensors.srFront.getRangeInches() <= 1.811) {
+				//shoot
+			} else {
+				//What here
+			}
+		} else {
+			drive.arcadeDrive(0.0, -0.3);
+		}
 	}
 }

@@ -14,6 +14,6 @@ public class Filters {
 	 * @return input ^ power
 	 */
 	public static double powerCurving(double input, double power) {
-		return (input < 0)? -1:1 * Math.pow(Math.abs(input), power);
+		return ((input < 0)? -1 : 1) * Math.pow(Math.abs(input), power);
 	}
 }

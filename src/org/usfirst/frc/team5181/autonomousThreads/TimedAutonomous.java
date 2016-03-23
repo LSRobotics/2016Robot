@@ -27,12 +27,12 @@ public class TimedAutonomous implements Autonomous {
 	double commandStartTime = 0;
 	RevX revX;
 	
-	public TimedAutonomous(Robot r, DriveTrain drive) {
+	public TimedAutonomous(Robot r) {
 		robot = r;
 		
 		revX = r.getRevX();
 		autonSwitch = r.limitSwitch;
-		pidi = new PIDFunctions(r, drive);
+		pidi = new PIDFunctions(r);
 		inAuton = false;
 	}
 	
