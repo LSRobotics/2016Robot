@@ -36,37 +36,39 @@ public class TimedAutonomous implements Autonomous {
 		inAuton = false;
 	}
 	
-	public void run() {
+	public void doAuton() {
 		try {
-			int iterative = 0;
-			for (String command:commands) {
-				if(command.contains("SETPOINT")) {
-					double rotation = Double.parseDouble(command.substring(command.indexOf("R:") + 2));
-					
-					//Correct E-r
-					while(pidi.onTarget(Controllers.ROTATION)) {
-						pidi.turnToAngle(rotation);
+			if(commands != null && timePeriods != null) {
+				int iterative = 0;
+				for (String command:commands) {
+					if(command.contains("SETPOINT")) {
+						double rotation = Double.parseDouble(command.substring(command.indexOf("R:") + 2));
+						
+						//Correct E-r
+						while(pidi.onTarget(Controllers.ROTATION)) {
+							pidi.turnToAngle(rotation);
+						}
+						continue;
 					}
-					continue;
-				}
-				
-				commandStartTime = System.nanoTime() / 1000000;
-				while((System.nanoTime() / 1000000) - commandStartTime < timePeriods.get(iterative)) {
-					robot.teleopMaster(true);
-					Gamepad.setSyntheticState(command);
 					
+					commandStartTime = System.nanoTime() / 1000000;
+					while((System.nanoTime() / 1000000) - commandStartTime < timePeriods.get(iterative)) {
+						robot.teleopMaster(true);
+						Gamepad.setSyntheticState(command);
+						
+						//Breaks out of thread is autonomous ends
+						if(!inAuton) {
+							break;
+						}
+					}
 					//Breaks out of thread is autonomous ends
 					if(!inAuton) {
 						break;
 					}
+					iterative++;
 				}
-				//Breaks out of thread is autonomous ends
-				if(!inAuton) {
-					break;
-				}
-				iterative++;
+				DriverStation.reportError("Finished", false);
 			}
-			DriverStation.reportError("Finished", false);
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "", true);
@@ -76,7 +78,7 @@ public class TimedAutonomous implements Autonomous {
 	/**
 	 * 
 	 */
-	public void actionPlayback(String recordingName, long period) {
+	public void initializeAuton(String recordingName) {
 		commands = new ArrayList<String>();
 		timePeriods = new ArrayList<Double>();
 		try {
@@ -104,8 +106,6 @@ public class TimedAutonomous implements Autonomous {
 			do {
 				revX.zeroYaw();
 			} while(Math.abs(revX.getRotation()) < 0.5);
-			
-			this.run();
 		}
 		catch(Exception e) {
 			DriverStation.reportError(e + "Autonomous.java, actionPlayback:\n", false);
