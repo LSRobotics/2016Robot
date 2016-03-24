@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
+import org.usfirst.frc.team5181.sensors.RangeSensors.SonicRangeSensor;;
+
 public class PIDFunctions implements PIDOutput {
-	Robot robot;
 	DriveTrain drive;
 	
 	public PIDController pidiR, pidiD;
@@ -27,43 +28,59 @@ public class PIDFunctions implements PIDOutput {
 	static double kFr = 0.00, kFd = 0.00; 
 	
 	static final double toleranceRotation = 1;
-	static final double toleranceDistance = .5;
+	static final double toleranceDistance = 90;
 	
 	double pidValue = 0;
 	
-	public PIDFunctions(Robot r) {
-		robot = r;
+	public PIDFunctions(Robot r, Controllers pidType, Object source) {
 		this.drive = r.drive;
 		
-		gyroPID = new GyroSource(r.getRevX());
-		displacePID = new DisplacementSource(r.rangeSensors.srBack); //change later //TODO
-		
-		pidiR = new PIDController(kPr, kIr, kDr, kFr, gyroPID, this);
-		
-		pidiR.setInputRange(-180.0, 180.0);
-		pidiR.setOutputRange(-1, 1);
-		pidiR.setAbsoluteTolerance(toleranceRotation);
-		pidiR.setContinuous(true);
-		
-		pidiD = new PIDController(kPd, kId, kDd, kFd, displacePID, this);
-		pidiD.setInputRange(0, 5000); //mm
-		pidiD.setOutputRange(-0.5, 0.5);
-		pidiD.setAbsoluteTolerance(toleranceDistance);
-		pidiD.setContinuous(true);
-		
+		switch(pidType) {
+			case ROTATION:
+				gyroPID = new GyroSource((RevX) source);
+				
+				pidiR = new PIDController(kPr, kIr, kDr, kFr, gyroPID, this);
+				
+				pidiR.setInputRange(-180.0, 180.0);
+				pidiR.setOutputRange(-1, 1);
+				pidiR.setAbsoluteTolerance(toleranceRotation);
+				pidiR.setContinuous(true);
+				
+				break;
+			case DISPLACEMENT:
+				displacePID = new DisplacementSource((SonicRangeSensor) source); 
+				
+				pidiD = new PIDController(kPd, kId, kDd, kFd, displacePID, this);
+				
+				pidiD.setInputRange(0, 5000); //mm
+				pidiD.setOutputRange(-0.5, 0.5);
+				pidiD.setAbsoluteTolerance(toleranceDistance);
+				pidiD.setContinuous(true);
+				
+				break;
+		}
 	}
 	
-	public void turnToAngle(double angle) {
-		pidiR.setSetpoint(angle);
-		pidiR.enable();
-		drive.arcadeDrive(pidValue, 0);
+	public void turnToAngle(double angle) throws NullPointerException {
+		if(pidiR != null) {
+			pidiR.setSetpoint(angle);
+			pidiR.enable();
+			drive.arcadeDrive(pidValue, 0);
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 	
-	public void moveTo(double distance) {
-		pidiD.setSetpoint(distance);
-		pidiD.enable();
-		DriverStation.reportError(robot.rangeSensors.srBack.getRangeMm() + "\t" + pidValue + " \n", false);
-		drive.arcadeDrive(0, pidValue);
+	public void moveTo(double distance) throws NullPointerException{
+		if(pidiD != null) {
+			pidiD.setSetpoint(distance);
+			pidiD.enable();
+			drive.arcadeDrive(0, pidValue);
+		}
+		else {
+			throw new NullPointerException();
+		}
 	}
 	
 	public void pidWrite(double output) {
@@ -72,6 +89,15 @@ public class PIDFunctions implements PIDOutput {
 	
 	public enum Controllers {
 		ROTATION, DISPLACEMENT
+	}
+	
+	public void setPIDSource(Object source, Controllers pidType) {
+		if(pidType == Controllers.ROTATION) {
+			pidiR = new PIDController(kPr, kIr, kDr, new GyroSource((RevX) source), this);
+		}
+		if(pidType == Controllers.DISPLACEMENT) {
+			pidiD = new PIDController(kPd, kId, kDd, new DisplacementSource((SonicRangeSensor) source), this);
+		}
 	}
 	
 	public static void upadtePID(Controllers controller, double kP, double kI, double kD, double kF) {
@@ -88,6 +114,7 @@ public class PIDFunctions implements PIDOutput {
 			kFd = kF;
 		}
 	}
+	
 	public void setPID(Controllers controller) {
 		if(controller == Controllers.ROTATION) {
 			if(pidiR != null) {

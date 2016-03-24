@@ -32,7 +32,7 @@ public class TimedAutonomous implements Autonomous {
 		
 		revX = r.getRevX();
 		autonSwitch = r.limitSwitch;
-		pidi = new PIDFunctions(r);
+		pidi = new PIDFunctions(r, Controllers.ROTATION, revX);
 		inAuton = false;
 	}
 	
@@ -78,7 +78,7 @@ public class TimedAutonomous implements Autonomous {
 	/**
 	 * 
 	 */
-	public void initializeAuton(String recordingName) {
+	public void initializeAuton(String recordingName, String[] others) {
 		commands = new ArrayList<String>();
 		timePeriods = new ArrayList<Double>();
 		try {

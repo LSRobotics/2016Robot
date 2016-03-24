@@ -31,7 +31,7 @@ public class StupidAutonomous implements Autonomous {
 	 */		
 	
 	@Override
-	public void initializeAuton(String recordingName) {
+	public void initializeAuton(String recordingName, String[] others) {
 		// TODO Auto-generated method stub
 		
 	}

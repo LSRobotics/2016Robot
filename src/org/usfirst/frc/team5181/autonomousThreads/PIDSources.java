@@ -18,9 +18,9 @@ public class PIDSources {
 		private PIDSourceType sourceType;
 		
 		public GyroSource(RevX r) {
-			revX = r;
-			sourceType = PIDSourceType.kDisplacement;
-		}
+				revX = r;
+				sourceType = PIDSourceType.kDisplacement;
+			}
 		
 		public void setPIDSourceType(PIDSourceType pidSource) {
 			sourceType = pidSource;
@@ -40,8 +40,8 @@ public class PIDSources {
 		private SonicRangeSensor ultraSonic;
 		private PIDSourceType sourceType;
 
-		public DisplacementSource(SonicRangeSensor us) {
-			ultraSonic = us;
+		public DisplacementSource(SonicRangeSensor source) {
+			ultraSonic = source;
 			sourceType = PIDSourceType.kDisplacement;
 		}
 		

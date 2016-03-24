@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5181.autonomousThreads;
 
 
+import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
 import org.usfirst.frc.team5181.robot.Robot;
 import org.usfirst.frc.team5181.sensors.RangeSensors;
 
@@ -27,11 +28,11 @@ public class TestingAutonomous implements Autonomous {
 		rangeSensors = robot.rangeSensors;
 		this.robot = robot;
 
-		pidiD = new PIDFunctions(robot);
+		pidiD = new PIDFunctions(robot, Controllers.DISPLACEMENT, robot.rangeSensors.srFront);
 	}
 
 	@Override
-	public void initializeAuton(String recordingName) {
+	public void initializeAuton(String recordingName, String[] others) {
 		// TODO Auto-generated method stub
 		
 	}
