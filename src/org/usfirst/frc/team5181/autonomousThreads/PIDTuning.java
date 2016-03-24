@@ -26,8 +26,8 @@ public class PIDTuning {
 
 	private PIDFunctions pidi;
 	private RevX revX;
-	public PIDTuning(Robot robot) {
-		pidi = new PIDFunctions(robot);
+	public PIDTuning(Robot robot, Object source, Controllers pidType) {
+		pidi = new PIDFunctions(robot, pidType, source);
 		revX = robot.getRevX();
 	}
 	
