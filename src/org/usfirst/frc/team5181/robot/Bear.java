@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class Bear extends Thread {
 	ArrayList<String> koala = new   ArrayList<String>(); //bear
-	Bear bear = new Bear();
 	public Bear() {
 			koala.add("sssssssssssssssssssssssssssssssssyhhhhdhyysyNyssssssssssssssoooooo++++++++++++++");  
 			koala.add("ssssssssssssssssssssssssssssyddhyssooooooooohdssssssssssssssssssssssssssssssssss");
@@ -41,8 +40,6 @@ public class Bear extends Thread {
 	
 	/**
 	 * Does bear koala, or does bear bear?
-	 * Bear marker
-	 * Bear Tylex
 	 */
 	public void run() {
 		for(String s: koala) {
