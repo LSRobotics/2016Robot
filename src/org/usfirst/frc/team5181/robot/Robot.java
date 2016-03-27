@@ -4,13 +4,8 @@ import org.usfirst.frc.team5181.actuators.BallPickup;
 import org.usfirst.frc.team5181.actuators.Boris;
 import org.usfirst.frc.team5181.actuators.LadderArm;
 import org.usfirst.frc.team5181.actuators.LinearActuator;
-import org.usfirst.frc.team5181.autonomousThreads.ActionBased;
-import org.usfirst.frc.team5181.autonomousThreads.Autonomous;
-import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions;
-import org.usfirst.frc.team5181.autonomousThreads.StupidAutonomous;
-import org.usfirst.frc.team5181.autonomousThreads.TimedAutonomous;
+import org.usfirst.frc.team5181.autonomousThreads.*;
 import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
-import org.usfirst.frc.team5181.autonomousThreads.TestingAutonomous;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
 import org.usfirst.frc.team5181.sensors.RevX;
@@ -52,6 +47,8 @@ public class Robot extends SampleRobot {
 	// Autonomous Chooser
 	Command autonCommand;
 	SendableChooser autonChooser;
+	Command position;
+	SendableChooser positionChooser;
 
 	// Sensors
 	public RevX revX;
@@ -89,13 +86,19 @@ public class Robot extends SampleRobot {
 		boris = new Boris(Statics.BORIS_PORT);
 		
 		// Auton
-		auton = new TimedAutonomous(this);
+		auton = new MixedAutonomous(this);
+		//auton = new TimedAutonomous(this);
 		
 		recorder = new ActionBased(revX);
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
 		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
+
+		positionChooser = new SendableChooser();
+		positionChooser.addDefault("Right", "right");
+		positionChooser.addDefault("Left", "left");
+		SmartDashboard.putData("Position Selector", positionChooser);
 
 		koala = new Bear();
 		ballTracker = false;
@@ -108,6 +111,8 @@ public class Robot extends SampleRobot {
 
 	public void autonomous() {
 		String selectedAuton = (String) autonChooser.getSelected();
+		String selectedPosition = (String) positionChooser.getSelected();
+		auton.initializeAuton(selectedAuton, new String[] {selectedAuton, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defence name
 		while (this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
