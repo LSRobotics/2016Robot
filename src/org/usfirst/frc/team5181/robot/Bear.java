@@ -1,57 +1,40 @@
 package org.usfirst.frc.team5181.robot;
 
-import java.util.ArrayList;
-
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import edu.wpi.first.wpilibj.DriverStation;
 
-/**
- * 
- * @author Connor Devitt | Mark Bense | Alex Fang
- *
- **/
+import javax.imageio.ImageIO;
 
-public class Bear extends Thread {
-	ArrayList<String> koala = new   ArrayList<String>(); //bear
-	Bear bear = new Bear();
-	public Bear() {
-			koala.add("sssssssssssssssssssssssssssssssssyhhhhdhyysyNyssssssssssssssoooooo++++++++++++++");  
-			koala.add("ssssssssssssssssssssssssssssyddhyssooooooooohdssssssssssssssssssssssssssssssssss");
-			koala.add("sssssssssssssssssssssssssssssNoooooooooooooosNsssssssyyyssssssssssssssssssssssss");
-			koala.add("sssssssssssssssssssssssssssssmsooooosssyhhddmNdhhyyyhddhdhysssssssssssssssssssss"); 
-			koala.add("sssssssssssssssyyysssssssssymhyhhdmmNNNmdhyyssssshNysshsymssssssssssssssssssssss"); 
-			koala.add("sssssssssssssydhhhhhdyssyhhhdddyysssoooosyhddddhddhyssddssmhssssssssssssssssssss"); 
-			koala.add("sssssssssssssmysssssshmdssoooosyhdddhhhhhyssssssssssssysssmhssssssssssssssssssss"); 
-			koala.add("ssssssssssssydsssdmsssydhddddddhysssssssssssssssssssssssssyNysssssssssssssssssss"); 
-			koala.add("sssssssssssssmyssshdssssssssssssssssssssssssssssssssssssssshmsssssssssssssssssss"); 
-			koala.add("sssssssssssssymsssssssssssssssssssssssssssssssssssssssssssssmyssssssssssssssssss"); 
-			koala.add("ssssssssssssshdsssssssssssssssssssssssssssyhhysssssssssssssshdssssssssssssssssss"); 
-			koala.add("sssssssssssssdyssssssssssssssssssssssssshmo//smysssssssssssssNysssssssssssssssss"); 
-			koala.add("sssssssssssssmssssssssssssssshdyyyhdyssyN-````:Nhssssssssssssymsssssssssssssssss");
-			koala.add("sssssssssssssNsssssssssssssshh-.:../NyshN/:``:+mdsssssssssssssmyssssssssssssssss");
-			koala.add("ssssssssssssymssssssssssssssmo`./`./mNNMMMNso/oNysssssssssssssdhssssssssssssssss"); 
-			koala.add("sssssssssssshdsssssssssssssshh```-ho:MMMMMN.:yNyssssssssssssssymssssssssssssssss");
-			koala.add("ssssssssssssmysssssssssssssssmy//d+``hmNmh:``.hdsssssssssssssssdhsssssssssssssss"); 
-			koala.add("ssssssssssssNsssssssssssssssssyyN+```..--.````-NysssssssssssssssNsssssssssssssss"); 
-			koala.add("sssssssssssymsssssssssssssssssssM-`````````````dhsssssssssssssssdhssssssssssssss"); 
-			koala.add("ssssssssssshdsssssssssssssssssssN:```+ho:--/-.mhsssssssssssssssymsssssssssssssss"); 
-			koala.add("sssssssssssdhsssssssssssssssssssdy`````-/oosy:`+Nsssssssssssssssssmyssssssssssss"); 
-			koala.add("sssssssssssmyssssssssssssssssssssms:.--```.-:sdysssssssssssssssssdhsssssssssssss"); 
-			koala.add("sssssssssssmssssssssssssssssssssssyhyssosyhhhyssssssssssssssssssshdsssssssssssss");
-	}
-	
-	/**
-	 * Does bear koala, or does bear bear?
-	 * Bear marker
-	 * Bear Tylex
-	 */
-	public void run() {
-		for(String s: koala) {
-			DriverStation.reportError(s + "\n", false);
+public class Bear {
+
+	public void Bear throws IOException {
+
+		int width = 100;
+		int height = 30;
+
+		BufferedImage image = ImageIO.read(new File("/var/bear/bear.jpg"));
+
+		for (int y = 0; y < height; y++) {
+			StringBuilder sb = new StringBuilder();
+			for (int x = 0; x < width; x++) {
+
+				sb.append(image.getRGB(x, y) == -16777216 ? " " : "$");
+
+			}
+
+			if (sb.toString().trim().isEmpty()) {
+				continue;
+			}
+
+			Driverstation.reportError(sb);
 		}
-		DriverStation.reportError("3.1415926535 8979323846 2643383279 5028841971 6939937510\n", false);
-		DriverStation.reportError("  5820974944 5923078164 0628620899 8628034825 3421170679\n", false);
+
 	}
-	public void start() {
-		this.start();
-	}
+
 }
