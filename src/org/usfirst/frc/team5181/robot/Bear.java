@@ -8,12 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import edu.wpi.first.wpilibj.DriverStation;
-
 import javax.imageio.ImageIO;
 
 public class Bear {
 
-	public void Bear throws IOException {
+	public void wonderfulbear() throws IOException {
 
 		int width = 100;
 		int height = 30;
@@ -32,7 +31,7 @@ public class Bear {
 				continue;
 			}
 
-			Driverstation.reportError(sb);
+			DriverStation.reportError(sb.toString(), false);
 		}
 
 	}
