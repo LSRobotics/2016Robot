@@ -72,7 +72,7 @@ public class UnitConversion {
 			// DO NOTHING
 		}
 
-		return tc;
+		return c;
 
 	}
 
