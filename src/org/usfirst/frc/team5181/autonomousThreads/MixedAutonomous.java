@@ -26,9 +26,9 @@ public class MixedAutonomous implements Autonomous {
 
 	Autonomous recordingAuton;
 
-	public static double d1 = 174.86, d2 = 144.86, a1 = -150, a2 = 150;
+	public static double d1 = 159.86 /* LEFT */, d2 = 116 /* RIGHT */, a1 = 120 /* LEFT */, a2 = -120 /* RIGHT */;
 	
-	public MixedAutonomous(Robot robot) {
+	public MixedAutonomous(Robot robot) {       
 		r = robot;
 		
 		rangeSensors = robot.rangeSensors;
@@ -82,7 +82,7 @@ public class MixedAutonomous implements Autonomous {
 		pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
 		while(pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
 			double distance = (autonPosition[0].equalsIgnoreCase("left")) ? d1 : d2;
-			pidi.moveTo(uc.unitConversion("inches", "milimeters", (191.5 - (distance - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/3)))); //I don't want to do it like that; Tim forced me to
+			pidi.moveTo(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/6) - 39)))); //I don't want to do it like that; Tim forced me to
 		}
 		
 		//Turn to face goal
