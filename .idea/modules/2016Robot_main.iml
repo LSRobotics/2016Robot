@@ -7,10 +7,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:desktop:3.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:arm:3.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Gradle: edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:desktop:3.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:arm:3.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.wpi.first.wpilibj:wpilibJavaFinal:0.1.0-SNAPSHOT" level="project" />
   </component>
 </module>

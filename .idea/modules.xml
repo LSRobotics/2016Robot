@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/2016RobotTemp.iml" filepath="$PROJECT_DIR$/2016RobotTemp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2016Robot.iml" filepath="$PROJECT_DIR$/.idea/modules/2016Robot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2016Robot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/2016Robot_main.iml" group="2016Robot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2016Robot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/2016Robot_test.iml" group="2016Robot" />
     </modules>
   </component>
 </project>
