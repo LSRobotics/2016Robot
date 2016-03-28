@@ -26,6 +26,8 @@ public class MixedAutonomous implements Autonomous {
 
 	Autonomous recordingAuton;
 
+	public static double d1 = 174.86, d2 = 144.86, a1 = -150, a2 = 150;
+	
 	public MixedAutonomous(Robot robot) {
 		r = robot;
 		
@@ -76,55 +78,32 @@ public class MixedAutonomous implements Autonomous {
 			}
 		}
 		
-		if (autonPosition[0].equalsIgnoreCase("left")) {
-			//Backwards after defense
-			pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
-			while(pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
-				pidi.moveTo(uc.unitConversion("inches", "milimeters", (191.5 - (174.86 - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/3)))); //I don't want to do it like that; Tim forced me to
-			}
-			
-			//Turn to face goal
-			pidi.setPIDSource(revX, Controllers.ROTATION);
-			while(pidi.onTarget(Controllers.ROTATION) && inAuton) {
-				pidi.turnToAngle(-150.0);
-			}
-		
-			//Drive to goal
-			pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
-			while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
-				pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
-			}
-			while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
-				drive.arcadeDrive(0, 0.3);
-			}
-			
-			//Shoot
-			ballPickup.shootFree(1, 1);
+		//Backwards after defense
+		pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
+		while(pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
+			double distance = (autonPosition[0].equalsIgnoreCase("left")) ? d1 : d2;
+			pidi.moveTo(uc.unitConversion("inches", "milimeters", (191.5 - (distance - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/3)))); //I don't want to do it like that; Tim forced me to
 		}
-		if (autonPosition[0].equalsIgnoreCase("right")) {
-			//Backwards over defense 
-			pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
-			while(pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
-				pidi.moveTo(uc.unitConversion("inches", "milimeters", (191.5 - (144.86 - rangeSensors.srLeft.getRangeInches()) * Math.tan(Math.PI /3)))); //I don't want to do it like that; Tim forced me to
-			}
-			
-			//Turn to face goal
-			pidi.setPIDSource(revX, Controllers.ROTATION);
-			while(pidi.onTarget(Controllers.ROTATION) && inAuton) {
-				pidi.turnToAngle(150.0);
-			}
-			
-			//Drive to goal
-			pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
-			while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
-				pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
-			}
-			while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
+		
+		//Turn to face goal
+		pidi.setPIDSource(revX, Controllers.ROTATION);
+		while(pidi.onTarget(Controllers.ROTATION) && inAuton) {
+			double angle = (autonPosition[0].equalsIgnoreCase("left")) ? a1 : a2;
+			pidi.turnToAngle(angle);
+		}
+	
+		//Drive to goal
+		pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
+		while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
+			pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
+		}
+		while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
 				drive.arcadeDrive(0, 0.3);
-			}
+		}
 			
-			//Shoot
-			ballPickup.shootFree(1, 1);
-		}		
+		//Shoot
+		ballPickup.shootFree(1, 1);
+		
+				
 	}
 }
