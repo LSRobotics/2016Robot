@@ -31,7 +31,7 @@ public class TimedAutonomous implements Autonomous {
 		robot = r;
 		
 		revX = r.getRevX();
-		autonSwitch = r.limitSwitch;
+		//autonSwitch = r.limitSwitch;
 		pidi = new PIDFunctions(r, Controllers.ROTATION, revX);
 		inAuton = false;
 	}

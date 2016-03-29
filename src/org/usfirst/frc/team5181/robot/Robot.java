@@ -8,6 +8,7 @@ import org.usfirst.frc.team5181.autonomousThreads.*;
 import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
+import org.usfirst.frc.team5181.sensors.RangeSensors.SonicRangeSensor;
 import org.usfirst.frc.team5181.sensors.RevX;
 import org.usfirst.frc.team5181.sensors.RangeSensors;
 
@@ -53,7 +54,6 @@ public class Robot extends SampleRobot {
 	// Sensors
 	public RevX revX;
 	public RangeSensors rangeSensors;
-	
 	// Actuators
 	public BallPickup ballPickUp;
 	LadderArm arm;
@@ -66,7 +66,7 @@ public class Robot extends SampleRobot {
 
 	// Sensors
 	Potentiometer potent;
-	public LimitSwitch limitSwitch;
+	//public LimitSwitch limitSwitch;
 
 	private boolean ballTracker;
 	private boolean clientStarted;
@@ -76,14 +76,14 @@ public class Robot extends SampleRobot {
 
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		limitSwitch = new LimitSwitch(7);
+		//limitSwitch = new LimitSwitch(7);
 		rangeSensors = new RangeSensors();
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7, 0); // TODO change constructor
+		//arm = new LadderArm(6, 7, 0); // TODO change constructor
 		rotateMAXPOWER = false;
-		boris = new Boris(Statics.BORIS_PORT);
+		//boris = new Boris(Statics.BORIS_PORT);
 		
 		// Auton
 		auton = new MixedAutonomous(this);
@@ -112,7 +112,7 @@ public class Robot extends SampleRobot {
 	public void autonomous() {
 		String selectedAuton = (String) autonChooser.getSelected();
 		String selectedPosition = (String) positionChooser.getSelected();
-		auton.initializeAuton(selectedAuton, new String[] {selectedAuton, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defence name
+		auton.initializeAuton(selectedAuton, new String[] {selectedAuton, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defense name
 		while (this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
 		}
@@ -236,9 +236,14 @@ public class Robot extends SampleRobot {
 		//		auton.doAuton();
 		//	}
 		
-		PIDFunctions pid = new PIDFunctions(this, Controllers.ROTATION, this.revX);
+		//SonicRangeSensor sonic = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
+//		sonic.ultra.setEnabled(true);
+//		sonic.ultra.setAutomaticMode(true);
+		
+		PIDFunctions pid = new PIDFunctions(this, Controllers.DISPLACEMENT, rangeSensors.srFront);
 		while(this.isEnabled()) {
-			pid.turnToAngle(120);
+			pid.moveTo(250);
+			DriverStation.reportError("\n FRONT: " + rangeSensors.srFront.getRangeMm(), false);
 		}
 		
 	}

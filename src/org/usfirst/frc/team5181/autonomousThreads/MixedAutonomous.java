@@ -82,7 +82,7 @@ public class MixedAutonomous implements Autonomous {
 		pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
 		while(pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
 			double distance = (autonPosition[0].equalsIgnoreCase("left")) ? d1 : d2;
-			pidi.moveTo(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/6) - 39)))); //I don't want to do it like that; Tim forced me to
+			pidi.moveTo(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - rangeSensors.srRight.getRangeInches()) * Math.tan(Math.PI/6) - 39)))); //I don't want to do it like that; time forced me to
 		}
 		
 		//Turn to face goal
