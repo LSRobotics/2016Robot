@@ -26,7 +26,7 @@ public class MixedAutonomous implements Autonomous {
 
 	Autonomous recordingAuton;
 
-	public static double d1 = 159.86 /* LEFT */, d2 = 116 /* RIGHT */, a1 = 120 /* LEFT */, a2 = -120 /* RIGHT */;
+	public static double d1 = 159.86 /* LEFT */, d2 = 116 /* RIGHT */, a1 = -120 /* LEFT */, a2 = 120 /* RIGHT */;
 	
 	public MixedAutonomous(Robot robot) {       
 		r = robot;

@@ -232,8 +232,14 @@ public class Robot extends SampleRobot {
 	}
 
 	public void test() {
-		while (this.isEnabled()) {
-			auton.doAuton();
+		//	while (this.isEnabled()) {
+		//		auton.doAuton();
+		//	}
+		
+		PIDFunctions pid = new PIDFunctions(this, Controllers.ROTATION, this.revX);
+		while(this.isEnabled()) {
+			pid.turnToAngle(120);
 		}
+		
 	}
 }
