@@ -25,7 +25,7 @@ public class PIDFunctions implements PIDOutput {
 	static double kPr = 0.16, kPd = 0.01; //kPr = 0.12, kPd = 0.009; 
 	static double kIr = 0.001,  kId = 0.00; //kIr = 0.0, kId = 0.00; 
 	static double kDr = 0.19, kDd = 0.20; //kDr = 0.06, kDd = 0.00; 
-	static double kFr = 0.0,  kFd = 0.00; //kFr = 0.00, kFd = 0.00; 
+	static double kFr = 0.0,  kFd = 0.01; //kFr = 0.00, kFd = 0.00; 
 	
 	static final double toleranceRotation = 1;
 	static final double toleranceDistance = 90;
@@ -57,7 +57,7 @@ public class PIDFunctions implements PIDOutput {
 				pidiD.setOutputRange(-0.5, 0.5);
 				pidiD.setAbsoluteTolerance(toleranceDistance);
 				pidiD.setContinuous(true);
-				pidiD.setAbsoluteTolerance(10);
+				pidiD.setAbsoluteTolerance(2);
 				break;
 		}
 	}
