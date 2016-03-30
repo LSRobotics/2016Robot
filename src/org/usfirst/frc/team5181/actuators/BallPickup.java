@@ -5,16 +5,19 @@ import org.usfirst.frc.team5181.robot.Statics;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.Talon;
 
 public class BallPickup {
 	Talon left, right;
 	LimitSwitch ballInTrap;
+	Relay relay;
 	
 	public BallPickup() {
 		left = new Talon(Statics.LeftBall);
 		right = new Talon(Statics.RightBall); 
-		
+		relay = new Relay(Statics.BallIntakePort);
 		ballInTrap = new LimitSwitch(9);
 	}
 	
@@ -42,9 +45,24 @@ public class BallPickup {
 			}
 		}
 	}
+	
 	public void shootFree(double leftMag, double rightMag) {
 		left.set(-leftMag);
 		right.set(rightMag);
+	}
+	
+	public void setRelay(double mag) {
+		Value val;
+		if (mag > 0) {
+			val = Value.kForward;
+		}
+		else if (mag < 0) {
+			val = Value.kReverse;
+		}
+		else {
+			val = Value.kOff;
+		}
+		relay.set(val);
 	}
 }
 

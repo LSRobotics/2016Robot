@@ -47,4 +47,5 @@ public class Statics {
 	
 	//Actuators
 	public static final int BORIS_PORT = 8;
+	public static final int BallIntakePort = 9;
 }
