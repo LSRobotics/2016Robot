@@ -24,14 +24,18 @@ public class MixedAutonomous implements Autonomous {
 	RevX revX;
 	private boolean inAuton;
 	private String[] autonPosition; //[0] == Side [1] == Defense
-
+	String state;
+	boolean gotDistance;
+	double sensedDistance;
 	Autonomous recordingAuton;
 
 	public static double d1 = 159.86 /* LEFT */, d2 = 116 /* RIGHT */, a1 = -120 /* LEFT */, a2 = 120 /* RIGHT */;
 	
 	public MixedAutonomous(Robot robot) {       
 		r = robot;
-		
+		state = "initialized";
+		gotDistance = false;
+		sensedDistance = 0;
 		rangeSensors = robot.rangeSensors;
 		ballPickup = robot.ballPickUp;
 		drive = robot.drive;
@@ -62,57 +66,86 @@ public class MixedAutonomous implements Autonomous {
 	public void doAuton() {
 		//DO recording
 		//recordingAuton.doAuton();
-		
-		//Turn if need be
-		if(autonPosition[1].equalsIgnoreCase("Ramparts") || autonPosition[1].equalsIgnoreCase("ChivalDeFrise") || autonPosition[1].equalsIgnoreCase("Portecullis")) {
-			while(true && inAuton) {
-				try {
-					DriverStation.reportError("MixedAuton @ ln 70, turning 180 deg", false);
-					pidi.turnToAngle(180);
-					do {
-						revX.reset();
-					} while(revX.getAngle() != 0);
-					break;
-				}
-				catch(NullPointerException e) {
-					pidi = new PIDFunctions(r, Controllers.ROTATION, revX);
-				}
+		if (state.equalsIgnoreCase("initialized")) {
+			if (autonPosition[1].equalsIgnoreCase("Ramparts") || autonPosition[1].equalsIgnoreCase("ChivalDeFrise") || autonPosition[1].equalsIgnoreCase("Portecullis")) {
+				state = "turning";
+			}
+			else {
+				state = "backwards";
 			}
 		}
 		
-		//Backwards after defense
-		boolean autonPositionIsLeft = autonPosition[0].equalsIgnoreCase("left");
-		//Get measurements immediately
-		double sensedDistance = (autonPositionIsLeft) ? rangeSensors.srLeft.getRangeInches() : rangeSensors.srRight.getRangeInches();
-		pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
-		while(!pidi.onTarget(Controllers.DISPLACEMENT) && inAuton) {
-			double distance = (autonPositionIsLeft) ? d1 : d2;
-			DriverStation.reportError("MixedAuton @ ln 90, moving a distance\n", false);
-			pidi.moveTo(-(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39))))); //I don't want to do it like that; Tim forced me to
-		}
-		
-		//Turn to face goal
-		pidi.setPIDSource(revX, Controllers.ROTATION);
-		while(!pidi.onTarget(Controllers.ROTATION) && inAuton) {
-			double angle = (autonPositionIsLeft) ? a1 : a2;
-			DriverStation.reportError("MixedAuton @ ln 98, turning to face goal\n", false);
-			pidi.turnToAngle(angle);
-		}
-	
-		//Drive to goal
-		pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
-		//temporary comment as of 3-29-16
-//		while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
-//			pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
-//		}
-		while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
-			DriverStation.reportError("MixedAuton @ ln 90, moving a distance\n", false);
-			drive.arcadeDrive(0, 0.3);
-		}
+		//Turn if need be
+		if(state.equalsIgnoreCase("turning")) {
+			try {
+				pidi.setPIDSource(r.rangeSensors.srBack, Controllers.ROTATION);
+				DriverStation.reportError("MixedAuton @ ln 70, turning 180 deg", false);
+				if (!pidi.onTarget(Controllers.ROTATION)) {
+					pidi.turnToAngle(180);
+				}
+				else {
+					do {
+						revX.reset();
+					} while(revX.getAngle() != 0);
+					state = "backwards";
+				}
+			}
+			catch(NullPointerException e) {
+				pidi = new PIDFunctions(r, Controllers.ROTATION, revX);
+			}
 			
-		//Shoot
-		ballPickup.shootFree(1, 1);
+		}
 		
-				
+		boolean autonPositionIsLeft = autonPosition[0].equalsIgnoreCase("left");
+		if (state.equalsIgnoreCase("backwards")) {
+			//Backwards after defense
+			if (!gotDistance) {
+				//Get measurements immediately
+				sensedDistance = (autonPositionIsLeft) ? rangeSensors.srLeft.getRangeInches() : rangeSensors.srRight.getRangeInches();
+				gotDistance = true;
+			}
+			pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
+			
+			if(!pidi.onTarget(Controllers.DISPLACEMENT)) {
+				double distance = (autonPositionIsLeft) ? d1 : d2;
+				DriverStation.reportError("MixedAuton @ ln 90; Needed: " + (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39)) + " current: " + rangeSensors.srBack.getRangeInches() + "\n", false);
+				pidi.moveTo(-(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39))))); //I don't want to do it like that; Tim forced me to
+			}
+			else {
+				state = "turnToFaceGoal";
+			}
+		}
+		if (state.equalsIgnoreCase("turnToFaceGoal")) {
+			//Turn to face goal
+			pidi.setPIDSource(revX, Controllers.ROTATION);
+			if(!pidi.onTarget(Controllers.ROTATION)) {
+				double angle = (autonPositionIsLeft) ? a1 : a2;
+				DriverStation.reportError("MixedAuton @ ln 98, turning to face goal\n", false);
+				pidi.turnToAngle(angle);
+			}
+			else {
+				state = "DriveToGoal";
+			}
+		}
+		if (state.equalsIgnoreCase("DriveToGoal")) {
+			//Drive to goal
+			pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
+			//temporary comment as of 3-29-16
+	//		while(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05) && inAuton) {
+	//			pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
+	//		}
+			if(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05)) {
+				DriverStation.reportError("MixedAuton @ ln 90, moving a distance\n", false);
+				drive.arcadeDrive(0, 0.3);
+			}
+			else {
+				state = "shoot";
+			}
+		}
+		
+		if (state.equalsIgnoreCase("shoot")) {
+		//Shoot
+			ballPickup.shootFree(1, 1);
+		}
 	}
 }

@@ -22,10 +22,10 @@ public class PIDFunctions implements PIDOutput {
 	public GyroSource gyroPID;
 	public DisplacementSource displacePID;
 	
-	static double kPr = 0.16, kPd = 0.01; //kPr = 0.12, kPd = 0.009; 
+	static double kPr = 0.16, kPd = 0.018; //kPr = 0.12, kPd = 0.009; 
 	static double kIr = 0.001,  kId = 0.00; //kIr = 0.0, kId = 0.00; 
-	static double kDr = 0.19, kDd = 0.20; //kDr = 0.06, kDd = 0.00; 
-	static double kFr = 0.0,  kFd = 0.01; //kFr = 0.00, kFd = 0.00; 
+	static double kDr = 0.19, kDd = 0.225; //kDr = 0.06, kDd = 0.00; 
+	static double kFr = 0.0,  kFd = 0.00; //kFr = 0.00, kFd = 0.00; 
 	
 	static final double toleranceRotation = 1;
 	static final double toleranceDistance = 90;
@@ -77,7 +77,7 @@ public class PIDFunctions implements PIDOutput {
 		if(pidiD != null) {
 			pidiD.setSetpoint(distance);
 			pidiD.enable();
-			drive.arcadeDrive(0, pidValue);
+			drive.arcadeDrive(0, -pidValue); //if passing in the back sensor, make this negative
 		}
 		else {
 			throw new NullPointerException();

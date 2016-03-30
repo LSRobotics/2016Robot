@@ -80,7 +80,7 @@ public class Robot extends SampleRobot {
 		rangeSensors = new RangeSensors();
 		
 		// Actuators
-		ballPickUp = new BallPickup();
+		//ballPickUp = new BallPickup();
 		//arm = new LadderArm(6, 7, 0); // TODO change constructor
 		rotateMAXPOWER = false;
 		//boris = new Boris(Statics.BORIS_PORT);
@@ -131,7 +131,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		// Ball pickup
-			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
+			//ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
 		// End ball pickup
 		
 		// Start Raspberry Pi client
@@ -170,13 +170,13 @@ public class Robot extends SampleRobot {
 			}
 	
 			if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
-				arm.extendFree(0);
+				//arm.extendFree(0);
 			}
 	
 			if (Gamepad.LEFT_Stick_DOWN_State) {
 				arm.stayRotated();
 			} else if (!Gamepad.LEFT_Stick_DOWN_State) {
-				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
+				//arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
 			}
 	
 			rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
@@ -188,7 +188,7 @@ public class Robot extends SampleRobot {
 		// End ladder
 
 		//Boris
-			boris.Set(Gamepad.LEFT_Stick_Y_State);
+			//boris.Set(Gamepad.LEFT_Stick_Y_State);
 		//End Boris
 		
 		// Drive
@@ -241,10 +241,10 @@ public class Robot extends SampleRobot {
 //		sonic.ultra.setEnabled(true);
 //		sonic.ultra.setAutomaticMode(true);
 		
-		PIDFunctions pid = new PIDFunctions(this, Controllers.DISPLACEMENT, rangeSensors.srFront);
+		PIDFunctions pid = new PIDFunctions(this, Controllers.DISPLACEMENT, rangeSensors.srBack);
 		while(this.isEnabled()) {
 			pid.moveTo(250);
-			DriverStation.reportError("\n FRONT: " + rangeSensors.srFront.getRangeMm(), false);
+			DriverStation.reportError("\n FRONT: " + rangeSensors.srBack.getRangeMm(), false);
 		}
 		
 	}
