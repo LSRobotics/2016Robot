@@ -115,6 +115,7 @@ public class Robot extends SampleRobot {
 		auton.initializeAuton(selectedAuton, new String[] {selectedAuton, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defense name
 		while (this.isAutonomous()) {
 			auton.setAutonState(this.isAutonomous());
+			auton.doAuton();
 		}
 	}
 

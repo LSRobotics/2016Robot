@@ -24,7 +24,7 @@ public class PIDFunctions implements PIDOutput {
 	
 	static double kPr = 0.16, kPd = 0.01; //kPr = 0.12, kPd = 0.009; 
 	static double kIr = 0.001,  kId = 0.00; //kIr = 0.0, kId = 0.00; 
-	static double kDr = 0.19, kDd = 0.05; //kDr = 0.06, kDd = 0.00; 
+	static double kDr = 0.19, kDd = 0.20; //kDr = 0.06, kDd = 0.00; 
 	static double kFr = 0.0,  kFd = 0.00; //kFr = 0.00, kFd = 0.00; 
 	
 	static final double toleranceRotation = 1;
@@ -45,6 +45,7 @@ public class PIDFunctions implements PIDOutput {
 				pidiR.setOutputRange(-1, 1);
 				pidiR.setAbsoluteTolerance(toleranceRotation);
 				pidiR.setContinuous(true);
+				pidiR.setAbsoluteTolerance(2);
 				
 				break;
 			case DISPLACEMENT:
@@ -56,7 +57,7 @@ public class PIDFunctions implements PIDOutput {
 				pidiD.setOutputRange(-0.5, 0.5);
 				pidiD.setAbsoluteTolerance(toleranceDistance);
 				pidiD.setContinuous(true);
-				
+				pidiD.setAbsoluteTolerance(10);
 				break;
 		}
 	}
@@ -94,9 +95,20 @@ public class PIDFunctions implements PIDOutput {
 	public void setPIDSource(Object source, Controllers pidType) {
 		if(pidType == Controllers.ROTATION) {
 			pidiR = new PIDController(kPr, kIr, kDr, new GyroSource((RevX) source), this);
+
+			pidiR.setInputRange(-180.0, 180.0);
+			pidiR.setOutputRange(-1, 1);
+			pidiR.setAbsoluteTolerance(toleranceRotation);
+			pidiR.setContinuous(true);
+			pidiR.setAbsoluteTolerance(2);
 		}
 		if(pidType == Controllers.DISPLACEMENT) {
 			pidiD = new PIDController(kPd, kId, kDd, new DisplacementSource((SonicRangeSensor) source), this);
+			pidiD.setInputRange(0, 5000); //mm
+			pidiD.setOutputRange(-0.5, 0.5);
+			pidiD.setAbsoluteTolerance(toleranceDistance);
+			pidiD.setContinuous(true);
+			pidiD.setAbsoluteTolerance(10);
 		}
 	}
 	
