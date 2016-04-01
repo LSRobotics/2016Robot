@@ -61,7 +61,7 @@ public class TimedAutonomous implements Autonomous {
 							break;
 						}
 					}
-					//Breaks out of thread is autonomous ends
+					//Breaks out of thread if autonomous ends
 					if(!inAuton) {
 						break;
 					}

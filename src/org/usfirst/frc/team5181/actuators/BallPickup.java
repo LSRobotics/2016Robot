@@ -12,57 +12,26 @@ import edu.wpi.first.wpilibj.Talon;
 public class BallPickup {
 	Talon left, right;
 	LimitSwitch ballInTrap;
-	Relay relay;
 	
 	public BallPickup() {
 		left = new Talon(Statics.LeftBall);
 		right = new Talon(Statics.RightBall); 
-		relay = new Relay(Statics.BallIntakePort);
-		ballInTrap = new LimitSwitch(9);
 	}
 	
 	public void setBallIntake(double leftMag, double rightMag) {
-		if(!ballInTrap.get()) {
-			if(rightMag > .1) {
-				left.set(-1);
-				right.set(1);
-				return;
-			}
-			else if(!(rightMag > .1)) {
-				left.set(0);
-				right.set(0);
-				return;
-			}
+		if(rightMag > .1) {
+			left.set(-1);
+			right.set(1);
 		}
-		if(!(rightMag > .1)) {
-			if(leftMag > 0.2) {
-				left.set(0.2);
-				right.set(-0.2);
-			}
-			if(Math.abs(leftMag) < 0.1) {
-				left.set(0);
-				right.set(0);
-			}
+		if(leftMag > 0.1) {
+			left.set(-.2);
+			right.set(.2);
 		}
 	}
 	
 	public void shootFree(double leftMag, double rightMag) {
 		left.set(-leftMag);
 		right.set(rightMag);
-	}
-	
-	public void setRelay(double mag) {
-		Value val;
-		if (mag > 0) {
-			val = Value.kForward;
-		}
-		else if (mag < 0) {
-			val = Value.kReverse;
-		}
-		else {
-			val = Value.kOff;
-		}
-		relay.set(val);
 	}
 }
 

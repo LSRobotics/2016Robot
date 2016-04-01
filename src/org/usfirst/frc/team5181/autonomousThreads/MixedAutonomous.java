@@ -33,7 +33,7 @@ public class MixedAutonomous implements Autonomous {
 	
 	public MixedAutonomous(Robot robot) {       
 		r = robot;
-		state = "initialized";
+		state = "recording";
 		gotDistance = false;
 		sensedDistance = 0;
 		rangeSensors = robot.rangeSensors;
@@ -43,7 +43,7 @@ public class MixedAutonomous implements Autonomous {
 		pidi = new PIDFunctions(robot, Controllers.ROTATION, revX);
 		uc = new UnitConversion();
 		
-		//recordingAuton = new TimedAutonomous(robot);
+		recordingAuton = new TimedAutonomous(robot);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MixedAutonomous implements Autonomous {
 	public void initializeAuton(String recordingName, String[] others) {
 		autonPosition = others;
 		
-		//recordingAuton.initializeAuton(recordingName, others);
+		recordingAuton.initializeAuton(recordingName, others);
 	}
 
 	@Override
@@ -65,8 +65,20 @@ public class MixedAutonomous implements Autonomous {
 	@Override
 	public void doAuton() {
 		//DO recording
-		//recordingAuton.doAuton();
-		if (state.equalsIgnoreCase("initialized")) {
+		if (state.equalsIgnoreCase("recording")) {
+			Thread temp = new Thread() {
+				public void run() {
+					recordingAuton.doAuton();
+				}
+			};
+			temp.start();
+			
+			recordingAuton.setAutonState(inAuton);
+			if(!temp.isAlive()) {
+				state = "initialized";
+			}
+		}
+		if (state.equalsIgnoreCase("initialized") && inAuton) {
 			if (autonPosition[1].equalsIgnoreCase("Ramparts") || autonPosition[1].equalsIgnoreCase("ChivalDeFrise") || autonPosition[1].equalsIgnoreCase("Portecullis")) {
 				state = "turning";
 			}
@@ -76,7 +88,7 @@ public class MixedAutonomous implements Autonomous {
 		}
 		
 		//Turn if need be
-		if(state.equalsIgnoreCase("turning")) {
+		if(state.equalsIgnoreCase("turning") && inAuton) {
 			try {
 				pidi.setPIDSource(r.rangeSensors.srBack, Controllers.ROTATION);
 				DriverStation.reportError("MixedAuton @ ln 70, turning 180 deg", false);
@@ -97,7 +109,7 @@ public class MixedAutonomous implements Autonomous {
 		}
 		
 		boolean autonPositionIsLeft = autonPosition[0].equalsIgnoreCase("left");
-		if (state.equalsIgnoreCase("backwards")) {
+		if (state.equalsIgnoreCase("backwards") && inAuton) {
 			//Backwards after defense
 			if (!gotDistance) {
 				//Get measurements immediately
@@ -115,7 +127,7 @@ public class MixedAutonomous implements Autonomous {
 				state = "turnToFaceGoal";
 			}
 		}
-		if (state.equalsIgnoreCase("turnToFaceGoal")) {
+		if (state.equalsIgnoreCase("turnToFaceGoal") && inAuton) {
 			//Turn to face goal
 			pidi.setPIDSource(revX, Controllers.ROTATION);
 			if(!pidi.onTarget(Controllers.ROTATION)) {
@@ -127,7 +139,7 @@ public class MixedAutonomous implements Autonomous {
 				state = "DriveToGoal";
 			}
 		}
-		if (state.equalsIgnoreCase("DriveToGoal")) {
+		if (state.equalsIgnoreCase("DriveToGoal") && inAuton) {
 			//Drive to goal
 			pidi.setPIDSource(r.rangeSensors.srFront, Controllers.DISPLACEMENT);
 			//temporary comment as of 3-29-16

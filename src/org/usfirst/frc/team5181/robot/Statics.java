@@ -23,6 +23,7 @@ public class Statics {
 	public static int START = 8;
 	public static int LEFT_Stick_DOWN = 1; //FOR GAMEPAD =  9, JOYSTCIK = 1
 	public static int RIGHT_Stick_DOWN = 10;                                                                                                                                                                                                                                                                                                                                                    
+	public static int JoyStickTrigger = 1;
 	
 	// Axis
 	public static int LEFT_Stick_X = 0;
@@ -38,8 +39,8 @@ public class Statics {
 	//Ultrasonic Ports
 	public static final int FRONT_Ultra_Echo = 2;
 	public static final int FRONT_Ultra_Trigger = 1;
-	public static final int BACK_Ultra_Echo = 4;
-	public static final int BACK_Ultra_Trigger = 3;
+	public static final int BACK_Ultra_Echo = 0;
+	public static final int BACK_Ultra_Trigger = 1;
 	public static final int RIGHT_Ultra_Echo = 6;
 	public static final int RIGHT_Ultra_Trigger = 5;
 	public static final int LEFT_Ultra_Echo = 8;
@@ -47,5 +48,4 @@ public class Statics {
 	
 	//Actuators
 	public static final int BORIS_PORT = 8;
-	public static final int BallIntakePort = 9;
 }

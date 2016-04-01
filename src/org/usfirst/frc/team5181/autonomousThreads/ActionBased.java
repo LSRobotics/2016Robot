@@ -103,6 +103,7 @@ public class ActionBased extends Thread {
 		//Analog downs
 		recordAction(17, toDouble(Gamepad.LEFT_Stick_DOWN_State));
 		recordAction(18, toDouble(Gamepad.RIGHT_Stick_DOWN_State));
+		recordAction(19, toDouble(Gamepad.TRIGGER_State));
 		
 		recording.add("\n");
 	}

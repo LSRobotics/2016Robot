@@ -16,8 +16,8 @@ public class RangeSensors {
 	public RangeSensors() {
 		//this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
 		this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
-		this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.RIGHT_Ultra_Trigger);
-		this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		//this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.RIGHT_Ultra_Trigger);
+		//this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
 		
 		//Call constructors consecutively
 		//this.srFront.restartSensor();
@@ -26,10 +26,10 @@ public class RangeSensors {
 		this.srBack.restartSensor();
 		this.srBack.ultra.setAutomaticMode(true);
 		
-		this.srLeft.restartSensor();
-		
-		this.srRight.restartSensor();
-		this.srRight.ultra.setAutomaticMode(true);
+//		this.srLeft.restartSensor();
+
+//		this.srRight.restartSensor();
+//		this.srRight.ultra.setAutomaticMode(true);
 	}
 	
 	/**
