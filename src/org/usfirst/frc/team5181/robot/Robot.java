@@ -149,7 +149,15 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		// Ball pickup
-			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
+		if (Gamepad.Y_Button_State) {
+			ballPickUp.setBallIntake(0, 1);
+		}
+		else if (Gamepad.A_Button_State) {
+			ballPickUp.setBallIntake(1, 0);
+		}
+		else {
+			ballPickUp.shootFree(0, 0);
+		}
 		// End ball pickup
 		
 		// Start Raspberry Pi client
