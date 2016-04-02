@@ -14,8 +14,11 @@ public class Boris {
 		if(speed > .1) {
 			boris.set(1);
 		}
-		if(speed < -.1) {
+		else if(speed < -.1) {
 			boris.set(-1);
+		}
+		else {
+			boris.set(0);
 		}
 	}
 }
