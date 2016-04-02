@@ -20,6 +20,6 @@ public class Boris {
 		else {
 			boris.set(0);
 		}**/
-		boris.set(speed);
+		boris.set(speed * 0.8);
 	}
 }

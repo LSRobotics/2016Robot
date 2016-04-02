@@ -110,9 +110,9 @@ public class Robot extends SampleRobot {
 		ballTracker = false;
 		clientStarted = false;
 
-		//server = CameraServer.getInstance();
-		//server.setQuality(100);
-		//server.startAutomaticCapture("cam0");
+		server = CameraServer.getInstance();
+		server.setQuality(100);
+		server.startAutomaticCapture("cam0");
 	}
 
 	public void autonomous() {
@@ -269,21 +269,74 @@ public class Robot extends SampleRobot {
 	public RevX getRevX() {
 		return revX;
 	}
-
+	
+	boolean I = false, P = false,  D = false;
+	boolean dI = false, dP = false, dD = false;
+	double p = 0, i = 0, d = 0;
+	
 	public void test() {
-		//	while (this.isEnabled()) {
-		//		auton.doAuton();
-		//	}
+		PIDFunctions pidi = new PIDFunctions(this, Controllers.ROTATION, revX);
 		
-		//SonicRangeSensor sonic = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
-//		sonic.ultra.setEnabled(true);
-//		sonic.ultra.setAutomaticMode(true);
-		
-		PIDFunctions pid = new PIDFunctions(this, Controllers.DISPLACEMENT, rangeSensors.srBack);
 		while(this.isEnabled()) {
-			pid.moveTo(250);
-			DriverStation.reportError("\n FRONT: " + rangeSensors.srBack.getRangeMm(), false);
+			Gamepad.setNaturalState();
+			
+			for(int i = 0; i < 3; i++)
+			{
+				DriverStation.reportError(i + "\t" + pidi.getPIDTunings(Controllers.ROTATION)[i] + "\n", false);
+			}
+			
+			if(Gamepad.RIGHT_Stick_Y_State > .1) {
+				pidi.turnToAngle(90);
+			}
+			else if(Gamepad.RIGHT_Stick_Y_State < -.1) {
+				pidi.turnToAngle(0);
+			}
+			
+			if (Gamepad.X_Button_State && P == false) {
+				P = true;
+			}
+			else if (!Gamepad.X_Button_State && P == true ) {
+				P = false;
+			}
+			if (Gamepad.B_Button_State && D == false) {
+				D = true;
+			}
+			else if (!Gamepad.B_Button_State && D == true ) {
+				D = false;
+			}
+			if (Gamepad.Y_Button_State && I == false) {
+				I = true;
+			}
+			else if (!Gamepad.Y_Button_State && I == true ) {
+				I = false;
+			}
+			/**
+			if (Gamepad. && dP == false) {
+				P = true;
+			}
+			else if (!Gamepad.X_Button_State && P == true ) {
+				P = false;
+			}
+			if (Gamepad.B_Button_State && D == false) {
+				D = true;
+			}
+			else if (!Gamepad.B_Button_State && D == true ) {
+				D = false;
+			}
+			if (Gamepad.Y_Button_State && I == false) {
+				I = true;
+			}
+			else if (!Gamepad.Y_Button_State && I == true ) {
+				I = false;
+			}
+			**/
+			//Remember to decrease			
+			p += (P) ? 0.05 : 0.0;
+			d += (D) ? 0.05 : 0.0;
+			i += (I) ? 0.05 : 0.0;
+			
+			
+			
 		}
-		
 	}
 }
