@@ -11,7 +11,7 @@ public class Boris {
 	}
 	
 	public void set(double speed) {
-		if(speed > .1) {
+	/**	if(speed > .1) {
 			boris.set(1);
 		}
 		else if(speed < -.1) {
@@ -19,6 +19,7 @@ public class Boris {
 		}
 		else {
 			boris.set(0);
-		}
+		}**/
+		boris.set(speed);
 	}
 }
