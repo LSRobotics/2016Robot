@@ -55,7 +55,7 @@ public class Robot extends SampleRobot {
 	public RangeSensors rangeSensors;
 	// Actuators
 	public BallPickup ballPickUp;
-	LadderArm arm;
+	//LadderArm arm;
 	Boris boris;
 	boolean rotateMAXPOWER;
 
@@ -80,7 +80,7 @@ public class Robot extends SampleRobot {
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7); // TODO change constructor
+		//arm = new LadderArm(6, 7); // TODO change constructor
 		rotateMAXPOWER = false;
 		boris = new Boris(Statics.BORIS_PORT);
 		
@@ -191,7 +191,7 @@ public class Robot extends SampleRobot {
 			}
 		// End Collision
 
-		// Ladder
+		/** // Ladder
 			if(Gamepad.TRIGGER_State) {
 				if (Gamepad.A_Button_State) {
 					//arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
@@ -222,7 +222,7 @@ public class Robot extends SampleRobot {
 			else {
 				arm.rotateFree(0);
 			}
-		// End ladder
+		// End ladder */
 
 		//Boris
 			if(!Gamepad.TRIGGER_State) {
@@ -280,8 +280,7 @@ public class Robot extends SampleRobot {
 		while(this.isEnabled()) {
 			Gamepad.setNaturalState();
 			
-			for(int i = 0; i < 3; i++)
-			{
+			for(int i = 0; i < 3; i++) {
 				DriverStation.reportError(i + "\t" + pidi.getPIDTunings(Controllers.ROTATION)[i] + "\n", false);
 			}
 			
@@ -291,52 +290,62 @@ public class Robot extends SampleRobot {
 			else if(Gamepad.RIGHT_Stick_Y_State < -.1) {
 				pidi.turnToAngle(0);
 			}
+			else {
+				drive.tankDrive(0, 0);
+			}
 			
-			if (Gamepad.X_Button_State && P == false) {
+			//BEGIN
+			if (Gamepad.X_Button_State && !P) {
 				P = true;
 			}
-			else if (!Gamepad.X_Button_State && P == true ) {
+			else if (!Gamepad.X_Button_State && P) {
 				P = false;
 			}
-			if (Gamepad.B_Button_State && D == false) {
+			if (Gamepad.B_Button_State && !D) {
 				D = true;
 			}
-			else if (!Gamepad.B_Button_State && D == true ) {
+			else if (!Gamepad.B_Button_State && D) {
 				D = false;
 			}
-			if (Gamepad.Y_Button_State && I == false) {
+			if (Gamepad.Y_Button_State && !I) {
 				I = true;
 			}
-			else if (!Gamepad.Y_Button_State && I == true ) {
+			else if (!Gamepad.Y_Button_State && I) {
 				I = false;
 			}
-			/**
-			if (Gamepad. && dP == false) {
-				P = true;
+
+			//LEFT_Bumper_State => decrease P
+			if (Gamepad.LEFT_Bumper_State && !dP) {
+				dP = true;
 			}
-			else if (!Gamepad.X_Button_State && P == true ) {
-				P = false;
+			else if (!Gamepad.LEFT_Bumper_State && dP) {
+				dP = false;
 			}
-			if (Gamepad.B_Button_State && D == false) {
-				D = true;
+			//RIGHT_Bumper_State
+			if (Gamepad.A_Button_State && !dD) {
+				dD = true;
 			}
-			else if (!Gamepad.B_Button_State && D == true ) {
-				D = false;
+			else if (!Gamepad.A_Button_State && dD) {
+				dD = false;
 			}
-			if (Gamepad.Y_Button_State && I == false) {
-				I = true;
+			//A_Button_State
+			if (Gamepad.RIGHT_Bumper_State && !dI) {
+				dI = true;
 			}
-			else if (!Gamepad.Y_Button_State && I == true ) {
-				I = false;
+			else if (!Gamepad.RIGHT_Bumper_State && dI) {
+				dI = false;
 			}
-			**/
-			//Remember to decrease			
+		
+			//SD			
 			p += (P) ? 0.05 : 0.0;
 			d += (D) ? 0.05 : 0.0;
 			i += (I) ? 0.05 : 0.0;
 			
+			p -= (dP) ? (-0.05) : 0.0;
+			d -= (dD) ? (-0.05) : 0.0;
+			i -= (dI) ? (-0.05) : 0.0;
 			
-			
+			pidi.upadtePID(Controllers.ROTATION, p, i, d, 0);
 		}
 	}
 }
