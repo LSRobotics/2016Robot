@@ -20,12 +20,12 @@ public class BallPickup {
 	
 	public void setBallIntake(double leftMag, double rightMag) {
 		if(rightMag > .1) {
-			left.set(-1);
-			right.set(1);
+			left.set(1);
+			right.set(-1);
 		}
 		if(leftMag > 0.1) {
-			left.set(-.2);
-			right.set(.2);
+			left.set(-.8);
+			right.set(.8);
 		}
 	}
 	

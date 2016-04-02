@@ -10,7 +10,12 @@ public class Boris {
 		boris = new Talon(portNum);
 	}
 	
-	public void Set(double speed) {
-		boris.set(speed);
+	public void set(double speed) {
+		if(speed > .1) {
+			boris.set(1);
+		}
+		if(speed < -.1) {
+			boris.set(-1);
+		}
 	}
 }

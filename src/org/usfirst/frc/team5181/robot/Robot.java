@@ -80,7 +80,7 @@ public class Robot extends SampleRobot {
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		//arm = new LadderArm(6, 7, 0); // TODO change constructor
+		arm = new LadderArm(6, 7); // TODO change constructor
 		rotateMAXPOWER = false;
 		boris = new Boris(Statics.BORIS_PORT);
 		
@@ -89,6 +89,10 @@ public class Robot extends SampleRobot {
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
 		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
+		autonChooser.addObject("Low-Bar", "/var/rcrdng/lowBar.rcrdng");
+		autonChooser.addObject("CDF", "/var/rcrdng/CDF.rcrdng"); 
+		autonChooser.addObject("Moat", "/var/rcrdng/moat.rcrdng");
+		autonChooser.addObject("PTC", "/var/rcrdng/PTC.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
 
 		positionChooser = new SendableChooser();
@@ -189,34 +193,39 @@ public class Robot extends SampleRobot {
 		// Ladder
 			if(Gamepad.TRIGGER_State) {
 				if (Gamepad.A_Button_State) {
-					arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
+					//arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
 				}
 		
 				if (Gamepad.Y_Button_State) {
-					arm.extend(LadderArm.extensionDirections.EXTEND, 1);
+					//arm.extend(LadderArm.extensionDirections.EXTEND, 1);
 				}
 		
 				if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
 					//arm.extendFree(0);
 				}
 		
-				if (Gamepad.LEFT_Stick_DOWN_State) {
-					arm.stayRotated();
-				} else if (!Gamepad.LEFT_Stick_DOWN_State) {
-					arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
-				}
+//				if (Gamepad.LEFT_Stick_Y_State > 0.01) {
+//					arm.stayRotated();
+//				} else if (!Gamepad.LEFT_Stick_DOWN_State) {
+//					arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
+//				}
 		
+				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
+				
 				rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
 				
 				if (rotateMAXPOWER) {
 					arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
 				}
 			}
+			else {
+				arm.rotateFree(0);
+			}
 		// End ladder
 
 		//Boris
-			else {
-				boris.Set(Gamepad.LEFT_Stick_Y_State);
+			if(!Gamepad.TRIGGER_State) {
+				boris.set(Gamepad.LEFT_Stick_Y_State);
 			}
 		//End Boris
 		

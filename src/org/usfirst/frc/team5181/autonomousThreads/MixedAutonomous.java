@@ -91,7 +91,7 @@ public class MixedAutonomous implements Autonomous {
 		if(state.equalsIgnoreCase("turning") && inAuton) {
 			try {
 				pidi.setPIDSource(r.rangeSensors.srBack, Controllers.ROTATION);
-				DriverStation.reportError("MixedAuton @ ln 70, turning 180 deg", false);
+				//DriverStation.reportError("MixedAuton @ ln 70, turning 180 deg", false);
 				if (!pidi.onTarget(Controllers.ROTATION)) {
 					pidi.turnToAngle(180);
 				}
@@ -111,17 +111,18 @@ public class MixedAutonomous implements Autonomous {
 		boolean autonPositionIsLeft = autonPosition[0].equalsIgnoreCase("left");
 		if (state.equalsIgnoreCase("backwards") && inAuton) {
 			//Backwards after defense
-			if (!gotDistance) {
-				//Get measurements immediately
-				sensedDistance = (autonPositionIsLeft) ? rangeSensors.srLeft.getRangeInches() : rangeSensors.srRight.getRangeInches();
-				gotDistance = true;
-			}
+//			if (!gotDistance) {
+//				//Get measurements immediately
+//				sensedDistance = (autonPositionIsLeft) ? rangeSensors.srLeft.getRangeInches() : rangeSensors.srRight.getRangeInches();
+//				gotDistance = true;
+//			}
 			pidi.setPIDSource(r.rangeSensors.srBack, Controllers.DISPLACEMENT);
 			
 			if(!pidi.onTarget(Controllers.DISPLACEMENT)) {
-				double distance = (autonPositionIsLeft) ? d1 : d2;
-				DriverStation.reportError("MixedAuton @ ln 90; Needed: " + (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39)) + " current: " + rangeSensors.srBack.getRangeInches() + "\n", false);
-				pidi.moveTo(-(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39))))); //I don't want to do it like that; Tim forced me to
+//				double distance = (autonPositionIsLeft) ? d1 : d2;
+//				DriverStation.reportError("MixedAuton @ ln 90; Needed: " + (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39)) + " current: " + rangeSensors.srBack.getRangeInches() + "\n", false);
+//				pidi.moveTo(-(uc.unitConversion("inches", "milimeters", (161.5 - ((distance - sensedDistance) * Math.tan(Math.PI/6) - 39))))); //I don't want to do it like that; Tim forced me to
+  				pidi.moveTo(5 * 2.54 * 10);
 			}
 			else {
 				state = "turnToFaceGoal";
@@ -130,10 +131,10 @@ public class MixedAutonomous implements Autonomous {
 		if (state.equalsIgnoreCase("turnToFaceGoal") && inAuton) {
 			//Turn to face goal
 			pidi.setPIDSource(revX, Controllers.ROTATION);
-			if(!pidi.onTarget(Controllers.ROTATION)) {
-				double angle = (autonPositionIsLeft) ? a1 : a2;
-				DriverStation.reportError("MixedAuton @ ln 98, turning to face goal\n", false);
-				pidi.turnToAngle(angle);
+  			if(!pidi.onTarget(Controllers.ROTATION)) {
+//				double angle = (autonPositionIsLeft) ? a1 : a2;
+//				DriverStation.reportError("MixedAuton @ ln 98, turning to face goal\n", false);
+				pidi.turnToAngle(-95);
 			}
 			else {
 				state = "DriveToGoal";
@@ -147,7 +148,7 @@ public class MixedAutonomous implements Autonomous {
 	//			pidi.moveTo(uc.unitConversion("feet", "centimeters", 4.0));
 	//		}
 			if(!(Math.abs(revX.getWorldLinearAccelZ() + 1) <= 0.05)) {
-				DriverStation.reportError("MixedAuton @ ln 90, moving a distance\n", false);
+				//DriverStation.reportError("MixedAuton @ ln 90, moving a distance\n", false);
 				drive.arcadeDrive(0, 0.3);
 			}
 			else {
@@ -157,7 +158,7 @@ public class MixedAutonomous implements Autonomous {
 		
 		if (state.equalsIgnoreCase("shoot")) {
 		//Shoot
-			ballPickup.shootFree(1, 1);
+			ballPickup.setBallIntake(0, 1);
 		}
 	}
 }
