@@ -93,6 +93,7 @@ public class Robot extends SampleRobot {
 		autonChooser.addObject("CDF", "/var/rcrdng/CDF.rcrdng"); 
 		autonChooser.addObject("Moat", "/var/rcrdng/moat.rcrdng");
 		autonChooser.addObject("PTC", "/var/rcrdng/PTC.rcrdng");
+		autonChooser.addObject("Ramparts", "/var/rcrdng/ramparts.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
 
 		positionChooser = new SendableChooser();
