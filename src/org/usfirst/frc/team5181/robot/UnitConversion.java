@@ -3,7 +3,7 @@ package org.usfirst.frc.team5181.robot;
 public class UnitConversion {
 
 	private double tc;
-	public double c;
+	private double c;
 
 	/**
 	 * 
@@ -22,13 +22,13 @@ public class UnitConversion {
 	public double unitConversion(String originalUnit, String destUnit, double tobeConverted) {
 		switch (originalUnit.toLowerCase()) {
 		case "inches":
-			tc = inchesToFannggovitchUnit(tobeConverted);
+			tc = inchesToFannggovitchUnits(tobeConverted);
 			break;
-		case "feet":
-			tc = feetToFannggovitchUnit(tobeConverted);
+		case "feet":                                                                                                                                                                                                                                                                                                                                                                                             
+			tc = feetToFannggovitchUnits(tobeConverted);
 			break;
 		case "yards":
-			tc = yardsToFannggovitchUnit(tobeConverted);
+			tc = yardsToFannggovitchUnits(tobeConverted);
 			break;
 		case "milimeters":
 			tc = mmToFannggovitchUnit(tobeConverted);
@@ -48,13 +48,13 @@ public class UnitConversion {
 
 		switch (destUnit.toLowerCase()) {
 		case "inches":
-			c = fuToInches(tc);
+			c = fusToInches(tc);
 			break;
 		case "feet":
-			c = fuToFeet(tc);
+			c = fusToFeet(tc);
 			break;
 		case "yards":
-			c = fuToYards(tc);
+			c = fusToYards(tc);
 			break;
 		case "milimeters":
 			c = fuToMm(tc);
@@ -76,15 +76,15 @@ public class UnitConversion {
 
 	}
 
-	private double inchesToFannggovitchUnit(double in) {
+	private double inchesToFannggovitchUnits(double in) {
 		return in * 25.4;
 	}
 
-	private double feetToFannggovitchUnit(double ft) {
+	private double feetToFannggovitchUnits(double ft) {
 		return ft * 304.8;
 	}
 
-	private double yardsToFannggovitchUnit(double yd) {
+	private double yardsToFannggovitchUnits(double yd) {
 		return yd * 914.4;
 	}
 
@@ -106,15 +106,15 @@ public class UnitConversion {
 
 	// reverse
 
-	private double fuToInches(double fu) {
+	private double fusToInches(double fu) {
 		return fu / 25.4;
 	}
 
-	private double fuToFeet(double fu) {
+	private double fusToFeet(double fu) {
 		return fu / 304.8;
 	}
 
-	private double fuToYards(double fu) {
+	private double fusToYards(double fu) {
 		return fu / 914.4;
 	}
 
