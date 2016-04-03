@@ -55,7 +55,7 @@ public class Robot extends SampleRobot {
 	public RangeSensors rangeSensors;
 	// Actuators
 	public BallPickup ballPickUp;
-	//LadderArm arm;
+	LadderArm arm;
 	Boris boris;
 	boolean rotateMAXPOWER;
 
@@ -64,8 +64,7 @@ public class Robot extends SampleRobot {
 	boolean isRecording;
 
 	// Sensors
-	Potentiometer potent;
-	//public LimitSwitch limitSwitch;
+	//Potentiometer potent;
 
 	private boolean ballTracker;
 	private boolean clientStarted;
@@ -75,12 +74,11 @@ public class Robot extends SampleRobot {
 
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		//limitSwitch = new LimitSwitch(7);
 		rangeSensors = new RangeSensors();
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		//arm = new LadderArm(6, 7); // TODO change constructor
+		arm = new LadderArm(6, 7, 9); // TODO change constructor
 		rotateMAXPOWER = false;
 		boris = new Boris(Statics.BORIS_PORT);
 		
@@ -154,15 +152,17 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		// Ball pickup
-		if (Gamepad.Y_Button_State) {
-			ballPickUp.setBallIntake(0, 1);
-		}
-		else if (Gamepad.A_Button_State) {
-			ballPickUp.setBallIntake(1, 0);
-		}
-		else {
-			ballPickUp.shootFree(0, 0);
-		}
+			if(!Gamepad.TRIGGER_State) {
+				if (Gamepad.Y_Button_State) {
+					ballPickUp.setBallIntake(0, 1);
+				}
+				else if (Gamepad.A_Button_State) {
+					ballPickUp.setBallIntake(1, 0);
+				}
+				else {
+					ballPickUp.shootFree(0, 0);
+				}
+				}
 		// End ball pickup
 		
 		// Start Raspberry Pi client
@@ -191,26 +191,20 @@ public class Robot extends SampleRobot {
 			}
 		// End Collision
 
-		/** // Ladder
+		// Ladder
 			if(Gamepad.TRIGGER_State) {
 				if (Gamepad.A_Button_State) {
-					//arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
+					arm.extendFree(1);
 				}
 		
 				if (Gamepad.Y_Button_State) {
-					//arm.extend(LadderArm.extensionDirections.EXTEND, 1);
-				}
+					arm.extendFree(-1);
+				}   
 		
 				if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
-					//arm.extendFree(0);
+					arm.extendStop();
 				}
-		
-//				if (Gamepad.LEFT_Stick_Y_State > 0.01) {
-//					arm.stayRotated();
-//				} else if (!Gamepad.LEFT_Stick_DOWN_State) {
-//					arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
-//				}
-		
+
 				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
 				
 				rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
@@ -222,7 +216,7 @@ public class Robot extends SampleRobot {
 			else {
 				arm.rotateFree(0);
 			}
-		// End ladder */
+		// End ladder 
 
 		//Boris
 			if(!Gamepad.TRIGGER_State) {
@@ -281,7 +275,7 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 			
 			for(int i = 0; i < 3; i++) {
-				DriverStation.reportError(i + "\t" + pidi.getPIDTunings(Controllers.ROTATION)[i] + "\n", false);
+				DriverStation.reportError("Current println: " + i + "     " + pidi.getPIDTunings(Controllers.ROTATION)[i] + "\n", false);
 			}
 			
 			if(Gamepad.RIGHT_Stick_Y_State > .1) {
