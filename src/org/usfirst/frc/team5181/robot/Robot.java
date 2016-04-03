@@ -55,7 +55,7 @@ public class Robot extends SampleRobot {
 	public RangeSensors rangeSensors;
 	// Actuators
 	public BallPickup ballPickUp;
-	LadderArm arm;
+	//LadderArm arm;
 	Boris boris;
 	boolean rotateMAXPOWER;
 
@@ -78,7 +78,7 @@ public class Robot extends SampleRobot {
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7, 9); // TODO change constructor
+		//arm = new LadderArm(6, 7, 9); // TODO change constructor
 		rotateMAXPOWER = false;
 		boris = new Boris(Statics.BORIS_PORT);
 		
@@ -192,30 +192,30 @@ public class Robot extends SampleRobot {
 		// End Collision
 
 		// Ladder
-			if(Gamepad.TRIGGER_State) {
-				if (Gamepad.A_Button_State) {
-					arm.extendFree(1);
-				}
-		
-				if (Gamepad.Y_Button_State) {
-					arm.extendFree(-1);
-				}   
-		
-				if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
-					arm.extendStop();
-				}
-
-				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
-				
-				rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
-				
-				if (rotateMAXPOWER) {
-					arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
-				}
-			}
-			else {
-				arm.rotateFree(0);
-			}
+//			if(Gamepad.TRIGGER_State) {
+//				if (Gamepad.A_Button_State) {
+//					arm.extendFree(1);
+//				}
+//		
+//				if (Gamepad.Y_Button_State) {
+//					arm.extendFree(-1);
+//				}   
+//		
+//				if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
+//					arm.extendStop();
+//				}
+//
+//				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
+//				
+//				rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
+//				
+//				if (rotateMAXPOWER) {
+//					arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
+//				}
+//			}
+//			else {
+//				arm.rotateFree(0);
+//			}
 		// End ladder 
 
 		//Boris
