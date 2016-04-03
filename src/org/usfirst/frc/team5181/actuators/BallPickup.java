@@ -17,15 +17,37 @@ public class BallPickup {
 		left = new Talon(Statics.LeftBall);
 		right = new Talon(Statics.RightBall); 
 	}
+	public BallPickup(int limitPort) {
+		left = new Talon(Statics.LeftBall);
+		right = new Talon(Statics.RightBall); 
+		
+		ballInTrap = new LimitSwitch(limitPort);
+	}
 	
 	public void setBallIntake(double leftMag, double rightMag) {
-		if(rightMag > .1) {
-			left.set(1);
-			right.set(-1);
+		if(ballInTrap == null) {
+			if(rightMag > .1) {
+				left.set(1);
+				right.set(-1);
+			}
+			if(leftMag > 0.1) {
+				left.set(-.8);
+				right.set(.8);
+			}
 		}
-		if(leftMag > 0.1) {
-			left.set(-.8);
-			right.set(.8);
+		else {
+			if(!ballInTrap.get()) { //is in trap
+				if(rightMag > .1) {
+					left.set(1);
+					right.set(-1);
+				}
+			}
+			else if(ballInTrap.get()) {
+				if(leftMag > .1) {
+					left.set(-.8);
+					right.set(.8);
+				}
+			}
 		}
 	}
 	
