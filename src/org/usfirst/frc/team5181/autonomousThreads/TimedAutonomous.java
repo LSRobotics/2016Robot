@@ -31,7 +31,7 @@ public class TimedAutonomous implements Autonomous {
 		robot = r;
 		
 		revX = r.getRevX();
-		autonSwitch = r.limitSwitch;
+		//autonSwitch = r.limitSwitch;
 		pidi = new PIDFunctions(r, Controllers.ROTATION, revX);
 		inAuton = false;
 	}
@@ -61,7 +61,7 @@ public class TimedAutonomous implements Autonomous {
 							break;
 						}
 					}
-					//Breaks out of thread is autonomous ends
+					//Breaks out of thread if autonomous ends
 					if(!inAuton) {
 						break;
 					}

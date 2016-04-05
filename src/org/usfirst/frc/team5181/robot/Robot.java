@@ -6,8 +6,10 @@ import org.usfirst.frc.team5181.actuators.LadderArm;
 import org.usfirst.frc.team5181.actuators.LinearActuator;
 import org.usfirst.frc.team5181.autonomousThreads.*;
 import org.usfirst.frc.team5181.autonomousThreads.PIDFunctions.Controllers;
+import org.usfirst.frc.team5181.autonomousThreads.PseudoPID.Source;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 import org.usfirst.frc.team5181.sensors.Potentiometer;
+import org.usfirst.frc.team5181.sensors.RangeSensors.SonicRangeSensor;
 import org.usfirst.frc.team5181.sensors.RevX;
 import org.usfirst.frc.team5181.sensors.RangeSensors;
 
@@ -45,15 +47,13 @@ public class Robot extends SampleRobot {
 	CameraServer server;
 
 	// Autonomous Chooser
-	Command autonCommand;
 	SendableChooser autonChooser;
-	Command position;
 	SendableChooser positionChooser;
-
+	SendableChooser scoreLowGoal;
+	
 	// Sensors
 	public RevX revX;
 	public RangeSensors rangeSensors;
-	
 	// Actuators
 	public BallPickup ballPickUp;
 	LadderArm arm;
@@ -65,8 +65,7 @@ public class Robot extends SampleRobot {
 	boolean isRecording;
 
 	// Sensors
-	Potentiometer potent;
-	public LimitSwitch limitSwitch;
+	//Potentiometer potent;
 
 	private boolean ballTracker;
 	private boolean clientStarted;
@@ -76,45 +75,69 @@ public class Robot extends SampleRobot {
 
 		// Sensors
 		revX = new RevX(SPI.Port.kMXP);
-		limitSwitch = new LimitSwitch(7);
 		rangeSensors = new RangeSensors();
 		
 		// Actuators
 		ballPickUp = new BallPickup();
-		arm = new LadderArm(6, 7, 0); // TODO change constructor
+		arm = new LadderArm(6, 7, 9); // TODO change constructor
 		rotateMAXPOWER = false;
 		boris = new Boris(Statics.BORIS_PORT);
 		
-		// Auton
-		auton = new MixedAutonomous(this);
-		//auton = new TimedAutonomous(this);
-		
+		// Auton		
 		recorder = new ActionBased(revX);
 		autonChooser = new SendableChooser();
 		autonChooser.addDefault("Rock-Wall", "/var/rcrdng/rockWall.rcrdng");
 		autonChooser.addObject("Rough-Terrain", "/var/rcrdng/roughTerrain.rcrdng");
+		autonChooser.addObject("Low-Bar", "/var/rcrdng/lowBar.rcrdng");
+		autonChooser.addObject("CDF", "/var/rcrdng/CDF.rcrdng"); 
+		autonChooser.addObject("Moat", "/var/rcrdng/moat.rcrdng");
+		autonChooser.addObject("PTC", "/var/rcrdng/PTC.rcrdng");
+		autonChooser.addObject("Ramparts", "/var/rcrdng/ramparts.rcrdng");
 		SmartDashboard.putData("Auto Selector", autonChooser);
 
 		positionChooser = new SendableChooser();
 		positionChooser.addDefault("Right", "right");
 		positionChooser.addDefault("Left", "left");
 		SmartDashboard.putData("Position Selector", positionChooser);
-
+		
+		scoreLowGoal = new SendableChooser();
+		scoreLowGoal.addDefault("Don't Score Low Goal", false);
+		scoreLowGoal.addObject("Score Low Goal", true);
+		SmartDashboard.putData("Score Low Goal Chooser", scoreLowGoal);
+		
 		koala = new Bear();
 		ballTracker = false;
 		clientStarted = false;
 
-		//server = CameraServer.getInstance();
-		//server.setQuality(100);
-		//server.startAutomaticCapture("cam0");
+		server = CameraServer.getInstance();
+		server.setQuality(100);
+		server.startAutomaticCapture("cam0");
 	}
 
 	public void autonomous() {
+		boolean lowGoal = (boolean) scoreLowGoal.getSelected();
 		String selectedAuton = (String) autonChooser.getSelected();
 		String selectedPosition = (String) positionChooser.getSelected();
-		auton.initializeAuton(selectedAuton, new String[] {selectedAuton, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defence name
-		while (this.isAutonomous()) {
-			auton.setAutonState(this.isAutonomous());
+		
+		if (lowGoal) {
+			auton = new MixedAutonomous(this);
+			auton.initializeAuton(selectedAuton, new String[] {selectedPosition, selectedAuton.substring(selectedAuton.lastIndexOf('/'), selectedAuton.indexOf('.'))}); //need to find a better way to get the straight defense name
+			while (this.isAutonomous()) {
+				auton.setAutonState(this.isAutonomous());
+				auton.doAuton();
+			}
+		}
+		else {
+			auton = new TimedAutonomous(this);
+			auton.initializeAuton(selectedAuton, new String[] {"", ""}); //TimedAutonomous doesn't use the second argument, don't want to waste time doing substring
+			new Thread() { 
+				public void run() {
+						auton.doAuton();
+					}
+			}.start();
+			while (this.isAutonomous()) {
+				auton.setAutonState(this.isAutonomous());
+			}
 		}
 	}
 
@@ -130,7 +153,17 @@ public class Robot extends SampleRobot {
 			Gamepad.setNaturalState();
 		}
 		// Ball pickup
-			ballPickUp.setBallIntake(Gamepad.LEFT_Trigger_State, Gamepad.RIGHT_Trigger_State);
+			if(!Gamepad.TRIGGER_State) {
+				if (Gamepad.Y_Button_State) {
+					ballPickUp.setBallIntake(0, 1);
+				}
+				else if (Gamepad.A_Button_State) {
+					ballPickUp.setBallIntake(1, 0);
+				}
+				else {
+					ballPickUp.shootFree(0, 0);
+				}
+				}
 		// End ball pickup
 		
 		// Start Raspberry Pi client
@@ -160,34 +193,36 @@ public class Robot extends SampleRobot {
 		// End Collision
 
 		// Ladder
-			if (Gamepad.A_Button_State) {
-				arm.extend(LadderArm.extensionDirections.CONTRACT, 1);
+			if(Gamepad.TRIGGER_State) {
+//				if (Gamepad.A_Button_State) {
+//					arm.extendFree(1);
+//				}
+//		
+//				if (Gamepad.Y_Button_State) {
+//					arm.extendFree(-1);
+//				}   
+//		
+//				if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
+//					arm.extendStop();
+//				}
+
+				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.25);
+				
+//				rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
+//				
+//				if (rotateMAXPOWER) {
+//					arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
+//				}
 			}
-	
-			if (Gamepad.Y_Button_State) {
-				arm.extend(LadderArm.extensionDirections.EXTEND, 1);
+			else {
+				arm.rotateFree(0);
 			}
-	
-			if (!Gamepad.A_Button_State && !Gamepad.Y_Button_State) {
-				arm.extendFree(0);
-			}
-	
-			if (Gamepad.LEFT_Stick_DOWN_State) {
-				arm.stayRotated();
-			} else if (!Gamepad.LEFT_Stick_DOWN_State) {
-				arm.rotate(Gamepad.LEFT_Stick_Y_State, 0.35);
-			}
-	
-			rotateMAXPOWER = (Gamepad.D_PAD_State == 0);
-			
-			if (rotateMAXPOWER) {
-				arm.rotateFree(Gamepad.LEFT_Stick_Y_State);
-			} 
-			//DriverStation.reportError(rotateMAXPOWER + "\n", false);
-		// End ladder
+		// End ladder 
 
 		//Boris
-			boris.Set(Gamepad.LEFT_Stick_Y_State);
+			if(!Gamepad.TRIGGER_State) {
+				boris.set(Gamepad.LEFT_Stick_Y_State);
+			}
 		//End Boris
 		
 		// Drive
@@ -204,8 +239,7 @@ public class Robot extends SampleRobot {
 			isRecording = true;
 
 			recorder.startRecording(true, period);
-			//recorder.setFile((String) autonChooser.getSelected());
-			recorder.setFile("/var/rcrdng/autonRecordingComp.rcrdng");
+			recorder.setFile((String) autonChooser.getSelected());
 			DriverStation.reportError("Started\n", false);
 		}
 
@@ -230,10 +264,88 @@ public class Robot extends SampleRobot {
 	public RevX getRevX() {
 		return revX;
 	}
-
+	
+//	boolean I = false, P = false,  D = false;
+//	boolean dI = false, dP = false, dD = false;
+//	double p = 0, i = 0, d = 0;
+	
 	public void test() {
-		while (this.isEnabled()) {
-			auton.doAuton();
-		}
+		PseudoPID pid = new PseudoPID(Source.Displacement, revX, this);
+		
+		pid.goToSetpoint(90, 5);
+		
+		
+//		PIDFunctions pidi = new PIDFunctions(this, Controllers.ROTATION, revX);
+//		
+//		while(this.isEnabled()) {
+//			Gamepad.setNaturalState();
+//			
+//			for(int i = 0; i < 3; i++) {
+//				DriverStation.reportError("Current println: " + i + "     " + pidi.getPIDTunings(Controllers.ROTATION)[i] + "\n", false);
+//			}
+//			
+//			if(Gamepad.RIGHT_Stick_Y_State > .1) {
+//				pidi.turnToAngle(90);
+//			}
+//			else if(Gamepad.RIGHT_Stick_Y_State < -.1) {
+//				pidi.turnToAngle(0);
+//			}
+//			else {
+//				drive.tankDrive(0, 0);
+//			}
+//			
+//			//BEGIN
+//			if (Gamepad.X_Button_State && !P) {
+//				P = true;
+//			}
+//			else if (!Gamepad.X_Button_State && P) {
+//				P = false;
+//			}
+//			if (Gamepad.B_Button_State && !D) {
+//				D = true;
+//			}
+//			else if (!Gamepad.B_Button_State && D) {
+//				D = false;
+//			}
+//			if (Gamepad.Y_Button_State && !I) {
+//				I = true;
+//			}
+//			else if (!Gamepad.Y_Button_State && I) {
+//				I = false;
+//			}
+//
+//			//LEFT_Bumper_State => decrease P
+//			if (Gamepad.LEFT_Bumper_State && !dP) {
+//				dP = true;
+//			}
+//			else if (!Gamepad.LEFT_Bumper_State && dP) {
+//				dP = false;
+//			}
+//			//RIGHT_Bumper_State
+//			if (Gamepad.A_Button_State && !dD) {
+//				dD = true;
+//			}
+//			else if (!Gamepad.A_Button_State && dD) {
+//				dD = false;
+//			}
+//			//A_Button_State
+//			if (Gamepad.RIGHT_Bumper_State && !dI) {
+//				dI = true;
+//			}
+//			else if (!Gamepad.RIGHT_Bumper_State && dI) {
+//				dI = false;
+//			}
+//		
+//			//SD			
+//			p += (P) ? 0.05 : 0.0;
+//			d += (D) ? 0.05 : 0.0;
+//			i += (I) ? 0.05 : 0.0;
+//			
+//			p -= (dP) ? (-0.05) : 0.0;
+//			d -= (dD) ? (-0.05) : 0.0;
+//			i -= (dI) ? (-0.05) : 0.0;
+//			
+//			pidi.upadtePID(Controllers.ROTATION, p, i, d, 0);
+//		}
 	}
 }

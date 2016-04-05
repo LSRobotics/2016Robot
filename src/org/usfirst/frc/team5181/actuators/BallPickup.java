@@ -5,6 +5,8 @@ import org.usfirst.frc.team5181.robot.Statics;
 import org.usfirst.frc.team5181.sensors.LimitSwitch;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.Talon;
 
 public class BallPickup {
@@ -14,34 +16,41 @@ public class BallPickup {
 	public BallPickup() {
 		left = new Talon(Statics.LeftBall);
 		right = new Talon(Statics.RightBall); 
+	}
+	public BallPickup(int limitPort) {
+		left = new Talon(Statics.LeftBall);
+		right = new Talon(Statics.RightBall); 
 		
-		ballInTrap = new LimitSwitch(9);
+		ballInTrap = new LimitSwitch(limitPort);
 	}
 	
 	public void setBallIntake(double leftMag, double rightMag) {
-		if(!ballInTrap.get()) {
+		if(ballInTrap == null) {
 			if(rightMag > .1) {
-				left.set(-1);
-				right.set(1);
-				return;
+				left.set(1);
+				right.set(-1);
 			}
-			else if(!(rightMag > .1)) {
-				left.set(0);
-				right.set(0);
-				return;
+			if(leftMag > 0.1) {
+				left.set(-.8);
+				right.set(.8);
 			}
 		}
-		if(!(rightMag > .1)) {
-			if(leftMag > 0.2) {
-				left.set(0.2);
-				right.set(-0.2);
+		else {
+			if(!ballInTrap.get()) { //is in trap
+				if(rightMag > .1) {
+					left.set(1);
+					right.set(-1);
+				}
 			}
-			if(Math.abs(leftMag) < 0.1) {
-				left.set(0);
-				right.set(0);
+			else if(ballInTrap.get()) {
+				if(leftMag > .1) {
+					left.set(-.8);
+					right.set(.8);
+				}
 			}
 		}
 	}
+	
 	public void shootFree(double leftMag, double rightMag) {
 		left.set(-leftMag);
 		right.set(rightMag);

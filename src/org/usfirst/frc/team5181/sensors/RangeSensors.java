@@ -16,8 +16,20 @@ public class RangeSensors {
 	public RangeSensors() {
 		//this.srFront = new SonicRangeSensor(Statics.FRONT_Ultra_Echo, Statics.FRONT_Ultra_Trigger);
 		this.srBack = new SonicRangeSensor(Statics.BACK_Ultra_Echo, Statics.BACK_Ultra_Trigger);
-		//this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		//this.srRight = new SonicRangeSensor(Statics.RIGHT_Ultra_Echo, Statics.RIGHT_Ultra_Trigger);
 		//this.srLeft = new SonicRangeSensor(Statics.LEFT_Ultra_Echo, Statics.LEFT_Ultra_Trigger);
+		
+		//Call constructors consecutively
+		//this.srFront.restartSensor();
+		//this.srFront.ultra.setAutomaticMode(true);
+		
+		this.srBack.restartSensor();
+		this.srBack.ultra.setAutomaticMode(true);
+		
+//		this.srLeft.restartSensor();
+
+//		this.srRight.restartSensor();
+//		this.srRight.ultra.setAutomaticMode(true);
 	}
 	
 	/**
@@ -29,7 +41,7 @@ public class RangeSensors {
 
 		int ULTRASONIC_ECHO_PULSE_OUTPUT; //Currently 4
 		int ULTRASONIC_TRIGGER_PULSE_INPUT; //Currently 3
-		Ultrasonic ultra;
+		public Ultrasonic ultra;
 
 		public SonicRangeSensor(int echoOut, int triggerIn) {
 			ULTRASONIC_ECHO_PULSE_OUTPUT = echoOut;
@@ -37,8 +49,6 @@ public class RangeSensors {
 			try { 
 				ultra = new Ultrasonic(ULTRASONIC_ECHO_PULSE_OUTPUT,
 				ULTRASONIC_TRIGGER_PULSE_INPUT, Ultrasonic.Unit.kMillimeters);
-				//restartSensor();
-				ultra.setAutomaticMode(true);
 			} catch (Exception e) {
 				DriverStation.reportError("Catastrophe at the place where catastrophe happens " + e, true);
 			}

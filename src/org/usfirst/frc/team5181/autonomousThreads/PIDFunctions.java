@@ -45,6 +45,7 @@ public class PIDFunctions implements PIDOutput {
 				pidiR.setOutputRange(-1, 1);
 				pidiR.setAbsoluteTolerance(toleranceRotation);
 				pidiR.setContinuous(true);
+				pidiR.setAbsoluteTolerance(2);
 				
 				break;
 			case DISPLACEMENT:
@@ -56,7 +57,7 @@ public class PIDFunctions implements PIDOutput {
 				pidiD.setOutputRange(-0.5, 0.5);
 				pidiD.setAbsoluteTolerance(toleranceDistance);
 				pidiD.setContinuous(true);
-				
+				pidiD.setAbsoluteTolerance(2);
 				break;
 		}
 	}
@@ -76,7 +77,7 @@ public class PIDFunctions implements PIDOutput {
 		if(pidiD != null) {
 			pidiD.setSetpoint(distance);
 			pidiD.enable();
-			drive.arcadeDrive(0, pidValue);
+			drive.arcadeDrive(0, -pidValue); //if passing in the back sensor, make this negative
 		}
 		else {
 			throw new NullPointerException();
@@ -94,9 +95,20 @@ public class PIDFunctions implements PIDOutput {
 	public void setPIDSource(Object source, Controllers pidType) {
 		if(pidType == Controllers.ROTATION) {
 			pidiR = new PIDController(kPr, kIr, kDr, new GyroSource((RevX) source), this);
+
+			pidiR.setInputRange(-180.0, 180.0);
+			pidiR.setOutputRange(-1, 1);
+			pidiR.setAbsoluteTolerance(toleranceRotation);
+			pidiR.setContinuous(true);
+			pidiR.setAbsoluteTolerance(2);
 		}
 		if(pidType == Controllers.DISPLACEMENT) {
 			pidiD = new PIDController(kPd, kId, kDd, new DisplacementSource((SonicRangeSensor) source), this);
+			pidiD.setInputRange(0, 5000); //mm
+			pidiD.setOutputRange(-0.5, 0.5);
+			pidiD.setAbsoluteTolerance(toleranceDistance);
+			pidiD.setContinuous(true);
+			pidiD.setAbsoluteTolerance(10);
 		}
 	}
 	

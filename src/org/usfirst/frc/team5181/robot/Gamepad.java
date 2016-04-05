@@ -21,6 +21,7 @@ public class Gamepad {
 	public static boolean START_State = false; //FROM GAMEPAD
 	public static boolean LEFT_Stick_DOWN_State = false; //FROM JOYSTICK
 	public static boolean RIGHT_Stick_DOWN_State = false; //FROM GAMEPAD
+	public static boolean TRIGGER_State = false; //FROM JOYSTICK
 	
 	// Axis
 	public static double LEFT_Stick_X_State = 0; //FROM JOYSTICK
@@ -64,6 +65,7 @@ public class Gamepad {
 			START_State = jGP.getRawButton(Statics.START);
 			LEFT_Stick_DOWN_State = jJS.getRawButton(Statics.LEFT_Stick_DOWN);
 			RIGHT_Stick_DOWN_State =jGP.getRawButton(Statics.RIGHT_Stick_DOWN);
+			TRIGGER_State = jJS.getRawButton(Statics.JoyStickTrigger);
 			
 			// Axis
 			LEFT_Stick_X_State = jJS.getRawAxis(Statics.LEFT_Stick_X);
@@ -118,6 +120,7 @@ public class Gamepad {
 			START_State = jGP.getRawButton(Statics.START);
 			LEFT_Stick_DOWN_State = jJS.getRawButton(Statics.LEFT_Stick_DOWN);
 			RIGHT_Stick_DOWN_State =jGP.getRawButton(Statics.RIGHT_Stick_DOWN);
+			TRIGGER_State = jJS.getRawButton(Statics.JoyStickTrigger);
 			
 			// Axis
 			LEFT_Stick_X_State = jJS.getRawAxis(Statics.LEFT_Stick_X);
@@ -196,6 +199,10 @@ public class Gamepad {
 		    		break;
 		    	case 18:
 		    		RIGHT_Stick_DOWN_State = magnitude.equals("1.0");
+		    		break;
+		    	case 19:
+		    		TRIGGER_State = magnitude.equals("1.0");
+		    		break;
 			}
 		}
 	}

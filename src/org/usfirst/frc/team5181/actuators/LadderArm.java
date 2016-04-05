@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Talon;
 
 public class LadderArm {
-	Talon armRotationController, armExtensionController;
+	Talon armRotationController, armExtensionController, armContractionController;
 	LimitSwitch BoundsMax; //extension
 	
 	/**
@@ -17,20 +17,24 @@ public class LadderArm {
 	 * @param limitMinPort min extension
 	 * @param limit15Port 15" extension
 	 */
-	public LadderArm(int rotationPort, int extensionPort, int limitMaxPort) {
+	public LadderArm(int rotationPort, int contractionPort, int extensionPort, int limitMaxPort) {
 		BoundsMax = new LimitSwitch(limitMaxPort);
 		
 		armRotationController = new Talon(rotationPort); 
 		armExtensionController = new Talon(extensionPort);
+		armContractionController = new Talon(contractionPort);
 	}
 	
 	/**
+	 * 
 	 * @param rotationPort
 	 * @param extensionPort
+	 * @param contractionPort
 	 */
-	public LadderArm(int rotationPort, int extensionPort) {
+	public LadderArm(int rotationPort, int extensionPort, int contractionPort) {
 		armRotationController = new Talon(rotationPort); 
 		armExtensionController = new Talon(extensionPort);
+		armContractionController = new Talon(contractionPort);
 	}
 	
 	 /**
@@ -57,7 +61,7 @@ public class LadderArm {
 	}
 	
 	public void stayRotated() {
-		armRotationController.set(0.23);
+		armRotationController.set(0.0);
 	}
 	
 	public enum extensionDirections {
@@ -70,7 +74,7 @@ public class LadderArm {
 			armExtensionController.set(-Math.abs(magnitude));
 		}
 		if(direction == extensionDirections.CONTRACT && Math.abs(magnitude) > 0.1) {
-			armExtensionController.set(Math.abs(magnitude));
+			armContractionController.set(Math.abs(magnitude));
 		}
 		
 		if(BoundsMax != null) {
@@ -80,7 +84,11 @@ public class LadderArm {
 		}
 	}
 	
-	public void extendFree(double mag) {
-		armExtensionController.set(mag);
+	public void extendStop() {
+		armExtensionController.set(0);
+		armContractionController.set(0);
+	}
+	public void extendFree(double speed) {
+		armExtensionController.set(speed);
 	}
 }
