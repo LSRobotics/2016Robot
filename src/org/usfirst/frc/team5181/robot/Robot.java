@@ -154,16 +154,16 @@ public class Robot extends SampleRobot {
 		}
 		// Ball pickup
 			if(!Gamepad.TRIGGER_State) {
-				if (Gamepad.Y_Button_State) {
+				if (Gamepad.LEFT_Trigger_State > 0.5) {
 					ballPickUp.setBallIntake(0, 1);
 				}
-				else if (Gamepad.A_Button_State) {
+				else if (Gamepad.RIGHT_Trigger_State > 0.5) {
 					ballPickUp.setBallIntake(1, 0);
 				}
 				else {
 					ballPickUp.shootFree(0, 0);
 				}
-				}
+			}
 		// End ball pickup
 		
 		// Start Raspberry Pi client
@@ -192,7 +192,7 @@ public class Robot extends SampleRobot {
 			}
 		// End Collision
 
-		// Ladder
+		// Ladder 
 			if(Gamepad.TRIGGER_State) {
 //				if (Gamepad.A_Button_State) {
 //					arm.extendFree(1);
@@ -220,11 +220,9 @@ public class Robot extends SampleRobot {
 		// End ladder 
 
 		//Boris
-			if(!Gamepad.TRIGGER_State) {
-				boris.set(Gamepad.LEFT_Stick_Y_State);
-			}
+			boris.set(Gamepad.LEFT_Stick_Y_State);
 		//End Boris
-		
+			
 		// Drive
 			drive.updateSpeedLimit(Gamepad.RIGHT_Bumper_State, Gamepad.LEFT_Bumper_State, Gamepad.B_Button_State);
 			drive.arcadeDrive(Gamepad.RIGHT_Stick_X_State, Gamepad.RIGHT_Stick_Y_State);
