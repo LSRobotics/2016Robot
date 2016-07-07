@@ -1,6 +1,7 @@
 # *Sigmund* CODE
 
-
+![sigmund in action](https://i.imgur.com/Bfpw7XOh.jpg)
+*Image: "Sigmund" in action during the Hatboro-Horsham competition*
 
 Code for the 2016 Season Robot "Sigmund".
 
