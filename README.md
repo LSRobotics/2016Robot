@@ -7,6 +7,7 @@ Code for the 2016 Season Robot "Sigmund".
 
 
 ##Code License
+![GNU GPL](https://www.gnu.org/graphics/gplv3-127x51.png)
 
 The entire `2016Robot` repository and all its affiliated codes are released under The GNU General Public Certificate v3. A more detailed version of this license can be accessed in the `LICENSE` file located in the same repository. All digital contents inside this repository are the copyrights of La Salle Robotics Team of La Salle College High School, Wyndmoor, PA.
 
