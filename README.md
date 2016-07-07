@@ -6,6 +6,10 @@ Code for the 2016 Season Robot "Sigmund".
 *Image: "Sigmund" in action during the Hatboro-Horsham competition*
 
 
+##Code License
+
+The entire `2016Robot` repository and all its affiliated codes are released under The GNU General Public Certificate v3. A more detailed version of this license can be accessed in the `LICENSE` file located in the same repository. All digital contents inside this repository are the copyrights of La Salle Robotics Team of La Salle College High School, Wyndmoor, PA.
+
 ##The authors
 
 * [Mark Bense](https://github.com/msbense) Code architecture, neural network implementation, vision recognition. Email: msb320 [@] lehigh.edu
