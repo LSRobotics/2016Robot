@@ -1,6 +1,6 @@
 # *Sigmund* CODE [![View us on the blue alliance](http://www.thebluealliance.com/images/tba_blue_lamp_navbar_large.png)](http://www.thebluealliance.com/team/5181)
 
-Code for the La Salle Robotics Team 5181's 2016 Season Robot "Sigmund". More details about the game can be accessed at https://usfirst.org.
+Code for the La Salle Robotics Team 5181's 2016 Season Robot "Sigmund". More details about the game can be accessed at http://usfirst.org.
 
 ![sigmund in action](https://i.imgur.com/Bfpw7XOh.jpg)
 *Image: "Sigmund" in action during the Hatboro-Horsham competition*
