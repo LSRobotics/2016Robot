@@ -1,4 +1,4 @@
-# *Sigmund* CODE
+# *Sigmund* CODE [![View us on the blue alliance](http://www.thebluealliance.com/images/tba_blue_lamp_navbar_large.png)](http://www.thebluealliance.com/team/5181)
 
 Code for the 2016 Season Robot "Sigmund".
 
