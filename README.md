@@ -14,7 +14,7 @@ The entire `2016Robot` repository and all its affiliated codes are released unde
 ##The authors
 
 * [Mark Bense](https://github.com/msbense) Code architecture, neural network implementation, vision recognition. Email: msb320 [@] lehigh.edu
-* [Connor Devitt](https://github.com/Connor-Devitt) Hardware and code integration, PID testing, robot controls. Email: connordevitt2019 [@] lschs.org
+* [Connor Devitt](https://github.com/Connor-Devitt) Hardware and code integration, PID testing, robot controls. Email: connordevitt2016 [@] lschs.org
 * [Tyler Liu](https://github.com/tylerliu) Vision recognition, various bugfixes, and maintainance. Email: tylerliu2018 [@] lschs.org
 * [Alex Fang](https://github.com/frjalex) Raspberry Pi integration, GitHub maintenance and cleanup, Bear code. Email: frjalex [@] temple.edu
 
