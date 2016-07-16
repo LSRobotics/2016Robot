@@ -24,8 +24,8 @@ public class Gamepad {
 	public static boolean TRIGGER_State = false; //FROM JOYSTICK
 	
 	// Axis
-	public static double LEFT_Stick_X_State = 0; //FROM GAMEPAD
-	public static double LEFT_Stick_Y_State = 0; //FROM GAMEPAD
+	public static double LEFT_Stick_X_State = 0; //FROM JOYSTICK
+	public static double LEFT_Stick_Y_State = 0; //FROM JOYSTCIK
 	public static double LEFT_Trigger_State = 0; //FROM GAMEPAD
 	public static double RIGHT_Trigger_State = 0; //FROM GAMEPAD
 	public static double RIGHT_Stick_X_State = 0; //FROM GAMEPAD
@@ -68,8 +68,8 @@ public class Gamepad {
 			TRIGGER_State = jJS.getRawButton(Statics.JoyStickTrigger);
 			
 			// Axis
-			LEFT_Stick_X_State = jGP.getRawAxis(Statics.LEFT_Stick_X);
-			LEFT_Stick_Y_State = jGP.getRawAxis(Statics.LEFT_Stick_Y);
+			LEFT_Stick_X_State = jJS.getRawAxis(Statics.LEFT_Stick_X);
+			LEFT_Stick_Y_State = jJS.getRawAxis(Statics.LEFT_Stick_Y);
 			LEFT_Trigger_State = jGP.getRawAxis(Statics.LEFT_Trigger);
 			RIGHT_Trigger_State = jGP.getRawAxis(Statics.RIGHT_Trigger);
 			RIGHT_Stick_X_State = jGP.getRawAxis(Statics.RIGHT_Stick_X);
@@ -123,8 +123,8 @@ public class Gamepad {
 			TRIGGER_State = jJS.getRawButton(Statics.JoyStickTrigger);
 			
 			// Axis
-			LEFT_Stick_X_State = jGP.getRawAxis(Statics.LEFT_Stick_X);
-			LEFT_Stick_Y_State = jGP.getRawAxis(Statics.LEFT_Stick_Y);
+			LEFT_Stick_X_State = jJS.getRawAxis(Statics.LEFT_Stick_X);
+			LEFT_Stick_Y_State = jJS.getRawAxis(Statics.LEFT_Stick_Y);
 			LEFT_Trigger_State = jGP.getRawAxis(Statics.LEFT_Trigger);
 			RIGHT_Trigger_State = jGP.getRawAxis(Statics.RIGHT_Trigger);
 			RIGHT_Stick_X_State = jGP.getRawAxis(Statics.RIGHT_Stick_X);
