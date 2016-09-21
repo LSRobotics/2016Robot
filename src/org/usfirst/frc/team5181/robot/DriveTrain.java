@@ -34,7 +34,8 @@ public class DriveTrain {
 		double xRotation = controlStickX;
 		double yDrive    = controlStickY;
 		
-		xRotation = Filters.powerCurving(controlStickX, 0.75); //filter rotational values
+		// 2016 - 9 fix: Add variable for turning so that turning gets dumb when high-speed driving.
+		xRotation = Filters.powerCurving(controlStickX, Filters.determineControlY(yDrive)); //filter rotational values
 		
 		if(Math.abs(yDrive) >= speedLimit) {
 			yDrive = ((yDrive < 0)? -1 : 1) * speedLimit;
