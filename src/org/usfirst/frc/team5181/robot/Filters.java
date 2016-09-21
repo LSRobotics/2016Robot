@@ -17,4 +17,12 @@ public class Filters {
 		return ((input < 0)? -1 : 1) * Math.pow(Math.abs(input), power);
 	}
 	
+	// yark
+	public static double determineControlY(double y) {
+		if(y >= 0.8) {
+			return -(1.5 - y);
+		} else {
+			return (1 - y);
+		}
+	}
 }
