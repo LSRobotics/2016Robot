@@ -39,7 +39,7 @@ public class DriveTrain {
 		if(Math.abs(yDrive) >= 0.5) {
 			xRotation = xRotation * 0.6; // TEMP FIX q. JACKASS HENRY
 		} else {
-			xRotation = Filters.powerCurving(xRotation, 0.75);
+			// do nil
 		}
 		
 		if(Math.abs(yDrive) >= speedLimit) {
